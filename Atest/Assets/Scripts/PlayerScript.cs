@@ -1,61 +1,67 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerScript : MonoBehaviour
 {
-    [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
-    float speed = 9;
+    public Rigidbody2D rb;
+    public Transform groundCheck;
+    public LayerMask groundLayer;
 
-    [SerializeField, Tooltip("Acceleration while grounded.")]
-    float walkAcceleration = 75;
+    private float horizontal;
+    [SerializeField]
+    private float speed = 8f;
+    [SerializeField]
+    private float jumpingPower = 16f;
+    [SerializeField]
+    private bool isFacingRight = true;
 
-    [SerializeField, Tooltip("Acceleration while in the air.")]
-    float airAcceleration = 30;
-
-    [SerializeField, Tooltip("Deceleration applied when character is grounded and not attempting to move.")]
-    float groundDeceleration = 70;
-
-    [SerializeField, Tooltip("Max height the character will jump regardless of gravity")]
-    float jumpHeight = 4;
-
-    private BoxCollider2D boxCollider;
-
-    private Vector2 velocity;
-
-    private void Awake()
+    void Update()
     {
-        boxCollider = GetComponent<BoxCollider2D>();
+        if (!isFacingRight && horizontal > 0f)
+        {
+            Flip();
+        }
+        else if (isFacingRight && horizontal < 0f)
+        {
+            Flip();
+        }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (Input.GetButtonDown("Jump"))
+        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+    }
+
+    public void Jump(InputAction.CallbackContext context)
+    {
+        if (context.performed && IsGrounded())
         {
-            velocity.y = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
 
-        float moveInput = Input.GetAxisRaw("Horizontal");
-        if (moveInput != 0)
+        if (context.canceled && rb.velocity.y > 0f)
         {
-            velocity.x = Mathf.MoveTowards(velocity.x, speed * moveInput, walkAcceleration * Time.deltaTime);
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
-        else
-        {
-            velocity.x = Mathf.MoveTowards(velocity.x, 0, groundDeceleration * Time.deltaTime);
-        }
-        transform.Translate(velocity * Time.deltaTime);
+    }
 
-        Collider2D[] hits = Physics2D.OverlapBoxAll(transform.position, boxCollider.size, 0);
-        foreach (Collider2D hit in hits)
-        {
-            if (hit == boxCollider)
-                continue;
-            ColliderDistance2D colliderDistance = hit.Distance(boxCollider);
+    private bool IsGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
 
-            if (colliderDistance.isOverlapped)
-            {
-                transform.Translate(colliderDistance.pointA - colliderDistance.pointB);   
-            }
-        }
+    private void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
+    }
+
+    public void Move(InputAction.CallbackContext context)
+    {
+        horizontal = context.ReadValue<Vector2>().x;
     }
 }

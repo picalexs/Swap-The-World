@@ -58,3 +58,12 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+#PNG
+*.png.meta
+
+#Player Input System
+*.inputactions.meta
+
+#CS
+'.cs.meta
+
