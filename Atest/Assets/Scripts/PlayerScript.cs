@@ -17,6 +17,13 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]
     private bool isFacingRight = true;
 
+    [SerializeField]
+    private bool jumpQueue;
+    [SerializeField]
+    private float firstJumpPress,lastGrounded;
+    [SerializeField]
+    private float preGroundJumpCooldown,preAirJumpCooldown;
+
     void Update()
     {
         if (!isFacingRight && horizontal > 0f)
@@ -31,14 +38,33 @@ public class PlayerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (IsGrounded())
+        {
+            if (Time.time - firstJumpPress <= preGroundJumpCooldown && jumpQueue)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            }
+            jumpQueue = false;
+        }
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed && IsGrounded())
+        if (context.performed)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            if (IsGrounded() || Time.time - lastGrounded <= preAirJumpCooldown)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            }
+            else
+            {
+                if (!jumpQueue)
+                {
+                    firstJumpPress = Time.time;
+                    jumpQueue = true; 
+                }
+            }
         }
 
         if (context.canceled && rb.velocity.y > 0f)
@@ -49,7 +75,12 @@ public class PlayerScript : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        bool grounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        if (grounded)
+        {
+            lastGrounded = Time.time;
+        }
+        return grounded;
     }
 
     private void Flip()
