@@ -5,24 +5,32 @@ using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    public Transform groundCheck;
-    public LayerMask groundLayer;
+    private Rigidbody2D rb;
+    private Collission collission;
 
+    [SerializeField]
     private float horizontal;
-    [SerializeField]
-    private float speed = 8f;
-    [SerializeField]
-    private float jumpingPower = 16f;
     [SerializeField]
     private bool isFacingRight = true;
 
     [SerializeField]
+    private float speed = 8f, climbingSpeed = 8f, climbingModifier=0.35f, stickCooldown =0.2f, s_cooldown;
+    [SerializeField]
+    private float jumpingPower = 16f,gravityScale=2.5f;
+
+
+    [SerializeField]
     private bool jumpQueue;
     [SerializeField]
-    private float firstJumpPress,lastGrounded;
+    private float firstJumpPress;
     [SerializeField]
-    private float preGroundJumpCooldown,preAirJumpCooldown;
+    private float preGroundJumpCooldown=0.15f,coyoteCooldown=0.15f,wallCooldown=0.15f;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        collission = GetComponent<Collission>();
+    }
 
     void Update()
     {
@@ -38,7 +46,10 @@ public class PlayerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (IsGrounded())
+        if(s_cooldown > 0)
+            s_cooldown -= Time.deltaTime;
+
+        if (collission.IsGrounded())
         {
             if (Time.time - firstJumpPress <= preGroundJumpCooldown && jumpQueue)
             {
@@ -46,14 +57,38 @@ public class PlayerScript : MonoBehaviour
             }
             jumpQueue = false;
         }
+        if (collission.onWall() && s_cooldown <=0)
+        {
+            if (rb.gravityScale != 0)
+            { 
+                rb.gravityScale = 0;
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+            }
+           /* 
+            float speedModifier = rb.velocity.y > 0 ? climbingModifier : 1f;
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y * climbingModifier * climbingSpeed);*/
+        }
+        else
+        {
+            rb.gravityScale = gravityScale;
+        }
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
     }
 
     public void Jump(InputAction.CallbackContext context)
     {
+        float lastGrounded = collission.lastGrounded;
+        float lastWall = collission.lastWall;
+
         if (context.performed)
         {
-            if (IsGrounded() || Time.time - lastGrounded <= preAirJumpCooldown)
+            if(collission.onWall() || Time.time - lastWall <= wallCooldown)
+            {
+                s_cooldown = stickCooldown;
+                rb.gravityScale = gravityScale;
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            }
+            else if (collission.IsGrounded() || Time.time - lastGrounded <= coyoteCooldown)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
             }
@@ -72,17 +107,6 @@ public class PlayerScript : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
     }
-
-    private bool IsGrounded()
-    {
-        bool grounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-        if (grounded)
-        {
-            lastGrounded = Time.time;
-        }
-        return grounded;
-    }
-
     private void Flip()
     {
         isFacingRight = !isFacingRight;
