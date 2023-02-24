@@ -10,6 +10,7 @@ public class PlayerScript : MonoBehaviour
     private PlayerActionControler _moveAction;
     private Rigidbody2D _rigidBody;
     private CapsuleCollider2D _capsuleCollider;
+    [SerializeField] private CollisionCheck _collision;
 
     [Space(10)]
     private bool _isFacingRight;
@@ -20,7 +21,7 @@ public class PlayerScript : MonoBehaviour
 
     [Space(10)]
     [Header("Movement variables")]
-    private bool _doConserveMomentum = true;
+    [SerializeField] private bool _doConserveMomentum = true;
     private Vector2 _movementInput;
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _acceleration;
@@ -32,20 +33,21 @@ public class PlayerScript : MonoBehaviour
 
     [Space(10)]
     [Header("Jump variables")]
+    [SerializeField] private float _coyoteCooldown = 0.15f;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpHangAccelerationMult;
     [SerializeField] private float _jumpHangMaxSpeedMult;
     [SerializeField] private float _jumpHangThreshold;
-
-
+    [SerializeField, Range(0,1)] private float _jumpCutMult;
 
     private void Awake()
     {
         _rigidBody=GetComponent<Rigidbody2D>();
         _capsuleCollider=GetComponent<CapsuleCollider2D>();
         _moveAction = new PlayerActionControler();
+        _collision = GetComponent<CollisionCheck>();
     }
-private void OnEnable()
+    private void OnEnable()
     {
         _moveAction.Enable();
     }
@@ -54,11 +56,29 @@ private void OnEnable()
     {
         _moveAction.Disable();
     }
+
+    private void Start()
+    {
+        _moveAction.Player.Jump.started += _ => JumpStarted();
+        _moveAction.Player.Jump.canceled += _ => JumpCanceled();
+    }
     private void FixedUpdate()
     {
         Move(1);
     }
 
+    private void Update()
+    {
+        _isGrounded = _collision.IsGrounded();
+        if (!_isFacingRight && _movementInput.x > 0f)
+        {
+            Flip();
+        }
+        else if (_isFacingRight && _movementInput.x < 0f)
+        {
+            Flip();
+        }
+    }
     private void Move(float _lerpAmount)
     {
         _movementInput = _moveAction.Player.Move.ReadValue<Vector2>();
@@ -67,9 +87,13 @@ private void OnEnable()
 
         float _accelRate;
         if (Time.time - _lastGrounded > 0)
+        {
             _accelRate = (Mathf.Abs(_targetSpeed) > 0.01f) ? _acceleration : _decceleration;
+        }
         else
+        {
             _accelRate = (Mathf.Abs(_targetSpeed) > 0.01f) ? _acceleration * _accelerationInAir : _decceleration * _deccelerationInAir;
+        }
 
         if ((_isJumping) && Mathf.Abs(_rigidBody.velocity.y) < _jumpHangThreshold)
         {
@@ -94,6 +118,30 @@ private void OnEnable()
             amount *= Mathf.Sign(_rigidBody.velocity.x);
             _rigidBody.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
         }
+    }
+
+    private void JumpStarted()
+    {
+        _lastGrounded = _collision._lastGrounded;
+        Jump();
+    }
+
+    private void Jump()
+    {
+        if (_isGrounded || Time.time - _lastGrounded <= _coyoteCooldown)
+        {
+            _isJumping = true;
+            _rigidBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+        }
+    }
+
+    private void JumpCanceled()
+    {
+        if (_isJumping)
+        {
+            _rigidBody.AddForce(Vector2.down * _rigidBody.velocity.y * (1 - _jumpCutMult), ForceMode2D.Impulse);
+        }
+        _isJumping = false;
     }
 
     private void Flip()

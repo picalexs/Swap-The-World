@@ -7,11 +7,11 @@ public class CollisionCheck : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Vector2 _groundCheckSize;
     [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private float _lastGrounded;
+    public float _lastGrounded;
 
     private void Awake()
     {
-        _groundCheck = GetComponentInChildren<Transform>();
+        _groundCheck = GetComponentsInChildren<Transform>()[1]; //gets the second transform it finds from the parent + childrens
     }
     public bool IsGrounded()
     {
