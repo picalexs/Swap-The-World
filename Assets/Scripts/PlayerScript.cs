@@ -7,10 +7,9 @@ using UnityEngine.UIElements;
 
 public class PlayerScript : MonoBehaviour
 {
-    private PlayerActionControler _moveAction;
+    private PlayerActionControler _playerAction;
     private Rigidbody2D _rigidBody;
-    private CapsuleCollider2D _capsuleCollider;
-    [SerializeField] private CollisionCheck _collision;
+    private CollisionCheck _collision;
 
     [Space(10)]
     private bool _isFacingRight;
@@ -43,24 +42,23 @@ public class PlayerScript : MonoBehaviour
     private void Awake()
     {
         _rigidBody=GetComponent<Rigidbody2D>();
-        _capsuleCollider=GetComponent<CapsuleCollider2D>();
-        _moveAction = new PlayerActionControler();
+        _playerAction = new PlayerActionControler();
         _collision = GetComponent<CollisionCheck>();
     }
     private void OnEnable()
     {
-        _moveAction.Enable();
+        _playerAction.Enable();
     }
 
     private void OnDisable()
     {
-        _moveAction.Disable();
+        _playerAction.Disable();
     }
 
     private void Start()
     {
-        _moveAction.Player.Jump.started += _ => JumpStarted();
-        _moveAction.Player.Jump.canceled += _ => JumpCanceled();
+        _playerAction.Player.Jump.started += _ => JumpStarted();
+        _playerAction.Player.Jump.canceled += _ => JumpCanceled();
     }
     private void FixedUpdate()
     {
@@ -81,7 +79,7 @@ public class PlayerScript : MonoBehaviour
     }
     private void Move(float _lerpAmount)
     {
-        _movementInput = _moveAction.Player.Move.ReadValue<Vector2>();
+        _movementInput = _playerAction.Player.Move.ReadValue<Vector2>();
         float _targetSpeed = _movementInput.x * _moveSpeed;
         _targetSpeed = Mathf.Lerp(_rigidBody.velocity.x, _targetSpeed, _lerpAmount);
 
