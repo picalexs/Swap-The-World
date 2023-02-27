@@ -9,4 +9,6 @@ public class ObjectData : ScriptableObject
     public string objectDescription;
     public GameObject objectModel;
     public Color32 objectColor;
+    public float objectGravityScale;
+    public float objectMass;
 }

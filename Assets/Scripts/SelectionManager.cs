@@ -68,7 +68,7 @@ public class SelectionManager : MonoBehaviour
                 Debug.Log("Selected first data from: " + firstSelectedObjectData.objectName);
             }
         }
-        else if(secondSelectedObjectManager == null)
+        else if(secondSelectedObjectManager == null || secondSelectedObjectData)
         {
             secondSelectedObjectManager = hit.transform.gameObject.GetComponent<ObjectManager>();
             secondSelectedObjectData = secondSelectedObjectManager.objectData;

@@ -18,3 +18,5 @@ MonoBehaviour:
   objectColor:
     serializedVersion: 2
     rgba: 4288610283
+  objectGravityScale: 3
+  objectMass: 50
