@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 5777768082999028753}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,14 +114,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5777768082999028750}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.08, y: -3.22, z: 0}
+  m_LocalPosition: {x: 0.39, y: -2.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5777768083707611817}
   - {fileID: 5777768082975395788}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5777768082999028757
 SpriteRenderer:
@@ -278,11 +278,17 @@ MonoBehaviour:
   _velocityPower: 1.2
   _frictionAmount: 1
   _coyoteCooldown: 0.15
+  _gravityScale: 2.5
   _jumpForce: 16
   _jumpHangAccelerationMult: 1.1
   _jumpHangMaxSpeedMult: 1.3
   _jumpHangThreshold: 1
   _jumpCutMult: 0.54
+  _dieJumpAmount: 0
+  _respawnTime: 0
+  _respawnPosition: {x: 0, y: 0}
+  _respawnJumpAmount: 0
+  _respawnCooldown: 0
 --- !u!114 &5777768082999028759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c38afeaa4e15f41baf42e894c508cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundCheck: {fileID: 0}
+  _groundCheck: {fileID: 5777768083707611817}
   _groundCheckSize: {x: 0.9, y: 0.1}
   _groundLayer:
     serializedVersion: 2

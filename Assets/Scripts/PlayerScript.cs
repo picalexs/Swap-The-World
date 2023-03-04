@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -15,6 +16,7 @@ public class PlayerScript : MonoBehaviour
     private bool _isFacingRight;
     private bool _isGrounded;
     private bool _isJumping;
+    private bool _isActive = true;
 
     private float _lastGrounded;
 
@@ -33,11 +35,19 @@ public class PlayerScript : MonoBehaviour
     [Space(10)]
     [Header("Jump variables")]
     [SerializeField] private float _coyoteCooldown = 0.15f;
+    [SerializeField] private float _gravityScale = 2.5f;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpHangAccelerationMult;
     [SerializeField] private float _jumpHangMaxSpeedMult;
     [SerializeField] private float _jumpHangThreshold;
     [SerializeField, Range(0,1)] private float _jumpCutMult;
+
+    [Space(10),Header("Respawn variables")]
+    [SerializeField] private float _dieJumpAmount;
+    [SerializeField] private float _respawnTime;
+    [SerializeField] private Vector2 _respawnPosition;
+    [SerializeField] private float _respawnJumpAmount;
+    [SerializeField] private float _respawnCooldown;
 
     private void Awake()
     {
@@ -57,16 +67,25 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
+        _respawnPosition = transform.position;
         _playerAction.Player.Jump.started += _ => JumpStarted();
         _playerAction.Player.Jump.canceled += _ => JumpCanceled();
     }
     private void FixedUpdate()
     {
+        if (!_isActive)
+        {
+            return;
+        }
         Move(1);
     }
 
     private void Update()
     {
+        if (!_isActive)
+        {
+            return;
+        }
         _isGrounded = _collision.IsGrounded();
         if (!_isFacingRight && _movementInput.x > 0f)
         {
@@ -120,6 +139,10 @@ public class PlayerScript : MonoBehaviour
 
     private void JumpStarted()
     {
+        if (!_isActive)
+        {
+            return;
+        }
         _lastGrounded = _collision._lastGrounded;
         Jump();
     }
@@ -141,7 +164,14 @@ public class PlayerScript : MonoBehaviour
         }
         _isJumping = false;
     }
-
+    private void MiniJump(float _jumpPower)
+    {
+        _rigidBody.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
+    }
+    public void SetGravityScale(float scale)
+    {
+        _rigidBody.gravityScale = scale;
+    }
     private void Flip()
     {
         _isFacingRight = !_isFacingRight;
@@ -150,4 +180,31 @@ public class PlayerScript : MonoBehaviour
         transform.localScale = _localScale;
     }
 
+    public void Die()
+    {
+        _isActive = false;
+        MiniJump(_dieJumpAmount);
+        SetGravityScale(_gravityScale);
+        _rigidBody.velocity = new Vector2(0, _rigidBody.velocity.y);
+        StartCoroutine(Respawn(_respawnTime));
+    }
+
+    public void SetRespawnPoint(Vector2 _position)
+    {
+        _respawnPosition = _position;
+    }
+
+    private IEnumerator Respawn(float _respawnTime)
+    {
+        yield return new WaitForSeconds(_respawnTime);
+        transform.position = _respawnPosition;
+        MiniJump(_respawnJumpAmount);
+        StartCoroutine(RespawnCooldown(_respawnCooldown));
+    }
+
+    private IEnumerator RespawnCooldown(float _respawnCooldown)
+    {
+        yield return new WaitForSeconds(_respawnCooldown);
+        _isActive = true;
+    }
 }
