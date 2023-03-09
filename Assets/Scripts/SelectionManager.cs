@@ -45,10 +45,6 @@ public class SelectionManager : MonoBehaviour
             {
                 Hover();
             }
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-
-            }
         }
     }
     private void Hover()
