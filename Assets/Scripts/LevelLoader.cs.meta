@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/LevelLoader.cs.meta
 guid: cffe8cee7f1af19458bf56afa66921ba
+========
+guid: 83a45479d0bafe54482c41482c875987
+>>>>>>>> main:Assets/Scripts/DoorScript.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

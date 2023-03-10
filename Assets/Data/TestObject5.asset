@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37d2d97cb4318944847b61b1aa787d0, type: 3}
   m_Name: TestObject5
   m_EditorClassIdentifier: 
-  objectName: Object 5
-  objectDescription: 5
-  objectModel: {fileID: 6325904163087932689, guid: dbdde5a9412d4b7418c14eb0908b96cd, type: 3}
+  objectName: Object 3
+  objectDescription: 3
+  objectSprite: {fileID: -2135585597343286014, guid: 5aa8b770bc43046bc8d993d0d5b7f4a5, type: 3}
   objectColor:
     serializedVersion: 2
-    rgba: 4283980031
-  objectGravityScale: -0.005
-  objectMass: 3
+    rgba: 4288610283
+  objectGravityScale: 3
+  objectMass: 4

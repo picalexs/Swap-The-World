@@ -10,11 +10,10 @@ public class SelectionManager : MonoBehaviour
 
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float _detectionCircleRadius = 0.2f;
-
-    private ObjectData firstSelectedObjectData;
-    private ObjectData secondSelectedObjectData;
-    private ObjectManager firstSelectedObjectManager;
-    private ObjectManager secondSelectedObjectManager;
+    [SerializeField] private ObjectData firstObjectData;
+    [SerializeField] private ObjectData secondObjectData;
+    [SerializeField] private ObjectManager firstObjectManager;
+    [SerializeField] private ObjectManager secondObjectManager;
 
     private void OnEnable()
     {
@@ -57,38 +56,36 @@ public class SelectionManager : MonoBehaviour
         {
             return;
         }
-
-        if (firstSelectedObjectManager == null || firstSelectedObjectData == null)
+        var selectedObjectManager = hit.transform.gameObject.GetComponent<ObjectManager>();
+        if (firstObjectManager == null)
         {
-            firstSelectedObjectManager = hit.transform.gameObject.GetComponent<ObjectManager>();
-
-            firstSelectedObjectData = firstSelectedObjectManager.objectData;
-            if (firstSelectedObjectData != null)
+            firstObjectManager = selectedObjectManager;
+            firstObjectData = firstObjectManager._objectData;
+            if (firstObjectData != null)
             {
-                Debug.Log("Selected first data from: " + firstSelectedObjectData.objectName);
+                Debug.Log("Selected first data from: " + firstObjectData.RuntimeObjectName);
             }
         }
-        else if(secondSelectedObjectManager == null || secondSelectedObjectData)
+        else if (secondObjectManager == null)
         {
-            secondSelectedObjectManager = hit.transform.gameObject.GetComponent<ObjectManager>();
-            secondSelectedObjectData = secondSelectedObjectManager.objectData;
-            if (secondSelectedObjectData == null)
+            secondObjectManager = selectedObjectManager;
+            secondObjectData = secondObjectManager._objectData;
+            if (secondObjectData == null || firstObjectData == null)
             {
                 return;
             }
 
             Debug.Log("Swaping data");
-            var aux = firstSelectedObjectData;
-            firstSelectedObjectManager.objectData = secondSelectedObjectData;
-            secondSelectedObjectManager.objectData = aux;
-            firstSelectedObjectManager.RefreshData();
-            secondSelectedObjectManager.RefreshData();
-
-            firstSelectedObjectManager = null;
-            secondSelectedObjectManager = null;
-            firstSelectedObjectData = null;
-            secondSelectedObjectData = null;
-
+            var aux = firstObjectData;
+            firstObjectManager._objectData = secondObjectData;
+            secondObjectManager._objectData = aux;
+            firstObjectManager.RefreshData();
+            secondObjectManager.RefreshData();
+            
+            firstObjectManager = null;
+            secondObjectManager = null;
+            firstObjectData = null;
+            secondObjectData = null;
         }
     }
 }

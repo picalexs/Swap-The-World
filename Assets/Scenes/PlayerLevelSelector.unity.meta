@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/PlayerLevelSelector.unity.meta
 guid: 38547cc1024b76f4687a1d8c2bb47b56
+========
+guid: 744ddc0e0ffce9f4f8b669798c99dbb1
+>>>>>>>> main:Assets/Scenes/PlayerMovementTest.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Object 4
   objectDescription: 4
-  objectModel: {fileID: 6325904163087932689, guid: dbdde5a9412d4b7418c14eb0908b96cd, type: 3}
+  objectSprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   objectColor:
     serializedVersion: 2
     rgba: 4283563862
   objectGravityScale: 0
-  objectMass: 1
+  objectMass: 5

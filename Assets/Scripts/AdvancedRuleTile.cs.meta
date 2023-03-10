@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/FaderForLevels.cs.meta
+guid: 10770e2b58c83e5448da82a557994e1e
+========
+guid: ce35db82d089de449b44ae95c32c8b40
+>>>>>>>> main:Assets/Scripts/AdvancedRuleTile.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

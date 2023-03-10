@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/FaderForLevels.cs.meta
 guid: aab77ae17c8425c459881e4aea1ae1e8
+========
+guid: ce35db82d089de449b44ae95c32c8b40
+>>>>>>>> main:Assets/Scripts/AdvancedRuleTile.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

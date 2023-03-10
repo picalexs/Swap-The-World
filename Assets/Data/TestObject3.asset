@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37d2d97cb4318944847b61b1aa787d0, type: 3}
   m_Name: TestObject3
   m_EditorClassIdentifier: 
-  objectName: Object 3
-  objectDescription: 3
-  objectModel: {fileID: 6325904163087932689, guid: dbdde5a9412d4b7418c14eb0908b96cd, type: 3}
-  objectColor:
-    serializedVersion: 2
-    rgba: 4288610283
-  objectGravityScale: 3
-  objectMass: 50
+  initialObjectName: object 3
+  initialObjectDescription: 3
+  initialGameObject: {fileID: 5096187268295380561, guid: f9b50c07680dbc64a9a4a16e81f5c1bd, type: 3}
+  initialObjectGravityScale: 0
+  initialObjectMass: 0
+  RuntimeObjectName: object 3
+  RuntimeObjectDescription: 3
+  RuntimeGameObject: {fileID: 5096187268295380561, guid: f9b50c07680dbc64a9a4a16e81f5c1bd, type: 3}
+  RuntimeObjectGravityScale: 0
+  RuntimeObjectMass: 0
