@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 664686e82b2d59f48a954542beb0b477
+<<<<<<<< HEAD:Assets/Scripts/LevelUnlockingManager.cs.meta
+guid: 63fc3b3afac2d78438b985bb47d45710
+========
+guid: 2f8e12f1e2ab02a4a9a04cb725d24660
+>>>>>>>> main:Assets/Scripts/GameEventListener.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
