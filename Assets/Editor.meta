@@ -1,12 +1,7 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Prefab/InteractableBox.prefab.meta
-guid: 4de9602dcb027924782525dcffa3530b
-PrefabImporter:
-========
 guid: d57fe40e70abfe44a9909cf5b179c05a
 folderAsset: yes
 DefaultImporter:
->>>>>>>> main:Assets/Editor.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

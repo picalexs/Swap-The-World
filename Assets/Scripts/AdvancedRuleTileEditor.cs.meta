@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Scripts/Interactable.cs.meta
-guid: ed3bd55aadb07384a9b19cad3f50913e
-========
 guid: 1cb9c03e015e0f1429dd3647d0c975bd
->>>>>>>> main:Assets/Scripts/AdvancedRuleTileEditor.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
