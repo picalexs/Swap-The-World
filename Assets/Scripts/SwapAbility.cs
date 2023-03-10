@@ -5,16 +5,22 @@ using UnityEngine;
 
 public class SwapAbility : MonoBehaviour
 {
+    private RewindTimeAbility timeAbility;
     [SerializeField] private float selectRange = 0.25f; // The range of the swap ability
     private GameObject firstObject; // The first object to be swapped
     private GameObject secondObject; // The second object to be swapped
     private List<MonoBehaviour> firstScripts = new List<MonoBehaviour>(); // The scripts to be swapped from the first object
     private List<MonoBehaviour> secondScripts = new List<MonoBehaviour>(); // The scripts to be swapped from the second object
 
+    private void Start()
+    {
+        timeAbility = GetComponent < RewindTimeAbility >();
+    }
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            timeAbility.SlowTimeDown();
             if (firstObject == null)
             {
                 Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
@@ -28,6 +34,7 @@ public class SwapAbility : MonoBehaviour
         // Check for mouse button release to finish selecting game objects and initiate swap
         if (Input.GetMouseButtonUp(0))
         {
+            timeAbility.CancelSlowDown();
             if (secondObject == null)
             {
                 Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
