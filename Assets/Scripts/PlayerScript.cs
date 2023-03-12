@@ -13,7 +13,7 @@ public class PlayerScript : MonoBehaviour
     private CollisionCheck _collision;
 
     [Space(10)]
-    private bool _isFacingRight;
+    private bool _isFacingRight=true;
     private bool _isGrounded;
     private bool _isJumping;
     private bool _jumpPressed;
