@@ -53,6 +53,15 @@ public partial class @PlayerActionControler : IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectObjects"",
+                    ""type"": ""Button"",
+                    ""id"": ""b156ceb9-1ab3-4597-a0f7-f40d405c15b4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -229,6 +238,17 @@ public partial class @PlayerActionControler : IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f66a59e-e8ee-4138-a21f-91ccc2f88442"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectObjects"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -819,6 +839,7 @@ public partial class @PlayerActionControler : IInputActionCollection2, IDisposab
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Ability = m_Player.FindAction("Ability", throwIfNotFound: true);
+        m_Player_SelectObjects = m_Player.FindAction("SelectObjects", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -893,6 +914,7 @@ public partial class @PlayerActionControler : IInputActionCollection2, IDisposab
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Ability;
+    private readonly InputAction m_Player_SelectObjects;
     public struct PlayerActions
     {
         private @PlayerActionControler m_Wrapper;
@@ -900,6 +922,7 @@ public partial class @PlayerActionControler : IInputActionCollection2, IDisposab
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Ability => m_Wrapper.m_Player_Ability;
+        public InputAction @SelectObjects => m_Wrapper.m_Player_SelectObjects;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -918,6 +941,9 @@ public partial class @PlayerActionControler : IInputActionCollection2, IDisposab
                 @Ability.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAbility;
                 @Ability.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAbility;
                 @Ability.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAbility;
+                @SelectObjects.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectObjects;
+                @SelectObjects.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectObjects;
+                @SelectObjects.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectObjects;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -931,6 +957,9 @@ public partial class @PlayerActionControler : IInputActionCollection2, IDisposab
                 @Ability.started += instance.OnAbility;
                 @Ability.performed += instance.OnAbility;
                 @Ability.canceled += instance.OnAbility;
+                @SelectObjects.started += instance.OnSelectObjects;
+                @SelectObjects.performed += instance.OnSelectObjects;
+                @SelectObjects.canceled += instance.OnSelectObjects;
             }
         }
     }
@@ -1090,6 +1119,7 @@ public partial class @PlayerActionControler : IInputActionCollection2, IDisposab
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAbility(InputAction.CallbackContext context);
+        void OnSelectObjects(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

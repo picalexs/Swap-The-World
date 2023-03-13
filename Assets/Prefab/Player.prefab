@@ -310,6 +310,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: c7f2e373-0f49-4877-82de-a023cc24314d
     m_ActionName: Player/Ability[/Keyboard/shift,/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: 13933c9e9cd8bcd438d38b5d86a547af, type: 3}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b156ceb9-1ab3-4597-a0f7-f40d405c15b4
+    m_ActionName: Player/SelectObjects[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

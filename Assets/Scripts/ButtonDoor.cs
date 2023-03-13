@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class ButtonDoor : MonoBehaviour
@@ -18,7 +15,7 @@ public class ButtonDoor : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Box"))
+        if(other.gameObject.tag == "Player" || other.gameObject.tag=="Swapable")
         {
             door.OpenDoor();
             spriteRenderer.sprite = openSprite;
@@ -27,7 +24,7 @@ public class ButtonDoor : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Box"))
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Swapable")
         {
             door.CloseDoor();
             spriteRenderer.sprite = closedSprite;

@@ -1,7 +1,9 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SwapAbility : MonoBehaviour
 {
@@ -11,10 +13,11 @@ public class SwapAbility : MonoBehaviour
     private GameObject secondObject; // The second object to be swapped
     private List<MonoBehaviour> firstScripts = new List<MonoBehaviour>(); // The scripts to be swapped from the first object
     private List<MonoBehaviour> secondScripts = new List<MonoBehaviour>(); // The scripts to be swapped from the second object
+    [SerializeField] private Camera mainCamera;
 
     private void Start()
     {
-        timeAbility = GetComponent < RewindTimeAbility >();
+        timeAbility = GetComponent<RewindTimeAbility>();
     }
     private void Update()
     {
@@ -23,25 +26,54 @@ public class SwapAbility : MonoBehaviour
             timeAbility.SlowTimeDown();
             if (firstObject == null)
             {
-                Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-                RaycastHit2D hit = Physics2D.CircleCast(rayPos, selectRange, Vector2.zero, 0f);
-                if (hit.collider != null && hit.collider.gameObject.tag == "Swapable")
+                Vector3 mousePosition = Mouse.current.position.ReadValue();
+                mousePosition.z = mainCamera.nearClipPlane;
+                Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+                Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange);
+
+                if (hit != null && hit.gameObject.tag == "Swapable")
                 {
-                    firstObject = hit.collider.gameObject;
+                    SpriteRenderer renderer = hit.gameObject.GetComponent<SpriteRenderer>();
+                    if (renderer == null)
+                    {
+                        Debug.LogError("Object must have a SpriteRenderer component");
+                        return;
+                    }
+                    Bounds bounds = renderer.bounds;
+
+                    if (bounds.Contains(mouseWorldPosition))
+                    {
+                        firstObject = hit.gameObject;
+                        Debug.Log("Selected object: " + firstObject.name);
+                    }
                 }
             }
         }
-        // Check for mouse button release to finish selecting game objects and initiate swap
         if (Input.GetMouseButtonUp(0))
         {
             timeAbility.CancelSlowDown();
             if (secondObject == null)
             {
-                Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-                RaycastHit2D hit = Physics2D.CircleCast(rayPos, selectRange, Vector2.zero, 0f);
-                if (hit.collider != null && hit.collider.gameObject.tag == "Swapable")
+                Vector3 mousePosition = Mouse.current.position.ReadValue();
+                mousePosition.z = mainCamera.nearClipPlane;
+                Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+                Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange);
+
+                if (hit != null && hit.gameObject.tag == "Swapable")
                 {
-                    secondObject = hit.collider.gameObject;
+                    SpriteRenderer renderer = hit.gameObject.GetComponent<SpriteRenderer>();
+                    if (renderer == null)
+                    {
+                        Debug.LogError("Object must have a SpriteRenderer component");
+                        return;
+                    }
+                    Bounds bounds = renderer.bounds;
+
+                    if (bounds.Contains(mouseWorldPosition))
+                    {
+                        secondObject = hit.gameObject;
+                        Debug.Log("Selected object: " + secondObject.name);
+                    }
                 }
                 if (firstObject != null && secondObject != null && firstObject != secondObject)
                 {
@@ -73,17 +105,13 @@ public class SwapAbility : MonoBehaviour
             firstRigidbody.mass = secondRigidbody.mass;
             secondRigidbody.mass = firstMass;
         }
-
-        // Swap the scripts
-        SwapScripts(firstObj,secondObj);
+        SwapScripts(firstObj, secondObj);
     }
     void SwapScripts(GameObject firstObject, GameObject secondObject)
     {
-        // Get the scripts to swap from each game object
         GetScriptsToSwap(firstObject, firstScripts);
         GetScriptsToSwap(secondObject, secondScripts);
 
-        // Remove any duplicate or disabled scripts from the lists
         firstScripts = firstScripts.Distinct().ToList();
         secondScripts = secondScripts.Distinct().ToList();
         firstScripts.RemoveAll(s => s == null || s.enabled == false);
@@ -128,20 +156,6 @@ public class SwapAbility : MonoBehaviour
             }
         }
     }
-
-    // Helper method to get the game object selected by the player
-    private GameObject GetSelectedObject(Vector3 mousePosition)
-    {
-        Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(mousePosition).x, Camera.main.ScreenToWorldPoint(mousePosition).y);
-        RaycastHit2D hit = Physics2D.CircleCast(rayPos, selectRange, Vector2.zero, 0f);
-        if (hit.collider != null && hit.collider.gameObject.tag=="Swapable")
-        {
-            return hit.collider.gameObject;
-        }
-        return null;
-    }
-
-    // Helper method to get the scripts to swap from a game object
     private void GetScriptsToSwap(GameObject gameObject, List<MonoBehaviour> scripts)
     {
         scripts.Clear();
@@ -154,8 +168,6 @@ public class SwapAbility : MonoBehaviour
             scripts.Add(script);
         }
     }
-
-    // Helper method to copy the properties of a script from one object to another
     private void CopyComponent(MonoBehaviour source, MonoBehaviour target)
     {
         System.Type type = source.GetType();
