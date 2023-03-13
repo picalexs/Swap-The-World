@@ -10,7 +10,6 @@ public class RewindTimeAbility : MonoBehaviour
     public float maxSlowdownDuration = 2f;
     public float slowMotionTimeLeft = 0f;
     private float originalFixedDeltaTime;
-    private float originalTimeScale;
     public KeyCode rewindKey = KeyCode.R;
     public List<string> tagsToRewind;
 

@@ -14,9 +14,6 @@ public class EntranceDoor : MonoBehaviour
     [SerializeField] private Sprite closedSprite;
     [SerializeField] private Sprite openSprite;
     private SpriteRenderer spriteRenderer;
-
-
-
     private void Start()
     {
         closedPosition = transform.position;
@@ -29,7 +26,6 @@ public class EntranceDoor : MonoBehaviour
         if (isOpen)
         {
             transform.position = Vector3.Lerp(transform.position, openPosition, doorSpeed * Time.deltaTime);
-
         }
         else
         {

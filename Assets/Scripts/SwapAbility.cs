@@ -7,20 +7,46 @@ using UnityEngine.InputSystem;
 
 public class SwapAbility : MonoBehaviour
 {
-    private RewindTimeAbility timeAbility;
-    [SerializeField] private float selectRange = 0.25f; // The range of the swap ability
-    private GameObject firstObject; // The first object to be swapped
-    private GameObject secondObject; // The second object to be swapped
-    private List<MonoBehaviour> firstScripts = new List<MonoBehaviour>(); // The scripts to be swapped from the first object
-    private List<MonoBehaviour> secondScripts = new List<MonoBehaviour>(); // The scripts to be swapped from the second object
+    [SerializeField] private GameObject movmentManager;
     [SerializeField] private Camera mainCamera;
+    private RewindTimeAbility timeAbility;
+    private PlayerScript playerScript;
+
+    [SerializeField] private float selectRange = 0.25f;
+    [SerializeField] private float swapPlayerTime = 5f;
+    private float playerTimer;
+    [SerializeField] private float swapObjectTime = 5f;
+    private float objectTimer;
+    private GameObject playerObj, ObjectObj;
+    private bool isSwaped = false;
+
+    private GameObject firstObject;
+    private GameObject secondObject;
+    private List<MonoBehaviour> firstScripts = new List<MonoBehaviour>();
+    private List<MonoBehaviour> secondScripts = new List<MonoBehaviour>();
 
     private void Start()
     {
         timeAbility = GetComponent<RewindTimeAbility>();
+        playerScript = movmentManager.GetComponent<PlayerScript>();
     }
     private void Update()
     {
+        if (isSwaped)
+        {
+            if (playerTimer < 0f)
+            {
+                Debug.Log("changed playerObject to " + playerObj);
+                SwapObjects(playerObj, ObjectObj);
+                playerScript.ChangePlayerObjectTo(playerObj);
+                isSwaped = false;
+            }
+            else
+            {
+                playerTimer -= Time.deltaTime;
+            }
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             timeAbility.SlowTimeDown();
@@ -31,7 +57,7 @@ public class SwapAbility : MonoBehaviour
                 Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
                 Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange);
 
-                if (hit != null && hit.gameObject.tag == "Swapable")
+                if (hit != null && (hit.gameObject.tag == "Swapable" || hit.gameObject.tag == "Player"))
                 {
                     SpriteRenderer renderer = hit.gameObject.GetComponent<SpriteRenderer>();
                     if (renderer == null)
@@ -59,7 +85,7 @@ public class SwapAbility : MonoBehaviour
                 Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
                 Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange);
 
-                if (hit != null && hit.gameObject.tag == "Swapable")
+                if (hit != null && (hit.gameObject.tag == "Swapable" || hit.gameObject.tag == "Player"))
                 {
                     SpriteRenderer renderer = hit.gameObject.GetComponent<SpriteRenderer>();
                     if (renderer == null)
@@ -88,7 +114,25 @@ public class SwapAbility : MonoBehaviour
 
     public void SwapObjects(GameObject firstObj, GameObject secondObj)
     {
-        // Swap the rigidbodies
+        if (firstObj.gameObject.tag == "Player")
+        {
+            playerObj = firstObj;
+            ObjectObj = secondObj;
+            playerScript.ChangePlayerObjectTo(secondObj);
+            Debug.Log("changed playerObject to " + secondObj);
+            playerTimer = swapPlayerTime;
+            isSwaped = true;
+        }
+        else if (secondObj.gameObject.tag == "Player")
+        {
+            playerObj = secondObj;
+            ObjectObj = firstObj;
+            playerScript.ChangePlayerObjectTo(firstObj);
+            Debug.Log("changed playerObject to " + firstObj);
+            playerTimer = swapPlayerTime;
+            isSwaped = true;
+        }
+
         Rigidbody2D firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
         Rigidbody2D secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
         if (firstRigidbody != null && secondRigidbody != null)
@@ -105,19 +149,18 @@ public class SwapAbility : MonoBehaviour
             firstRigidbody.mass = secondRigidbody.mass;
             secondRigidbody.mass = firstMass;
         }
+        Debug.Log("swaped rb");
         SwapScripts(firstObj, secondObj);
     }
     void SwapScripts(GameObject firstObject, GameObject secondObject)
     {
         GetScriptsToSwap(firstObject, firstScripts);
         GetScriptsToSwap(secondObject, secondScripts);
-
         firstScripts = firstScripts.Distinct().ToList();
         secondScripts = secondScripts.Distinct().ToList();
         firstScripts.RemoveAll(s => s == null || s.enabled == false);
         secondScripts.RemoveAll(s => s == null || s.enabled == false);
 
-        // Swap the scripts
         foreach (MonoBehaviour script in firstScripts)
         {
             script.enabled = false;

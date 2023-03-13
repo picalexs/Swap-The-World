@@ -4,6 +4,7 @@ public class ButtonDoor : MonoBehaviour
 {
     [SerializeField] private GameObject doorObject;
     [HideInInspector] private EntranceDoor door;
+    private float objectsOnButton;
 
     [SerializeField] private Sprite openSprite;
     [SerializeField] private Sprite closedSprite;
@@ -17,8 +18,12 @@ public class ButtonDoor : MonoBehaviour
     {
         if(other.gameObject.tag == "Player" || other.gameObject.tag=="Swapable")
         {
-            door.OpenDoor();
-            spriteRenderer.sprite = openSprite;
+            objectsOnButton++;
+            if (objectsOnButton == 1)
+            {
+                door.OpenDoor();
+                spriteRenderer.sprite = openSprite;
+            }
         }
     }
 
@@ -26,8 +31,12 @@ public class ButtonDoor : MonoBehaviour
     {
         if (other.gameObject.tag == "Player" || other.gameObject.tag == "Swapable")
         {
-            door.CloseDoor();
-            spriteRenderer.sprite = closedSprite;
+            objectsOnButton--;
+            if (objectsOnButton == 0)
+            {
+                door.CloseDoor();
+                spriteRenderer.sprite = closedSprite;
+            }
         }
     }
 }
