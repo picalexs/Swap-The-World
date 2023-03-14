@@ -2,12 +2,16 @@ using UnityEngine;
 
 public class InstantDeath : MonoBehaviour
 {
+    private PlayerScript playerScript;
+    private void Start()
+    {
+        playerScript = FindObjectOfType<PlayerScript>();
+    }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        var player = other.collider.GetComponent<PlayerScript>();
-        if (player!=null)
+        if (other.collider.tag == "Player")
         {
-            player.Die();
+            playerScript.Die();
         }
     }
 }

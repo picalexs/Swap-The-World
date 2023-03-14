@@ -5,6 +5,7 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     public GameObject roomCamera;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player" && !other.isTrigger)

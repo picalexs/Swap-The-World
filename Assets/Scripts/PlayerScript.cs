@@ -8,7 +8,6 @@ public class PlayerScript : MonoBehaviour
     [SerializeField,Description("Player")] private GameObject playerObject;
     private PlayerActionControler _playerAction;
     private Rigidbody2D _rigidBody;
-    private CollisionCheck _collision;
     private Renderer playerRenderer;
     [SerializeField] private LayerMask _groundLayer;
 
@@ -16,15 +15,18 @@ public class PlayerScript : MonoBehaviour
     [Space(10)]
     private bool _isFacingRight=true;
     private bool _isGrounded;
-    private bool _isJumping;
-    private bool _jumpPressed;
+    [SerializeField] private bool _isJumping;//
+    [SerializeField] private bool _jumpPressed;//
     private bool _isActive = true;
+    private bool _isSwaped = false;
+    [SerializeField] private bool _isPressing; //
 
     private float _lastGrounded;
+    [SerializeField] private float _pressedTime;
     [SerializeField] private float _coyoteTime = 0.15f;
-    private float _coyoteCooldownTimer;
+    [SerializeField] private float _coyoteCooldownTimer;//
     [SerializeField] private float _jumpTime = 0.15f;
-    private float _jumpCooldownTime;
+    [SerializeField] private float _jumpCooldownTime;//
     [SerializeField] private Vector2 _groundCheckSize;
 
     [Space(10)]
@@ -84,6 +86,7 @@ public class PlayerScript : MonoBehaviour
 
     public void ChangePlayerObjectTo(GameObject newObject)
     {
+        _isSwaped = !_isSwaped;
         playerObject = newObject;
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
         playerRenderer = playerObject.GetComponent<Renderer>();
@@ -106,25 +109,11 @@ public class PlayerScript : MonoBehaviour
         GravityCases();
         JumpCases();
         IsGrounded();
-        if (_isGrounded)
-        {
-            _coyoteCooldownTimer = _coyoteTime;
-        }
-        else
-        {
-            _coyoteCooldownTimer -= Time.deltaTime;
-        }
 
-        if (_jumpPressed)
+        if (_isSwaped)
         {
-            _jumpPressed = false;
-            _jumpCooldownTime = _jumpTime;
+            return;
         }
-        else
-        {
-            _jumpCooldownTime -= Time.deltaTime;
-        }
-
         if (!_isFacingRight && _movementInput.x > 0f)
         {
             Flip();
@@ -183,21 +172,25 @@ public class PlayerScript : MonoBehaviour
             return;
         }
         _jumpPressed = true;
+        _isPressing = true;
+        _pressedTime = 0;
         Jump();
     }
 
     private void Jump()
     {
-        if (_coyoteCooldownTimer > 0f)
+        if (_coyoteCooldownTimer > 0f && !_isJumping)
         {
             Debug.Log("jumping");
             _isJumping = true;
+            _coyoteCooldownTimer = 0f;
             _rigidBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
     }
 
     private void JumpCanceled()
     {
+        _isPressing = false;
         Debug.Log("jump canceled");
         if (_isJumping)
         {
@@ -209,13 +202,49 @@ public class PlayerScript : MonoBehaviour
 
     private void JumpCases()
     {
-        if (!_isJumping && _jumpCooldownTime > 0f && _isGrounded)
+
+        if (_isPressing)
         {
-            Debug.Log("jump case");
-            _isJumping = true;
-            _rigidBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-            _jumpCooldownTime = 0f;
+            _pressedTime += Time.deltaTime;
+        } else
+        {
+            _pressedTime -= Time.deltaTime;
         }
+        if (_isGrounded)
+        {
+            _coyoteCooldownTimer = _coyoteTime;
+        }
+        else
+        {
+            _coyoteCooldownTimer -= Time.deltaTime;
+        }
+
+        if (_jumpPressed)
+        {
+            _jumpPressed = false;
+            _jumpCooldownTime = _jumpTime;
+        }
+        else
+        {
+            _jumpCooldownTime -= Time.deltaTime;
+        }
+
+        if (!_isJumping && _isGrounded && _jumpCooldownTime > 0f)
+        {
+            if (_pressedTime > 0f)
+            {
+                Debug.Log("jump case");
+                _jumpCooldownTime = 0f;
+                _isJumping = true;
+                _rigidBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            }
+            else
+            {
+                _rigidBody.AddForce(Vector2.down * _rigidBody.velocity.y * (1 - _jumpCutMult), ForceMode2D.Impulse);
+                _isJumping = false;
+            }
+        }
+       
     }
     private void MiniJump(float _jumpPower)
     {
@@ -224,7 +253,7 @@ public class PlayerScript : MonoBehaviour
 
     private void GravityCases()
     {
-        if (_rigidBody.velocity.y < 0 && (_movementInput.y < 0) || (!_isJumping && _jumpCooldownTime > 0f && _isGrounded))
+        if (_rigidBody.velocity.y < 0 && (_movementInput.y < 0))
         {
             SetGravityScale(_gravityScale * _fastFallGravityMult);
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, Mathf.Max(_rigidBody.velocity.y, -_maxFastFallSpeed));
@@ -233,7 +262,7 @@ public class PlayerScript : MonoBehaviour
         {
             SetGravityScale(_gravityScale * _jumpHangTimeThreshold);
         }
-        else if (_rigidBody.velocity.y < 0)
+        else if (_rigidBody.velocity.y < 0 && _coyoteTime < 0)
         {
             SetGravityScale(_gravityScale * _gravityScaleMult);
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, Mathf.Max(_rigidBody.velocity.y, -_maxFallSpeed));
@@ -273,7 +302,7 @@ public class PlayerScript : MonoBehaviour
     private IEnumerator Respawn(float _respawnTime)
     {
         yield return new WaitForSeconds(_respawnTime);
-        transform.position = _respawnPosition;
+        playerObject.transform.position = _respawnPosition;
         MiniJump(_respawnJumpAmount);
         StartCoroutine(RespawnCooldown(_respawnCooldown));
     }
@@ -290,6 +319,8 @@ public class PlayerScript : MonoBehaviour
         if (_isGrounded)
         {
             _lastGrounded = Time.time;
+            Debug.Log("grounded");
         }
+        
     }
 }

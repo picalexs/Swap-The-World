@@ -70,7 +70,7 @@ public class RewindTimeAbility : MonoBehaviour
         }
         else
         {
-            playerPositions.Add(transform.position);
+            playerPositions.Add(playerObject.transform.position);
 
             // Record the positions of other objects
             foreach (string tag in tagsToRewind)

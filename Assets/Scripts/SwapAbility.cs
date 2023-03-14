@@ -13,9 +13,9 @@ public class SwapAbility : MonoBehaviour
     private PlayerScript playerScript;
 
     [SerializeField] private float selectRange = 0.25f;
-    [SerializeField] private float swapPlayerTime = 5f;
+    [SerializeField] private float swapPlayerTime = 3f;
     private float playerTimer;
-    [SerializeField] private float swapObjectTime = 5f;
+    [SerializeField] private float swapObjectTime = 3f;
     private float objectTimer;
     private GameObject playerObj, ObjectObj;
     private bool isSwaped = false;
@@ -114,6 +114,23 @@ public class SwapAbility : MonoBehaviour
 
     public void SwapObjects(GameObject firstObj, GameObject secondObj)
     {
+        Rigidbody2D firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
+        Rigidbody2D secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
+        if (firstRigidbody != null && secondRigidbody != null)
+        {
+            Vector2 firstVelocity = firstRigidbody.velocity;
+            firstRigidbody.velocity = secondRigidbody.velocity;
+            secondRigidbody.velocity = firstVelocity;
+
+            var firstGravityScale = firstRigidbody.gravityScale;
+            firstRigidbody.gravityScale = secondRigidbody.gravityScale;
+            secondRigidbody.gravityScale = firstGravityScale;
+
+            var firstMass = firstRigidbody.mass;
+            firstRigidbody.mass = secondRigidbody.mass;
+            secondRigidbody.mass = firstMass;
+        }
+
         if (firstObj.gameObject.tag == "Player")
         {
             playerObj = firstObj;
@@ -133,22 +150,6 @@ public class SwapAbility : MonoBehaviour
             isSwaped = true;
         }
 
-        Rigidbody2D firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
-        Rigidbody2D secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
-        if (firstRigidbody != null && secondRigidbody != null)
-        {
-            Vector2 firstVelocity = firstRigidbody.velocity;
-            firstRigidbody.velocity = secondRigidbody.velocity;
-            secondRigidbody.velocity = firstVelocity;
-
-            var firstGravityScale = firstRigidbody.gravityScale;
-            firstRigidbody.gravityScale = secondRigidbody.gravityScale;
-            secondRigidbody.gravityScale = firstGravityScale;
-
-            var firstMass = firstRigidbody.mass;
-            firstRigidbody.mass = secondRigidbody.mass;
-            secondRigidbody.mass = firstMass;
-        }
         Debug.Log("swaped rb");
         SwapScripts(firstObj, secondObj);
     }
