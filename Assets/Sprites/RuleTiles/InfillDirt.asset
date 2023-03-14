@@ -41,8 +41,8 @@ MonoBehaviour:
     m_RuleTransform: 1
   - m_Id: 1
     m_Sprites:
-    - {fileID: 1141841674, guid: d1c5dd83be0837c4097dbf48adae8e34, type: 3}
-    - {fileID: -710772813, guid: d1c5dd83be0837c4097dbf48adae8e34, type: 3}
+    - {fileID: 1496873320, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
+    - {fileID: 1301104659, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
     - {fileID: -1546014964, guid: b06e1bdedecf81c4b9188abef5e44c43, type: 3}
     - {fileID: -197644139, guid: d1c5dd83be0837c4097dbf48adae8e34, type: 3}
     - {fileID: -197644139, guid: d1c5dd83be0837c4097dbf48adae8e34, type: 3}
@@ -56,10 +56,10 @@ MonoBehaviour:
     m_Neighbors: 
     m_NeighborPositions: []
     m_RuleTransform: 0
-  alwaysConnect: 0
+  alwaysConnect: 1
   tilesToConnect:
-  - {fileID: 11400000, guid: 325b639ad4bc8f24aa50f16ba32a7708, type: 2}
   - {fileID: 11400000, guid: e3eab53cae24a3a438be73b1c1e3dd0d, type: 2}
   - {fileID: 11400000, guid: 8d6850d5708e8784db3313ca033fe5e8, type: 2}
   - {fileID: 11400000, guid: c11e52295974ed14ab1126a6c2faea89, type: 2}
+  - {fileID: 11400000, guid: ff5ba2b823336794da95516c96d25f5a, type: 2}
   checkSelf: 1

@@ -1,19 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor.Search;
+using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+
 
 public class PlayerScript : MonoBehaviour
 {
+    [SerializeField,Description("Player")] private GameObject playerObject;
     private PlayerActionControler _playerAction;
     private Rigidbody2D _rigidBody;
     private CollisionCheck _collision;
+    private Renderer playerRenderer;
+    [SerializeField] private LayerMask _groundLayer;
+
 
     [Space(10)]
-    private bool _isFacingRight;
+    private bool _isFacingRight=true;
     private bool _isGrounded;
     private bool _isJumping;
     private bool _jumpPressed;
@@ -24,6 +25,7 @@ public class PlayerScript : MonoBehaviour
     private float _coyoteCooldownTimer;
     [SerializeField] private float _jumpTime = 0.15f;
     private float _jumpCooldownTime;
+    [SerializeField] private Vector2 _groundCheckSize;
 
     [Space(10)]
     [Header("Movement variables")]
@@ -60,9 +62,7 @@ public class PlayerScript : MonoBehaviour
 
     private void Awake()
     {
-        _rigidBody = GetComponent<Rigidbody2D>();
         _playerAction = new PlayerActionControler();
-        _collision = GetComponent<CollisionCheck>();
     }
     private void OnEnable()
     {
@@ -73,12 +73,20 @@ public class PlayerScript : MonoBehaviour
     {
         _playerAction.Disable();
     }
-
     private void Start()
     {
-        _respawnPosition = transform.position;
+        _rigidBody = playerObject.GetComponent<Rigidbody2D>();
+        playerRenderer = playerObject.GetComponent<Renderer>();
+        _respawnPosition = playerObject.transform.position;
         _playerAction.Player.Jump.started += _ => JumpStarted();
         _playerAction.Player.Jump.canceled += _ => JumpCanceled();
+    }
+
+    public void ChangePlayerObjectTo(GameObject newObject)
+    {
+        playerObject = newObject;
+        _rigidBody = playerObject.GetComponent<Rigidbody2D>();
+        playerRenderer = playerObject.GetComponent<Renderer>();
     }
     private void FixedUpdate()
     {
@@ -97,8 +105,7 @@ public class PlayerScript : MonoBehaviour
         }
         GravityCases();
         JumpCases();
-
-        _isGrounded = _collision.IsGrounded();
+        IsGrounded();
         if (_isGrounded)
         {
             _coyoteCooldownTimer = _coyoteTime;
@@ -176,7 +183,6 @@ public class PlayerScript : MonoBehaviour
             return;
         }
         _jumpPressed = true;
-        _lastGrounded = _collision._lastGrounded;
         Jump();
     }
 
@@ -245,9 +251,9 @@ public class PlayerScript : MonoBehaviour
     private void Flip()
     {
         _isFacingRight = !_isFacingRight;
-        Vector3 _localScale = transform.localScale;
+        Vector3 _localScale = playerObject.transform.localScale;
         _localScale.x *= -1f;
-        transform.localScale = _localScale;
+        playerObject.transform.localScale = _localScale;
     }
 
     public void Die()
@@ -276,5 +282,14 @@ public class PlayerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(_respawnCooldown);
         _isActive = true;
+    }
+    public void IsGrounded()
+    {
+        Vector3 lowestPosition = new Vector3(playerRenderer.bounds.center.x, playerRenderer.bounds.min.y, 0f);
+        _isGrounded = Physics2D.OverlapBox(lowestPosition, _groundCheckSize, 0, _groundLayer);
+        if (_isGrounded)
+        {
+            _lastGrounded = Time.time;
+        }
     }
 }

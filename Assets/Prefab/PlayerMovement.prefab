@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8024156150843317320
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8024156150843317334}
+  - component: {fileID: 8024156150843317335}
+  - component: {fileID: 8024156150843317333}
+  m_Layer: 0
+  m_Name: PlayerMovement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8024156150843317334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8024156150843317320}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 85.330444, y: 11.731526, z: -0.5090862}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8024156150843317335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8024156150843317320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c2f901c5b7c44fa41a2256ce1b4b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 0}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _coyoteTime: 0.15
+  _jumpTime: 0.15
+  _groundCheckSize: {x: 0.9, y: 0.1}
+  _doConserveMomentum: 1
+  _moveSpeed: 9
+  _acceleration: 13
+  _decceleration: 16
+  _accelerationInAir: 0.65
+  _deccelerationInAir: 0.65
+  _velocityPower: 1
+  _frictionAmount: 1
+  _gravityScale: 2.5
+  _gravityScaleMult: 1.5
+  _fastFallGravityMult: 2
+  _jumpHangTimeThreshold: 1
+  _maxFastFallSpeed: 30
+  _maxFallSpeed: 25
+  _jumpForce: 16
+  _jumpHangAccelerationMult: 1.1
+  _jumpHangMaxSpeedMult: 1.3
+  _jumpHangThreshold: 1
+  _jumpCutMult: 0.45
+  _dieJumpAmount: 8
+  _respawnTime: 0.5
+  _respawnPosition: {x: 0, y: 0}
+  _respawnJumpAmount: 12
+  _respawnCooldown: 0.1
+--- !u!114 &8024156150843317333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8024156150843317320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: f4dc2287d917d4c4fbcdaefeb457b6d1, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4c903c6f-fe2e-4125-9534-9bc23cfd49d0
+    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2b829af7-7bea-4a1d-864f-d3d34dfe234d
+    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9da94535-d31f-4e9f-854c-caa2cf926b7c
+    m_ActionName: UI/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2f28578c-7052-41d0-9d07-9252038783c5
+    m_ActionName: UI/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2d8c2192-e50d-4fea-9ed0-18abb621fd2b
+    m_ActionName: UI/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5a1ecfe7-774a-4f16-b1fb-94faa20097e5
+    m_ActionName: UI/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 67bd54c9-b440-42c1-9bea-44ad002d4819
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 011e61ff-67a0-481e-800a-de2fd2025dcf
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 09e88f13-93b3-4e61-966d-b44fe701eae2
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e39e2142-ea0e-488c-bc4b-3ed901c63c53
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bd5c95b8-50d7-4b9d-b32a-c59f5bea2a8c
+    m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ccbd0373-2ae9-4dc7-ab73-4f9f34cb054e
+    m_ActionName: Player/Jump[/Keyboard/space,/Keyboard/x]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c7f2e373-0f49-4877-82de-a023cc24314d
+    m_ActionName: Player/Ability[/Keyboard/shift,/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: 13933c9e9cd8bcd438d38b5d86a547af, type: 3}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b156ceb9-1ab3-4597-a0f7-f40d405c15b4
+    m_ActionName: Player/SelectObjects[/Mouse/leftButton]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: 0
+  m_Camera: {fileID: 0}

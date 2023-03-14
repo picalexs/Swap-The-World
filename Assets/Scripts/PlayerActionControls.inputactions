@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SelectObjects",
+                    "type": "Button",
+                    "id": "b156ceb9-1ab3-4597-a0f7-f40d405c15b4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -207,6 +216,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f66a59e-e8ee-4138-a21f-91ccc2f88442",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectObjects",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

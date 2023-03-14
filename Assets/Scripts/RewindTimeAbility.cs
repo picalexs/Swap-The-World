@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class RewindTimeAbility : MonoBehaviour
 {
     public float rewindTime = 2.0f;
     public float slowDownFactor = 0.1f;
-    public float maxSlowdownDuration = 5f;
+    public float maxSlowdownDuration = 2f;
     public float slowMotionTimeLeft = 0f;
     private float originalFixedDeltaTime;
-    private float originalTimeScale;
     public KeyCode rewindKey = KeyCode.R;
     public List<string> tagsToRewind;
 
@@ -17,23 +17,21 @@ public class RewindTimeAbility : MonoBehaviour
     [HideInInspector] public bool isSlowingDown = false;
     private List<Vector2> playerPositions = new List<Vector2>();
     private Dictionary<GameObject, List<Vector2>> objectPositions = new Dictionary<GameObject, List<Vector2>>();
+    [SerializeField, Description("Player")] private GameObject playerObject;
     private Rigidbody2D rb2d;
 
     void Start()
     {
         originalFixedDeltaTime = Time.fixedDeltaTime;
-        rb2d = GetComponent<Rigidbody2D>();
+        rb2d = playerObject.GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        // Check if the rewind key is pressed
         if (Input.GetKeyDown(rewindKey))
         {
             StartRewind();
         }
-
-        // Check if the rewind key is released
         if (Input.GetKeyUp(rewindKey))
         {
             StopRewind();
@@ -42,7 +40,6 @@ public class RewindTimeAbility : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Record the player's position for rewinding
         if (isRewinding)
         {
             if (playerPositions.Count > 0)
