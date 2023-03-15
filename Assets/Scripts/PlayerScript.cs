@@ -15,18 +15,18 @@ public class PlayerScript : MonoBehaviour
     [Space(10)]
     private bool _isFacingRight=true;
     private bool _isGrounded;
-    [SerializeField] private bool _isJumping;//
-    [SerializeField] private bool _jumpPressed;//
+    private bool _isJumping;
+    private bool _jumpPressed;
     private bool _isActive = true;
     private bool _isSwaped = false;
-    [SerializeField] private bool _isPressing; //
+    private bool _isPressing;
 
     private float _lastGrounded;
     [SerializeField] private float _pressedTime;
     [SerializeField] private float _coyoteTime = 0.15f;
-    [SerializeField] private float _coyoteCooldownTimer;//
+    [SerializeField] private float _coyoteCooldownTimer;
     [SerializeField] private float _jumpTime = 0.15f;
-    [SerializeField] private float _jumpCooldownTime;//
+    [SerializeField] private float _jumpCooldownTime;
     [SerializeField] private Vector2 _groundCheckSize;
 
     [Space(10)]
@@ -319,8 +319,6 @@ public class PlayerScript : MonoBehaviour
         if (_isGrounded)
         {
             _lastGrounded = Time.time;
-            Debug.Log("grounded");
         }
-        
     }
 }
