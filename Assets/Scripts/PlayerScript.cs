@@ -14,7 +14,7 @@ public class PlayerScript : MonoBehaviour
 
     [Space(10)]
     private bool _isFacingRight=true;
-    private bool _isGrounded;
+    [SerializeField] private bool _isGrounded;
     private bool _isJumping;
     private bool _jumpPressed;
     private bool _isActive = true;
@@ -315,7 +315,19 @@ public class PlayerScript : MonoBehaviour
     public void IsGrounded()
     {
         Vector3 lowestPosition = new Vector3(playerRenderer.bounds.center.x, playerRenderer.bounds.min.y, 0f);
-        _isGrounded = Physics2D.OverlapBox(lowestPosition, _groundCheckSize, 0, _groundLayer);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(lowestPosition, _groundCheckSize, 0, _groundLayer);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.gameObject != playerObject.gameObject)
+            {
+                _isGrounded = true;
+                break;
+            }
+            else
+            {
+                _isGrounded = false;
+            }
+        }
         if (_isGrounded)
         {
             _lastGrounded = Time.time;

@@ -12,18 +12,23 @@ public class SwapAbility : MonoBehaviour
     private RewindTimeAbility timeAbility;
     private PlayerScript playerScript;
 
-    [SerializeField] private float selectRange = 0.25f;
-    [SerializeField] private float swapPlayerTime = 3f;
+    [SerializeField] private float selectRange = 1f;
+    [SerializeField] private float swapPlayerTime = 4f;
     private float playerTimer;
-    [SerializeField] private float swapObjectTime = 3f;
-    private float objectTimer;
     private GameObject playerObj, ObjectObj;
     private bool isSwaped = false;
 
     private GameObject firstObject;
-    private GameObject secondObject;
     private List<MonoBehaviour> firstScripts = new List<MonoBehaviour>();
     private List<MonoBehaviour> secondScripts = new List<MonoBehaviour>();
+
+    
+    // Variables to store the game objects and their clones
+    private GameObject highlightedObject;
+    private GameObject clone;
+    public LayerMask swapLayerMask;
+    public int cloneLayer;
+
 
     private void Start()
     {
@@ -47,73 +52,95 @@ public class SwapAbility : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        Vector3 mousePosition = Mouse.current.position.ReadValue();
+        mousePosition.z = mainCamera.nearClipPlane;
+        Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
+        Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange, swapLayerMask);
+
+        if (hit != null)
         {
-            timeAbility.SlowTimeDown();
-            if (firstObject == null)
+            HighlightObject(hit.gameObject);
+            if (Input.GetMouseButtonDown(0))
             {
-                Vector3 mousePosition = Mouse.current.position.ReadValue();
-                mousePosition.z = mainCamera.nearClipPlane;
-                Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-                Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange);
-
-                if (hit != null && (hit.gameObject.tag == "Swapable" || hit.gameObject.tag == "Player"))
-                {
-                    SpriteRenderer renderer = hit.gameObject.GetComponent<SpriteRenderer>();
-                    if (renderer == null)
-                    {
-                        Debug.LogError("Object must have a SpriteRenderer component");
-                        return;
-                    }
-                    Bounds bounds = renderer.bounds;
-
-                    if (bounds.Contains(mouseWorldPosition))
-                    {
-                        firstObject = hit.gameObject;
-                        Debug.Log("Selected object: " + firstObject.name);
-                    }
-                }
+                timeAbility.SlowTimeDown();
+                firstObject = hit.gameObject;
+                CloneObject(hit.gameObject);
+                Debug.Log(hit.gameObject.name);
             }
         }
-        if (Input.GetMouseButtonUp(0))
+        else if(!Input.GetMouseButton(0))
         {
-            timeAbility.CancelSlowDown();
-            if (secondObject == null)
+            RemoveHighlight();
+            RemoveClone();
+        }
+
+        if (Input.GetMouseButton(0) && clone != null)
+        {
+            MoveCloneToMouse();
+        }
+
+        if (Input.GetMouseButtonUp(0) && clone != null)
+        {
+            Debug.Log(hit != null ? hit.gameObject.name : "");
+            if (hit!=null && firstObject != hit.gameObject)
             {
-                Vector3 mousePosition = Mouse.current.position.ReadValue();
-                mousePosition.z = mainCamera.nearClipPlane;
-                Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-                Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange);
-
-                if (hit != null && (hit.gameObject.tag == "Swapable" || hit.gameObject.tag == "Player"))
-                {
-                    SpriteRenderer renderer = hit.gameObject.GetComponent<SpriteRenderer>();
-                    if (renderer == null)
-                    {
-                        Debug.LogError("Object must have a SpriteRenderer component");
-                        return;
-                    }
-                    Bounds bounds = renderer.bounds;
-
-                    if (bounds.Contains(mouseWorldPosition))
-                    {
-                        secondObject = hit.gameObject;
-                        Debug.Log("Selected object: " + secondObject.name);
-                    }
-                }
-                if (firstObject != null && secondObject != null && firstObject != secondObject)
-                {
-                    SwapObjects(firstObject, secondObject);
-                    Debug.Log("ability used");
-                }
+                SwapObjects(firstObject, hit.gameObject);
+                firstObject = null;
             }
-            firstObject = null;
-            secondObject = null;
+            timeAbility.CancelSlowDown();
+            RemoveClone();
+            RemoveHighlight();
+        }
+    }
+    void HighlightObject(GameObject obj)
+    {
+        if (highlightedObject != obj)
+        {
+            RemoveHighlight();
+            highlightedObject = obj;
+            highlightedObject.GetComponent<Renderer>().material.color = Color.yellow;
+        }
+    }
+    void RemoveHighlight()
+    {
+        if (highlightedObject != null)
+        {
+            highlightedObject.GetComponent<Renderer>().material.color = Color.white;
+            highlightedObject = null;
+        }
+    }
+    void CloneObject(GameObject obj)
+    {
+        RemoveClone();
+        clone = new GameObject(obj.name + " (Clone)");
+        SpriteRenderer spriteRenderer = clone.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = obj.GetComponent<SpriteRenderer>().sprite;
+
+        clone.transform.position = obj.transform.position;
+        clone.transform.rotation = obj.transform.rotation;
+        clone.transform.localScale = obj.transform.localScale;
+
+        spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+    }
+    void RemoveClone()
+    {
+        if (clone != null)
+        {
+            Destroy(clone);
+            clone = null;
         }
     }
 
+    void MoveCloneToMouse()
+    {
+        Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        clone.transform.position = new Vector3(mousePosition.x, mousePosition.y, clone.transform.position.z);
+    }
     public void SwapObjects(GameObject firstObj, GameObject secondObj)
     {
+        Debug.Log("start swap");
+        if (firstObj == secondObj)
+            return;
         Rigidbody2D firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
         Rigidbody2D secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
         if (firstRigidbody != null && secondRigidbody != null)

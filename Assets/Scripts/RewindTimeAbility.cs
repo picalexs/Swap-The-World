@@ -72,7 +72,6 @@ public class RewindTimeAbility : MonoBehaviour
         {
             playerPositions.Add(playerObject.transform.position);
 
-            // Record the positions of other objects
             foreach (string tag in tagsToRewind)
             {
                 GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
@@ -91,16 +90,12 @@ public class RewindTimeAbility : MonoBehaviour
             }
         }
     }
-
-    // Start rewinding time
     void StartRewind()
     {
         isRewinding = true;
         rb2d.isKinematic = true;
         Invoke("StopRewind", rewindTime);
     }
-
-    // Stop rewinding time
     void StopRewind()
     {
         isRewinding = false;
