@@ -13,9 +13,11 @@ public class SwapAbility : MonoBehaviour
     private PlayerScript playerScript;
 
     [SerializeField] private float selectRange = 1f;
-    [SerializeField] private float swapPlayerTime = 4f;
+    [SerializeField] private float swapPlayerCooldown = 4f;
     private float playerTimer;
-    private GameObject playerObj, ObjectObj;
+    [SerializeField] private float abilityCooldown = 4f;
+    private float abilityTimer;
+    private GameObject playerObj, objectObj;
     private bool isSwaped = false;
 
     private GameObject firstObject;
@@ -42,7 +44,7 @@ public class SwapAbility : MonoBehaviour
             if (playerTimer < 0f)
             {
                 Debug.Log("changed playerObject to " + playerObj);
-                SwapObjects(playerObj, ObjectObj);
+                SwapObjects(objectObj, playerObj);
                 playerScript.ChangePlayerObjectTo(playerObj);
                 isSwaped = false;
             }
@@ -57,7 +59,9 @@ public class SwapAbility : MonoBehaviour
         Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
         Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange, swapLayerMask);
 
-        if (hit != null)
+        abilityTimer -= Time.deltaTime;
+
+        if (hit != null && abilityTimer < 0f)
         {
             HighlightObject(hit.gameObject);
             if (Input.GetMouseButtonDown(0))
@@ -90,6 +94,7 @@ public class SwapAbility : MonoBehaviour
             timeAbility.CancelSlowDown();
             RemoveClone();
             RemoveHighlight();
+            abilityTimer = abilityCooldown;
         }
     }
     void HighlightObject(GameObject obj)
@@ -157,26 +162,27 @@ public class SwapAbility : MonoBehaviour
             firstRigidbody.mass = secondRigidbody.mass;
             secondRigidbody.mass = firstMass;
         }
-
-        if (firstObj.gameObject.tag == "Player")
+        if (!isSwaped)
         {
-            playerObj = firstObj;
-            ObjectObj = secondObj;
-            playerScript.ChangePlayerObjectTo(secondObj);
-            Debug.Log("changed playerObject to " + secondObj);
-            playerTimer = swapPlayerTime;
-            isSwaped = true;
+            if (firstObj.gameObject.tag == "Player")
+            {
+                playerObj = firstObj;
+                objectObj = secondObj;
+                playerScript.ChangePlayerObjectTo(secondObj);
+                Debug.Log("changed playerObject to " + secondObj);
+                playerTimer = swapPlayerCooldown;
+                isSwaped = true;
+            }
+            else if (secondObj.gameObject.tag == "Player")
+            {
+                playerObj = secondObj;
+                objectObj = firstObj;
+                playerScript.ChangePlayerObjectTo(firstObj);
+                Debug.Log("changed playerObject to " + firstObj);
+                playerTimer = swapPlayerCooldown;
+                isSwaped = true;
+            }
         }
-        else if (secondObj.gameObject.tag == "Player")
-        {
-            playerObj = secondObj;
-            ObjectObj = firstObj;
-            playerScript.ChangePlayerObjectTo(firstObj);
-            Debug.Log("changed playerObject to " + firstObj);
-            playerTimer = swapPlayerTime;
-            isSwaped = true;
-        }
-
         Debug.Log("swaped rb");
         SwapScripts(firstObj, secondObj);
     }

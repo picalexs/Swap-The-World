@@ -10,6 +10,7 @@ public class PlayerScript : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private Renderer playerRenderer;
     [SerializeField] private LayerMask _groundLayer;
+    private Animator _anim;
 
 
     [Space(10)]
@@ -20,6 +21,7 @@ public class PlayerScript : MonoBehaviour
     private bool _isActive = true;
     private bool _isSwaped = false;
     private bool _isPressing;
+    private bool _isRunning;
 
     private float _lastGrounded;
     [SerializeField] private float _pressedTime;
@@ -59,7 +61,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private float _dieJumpAmount = 8f;
     [SerializeField] private float _respawnTime = 0.5f;
     [SerializeField] private Vector2 _respawnPosition;
-    [SerializeField] private float _respawnJumpAmount = 12f;
+    [SerializeField] private float _respawnJumpAmount = 3f;
     [SerializeField] private float _respawnCooldown = 0.1f;
 
     private void Awake()
@@ -77,6 +79,7 @@ public class PlayerScript : MonoBehaviour
     }
     private void Start()
     {
+        _anim = playerObject.GetComponent<Animator>();
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
         playerRenderer = playerObject.GetComponent<Renderer>();
         _respawnPosition = playerObject.transform.position;
@@ -87,6 +90,8 @@ public class PlayerScript : MonoBehaviour
     public void ChangePlayerObjectTo(GameObject newObject)
     {
         _isSwaped = !_isSwaped;
+        _isRunning = false;
+        Debug.Log("isSwaped:" + _isSwaped);
         playerObject = newObject;
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
         playerRenderer = playerObject.GetComponent<Renderer>();
@@ -110,22 +115,34 @@ public class PlayerScript : MonoBehaviour
         JumpCases();
         IsGrounded();
 
-        if (_isSwaped)
+        if (!_isSwaped)
         {
-            return;
-        }
-        if (!_isFacingRight && _movementInput.x > 0f)
-        {
-            Flip();
-        }
-        else if (_isFacingRight && _movementInput.x < 0f)
-        {
-            Flip();
+            if (!_isFacingRight && _movementInput.x > 0f)
+            {
+                Flip();
+            }
+            else if (_isFacingRight && _movementInput.x < 0f)
+            {
+                Flip();
+            }
         }
     }
     private void Move(float _lerpAmount)
     {
         _movementInput = _playerAction.Player.Move.ReadValue<Vector2>();
+        if (!_isSwaped)
+        {
+            if (_movementInput.x == 0)
+            {
+                _isRunning = false;
+            }
+            else
+            {
+                _isRunning = true;
+            }
+        }
+        _anim.SetBool("isRunning", _isRunning);
+
         float _targetSpeed = _movementInput.x * _moveSpeed;
         _targetSpeed = Mathf.Lerp(_rigidBody.velocity.x, _targetSpeed, _lerpAmount);
 
@@ -288,20 +305,23 @@ public class PlayerScript : MonoBehaviour
     public void Die()
     {
         _isActive = false;
-        MiniJump(_dieJumpAmount);
         SetGravityScale(_gravityScale);
+        _isGrounded = true;
+        _isJumping= false;
         _rigidBody.velocity = new Vector2(0, _rigidBody.velocity.y);
+        MiniJump(_dieJumpAmount);
         StartCoroutine(Respawn(_respawnTime));
     }
 
     public void SetRespawnPoint(Vector2 _position)
     {
-        _respawnPosition = _position;
+        _respawnPosition = _position + new Vector2(0,1f);
     }
 
     private IEnumerator Respawn(float _respawnTime)
     {
         yield return new WaitForSeconds(_respawnTime);
+        _rigidBody.velocity = new Vector2(0, 0);
         playerObject.transform.position = _respawnPosition;
         MiniJump(_respawnJumpAmount);
         StartCoroutine(RespawnCooldown(_respawnCooldown));
