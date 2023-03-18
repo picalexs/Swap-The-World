@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     [SerializeField,Description("Player")] private GameObject playerObject;
+    [SerializeField] private Material playerMaterial;
     private PlayerActionControler _playerAction;
     private Rigidbody2D _rigidBody;
     private Renderer playerRenderer;
@@ -79,6 +80,7 @@ public class PlayerScript : MonoBehaviour
     }
     private void Start()
     {
+        playerMaterial = playerObject.GetComponent<Renderer>().material;
         _anim = playerObject.GetComponent<Animator>();
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
         playerRenderer = playerObject.GetComponent<Renderer>();
@@ -109,6 +111,8 @@ public class PlayerScript : MonoBehaviour
     {
         if (!_isActive)
         {
+            float fadeSpeed = 10f;
+            playerMaterial.SetFloat("_HitEffectBlend", Mathf.Lerp(playerMaterial.GetFloat("_HitEffectBlend"),0f,Time.deltaTime * fadeSpeed));
             return;
         }
         GravityCases();
@@ -304,7 +308,12 @@ public class PlayerScript : MonoBehaviour
 
     public void Die()
     {
+        if(!_isActive)
+        {
+            return;
+        }
         _isActive = false;
+        playerMaterial.SetFloat("_HitEffectBlend", 1f);
         SetGravityScale(_gravityScale);
         _isGrounded = true;
         _isJumping= false;
@@ -323,6 +332,7 @@ public class PlayerScript : MonoBehaviour
         yield return new WaitForSeconds(_respawnTime);
         _rigidBody.velocity = new Vector2(0, 0);
         playerObject.transform.position = _respawnPosition;
+        playerMaterial.SetFloat("_HitEffectBlend", 0f);
         MiniJump(_respawnJumpAmount);
         StartCoroutine(RespawnCooldown(_respawnCooldown));
     }

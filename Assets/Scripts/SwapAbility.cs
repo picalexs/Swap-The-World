@@ -1,3 +1,4 @@
+using AllIn1SpriteShader;
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ public class SwapAbility : MonoBehaviour
 {
     [SerializeField] private GameObject movmentManager;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private GameObject playerObject;
+    private Material playerMaterial;
     private RewindTimeAbility timeAbility;
     private PlayerScript playerScript;
 
@@ -24,8 +27,8 @@ public class SwapAbility : MonoBehaviour
     private List<MonoBehaviour> firstScripts = new List<MonoBehaviour>();
     private List<MonoBehaviour> secondScripts = new List<MonoBehaviour>();
 
-    
     // Variables to store the game objects and their clones
+    [SerializeField] private Color highlightColor;
     private GameObject highlightedObject;
     private GameObject clone;
     public LayerMask swapLayerMask;
@@ -36,6 +39,7 @@ public class SwapAbility : MonoBehaviour
     {
         timeAbility = GetComponent<RewindTimeAbility>();
         playerScript = movmentManager.GetComponent<PlayerScript>();
+        playerMaterial = playerObject.GetComponent<Renderer>().material;
     }
     private void Update()
     {
@@ -66,6 +70,7 @@ public class SwapAbility : MonoBehaviour
             HighlightObject(hit.gameObject);
             if (Input.GetMouseButtonDown(0))
             {
+                playerMaterial.SetFloat("_OutlineAlpha", 1f);
                 timeAbility.SlowTimeDown();
                 firstObject = hit.gameObject;
                 CloneObject(hit.gameObject);
@@ -81,20 +86,31 @@ public class SwapAbility : MonoBehaviour
         if (Input.GetMouseButton(0) && clone != null)
         {
             MoveCloneToMouse();
+            if(timeAbility.slowMotionTimeLeft <= 0f)
+            {
+                RemoveHighlight();
+                RemoveClone();
+                playerMaterial.SetFloat("_OutlineAlpha", 0f);
+                abilityTimer = abilityCooldown;
+            }
         }
 
-        if (Input.GetMouseButtonUp(0) && clone != null)
+        if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log(hit != null ? hit.gameObject.name : "");
-            if (hit!=null && firstObject != hit.gameObject)
-            {
-                SwapObjects(firstObject, hit.gameObject);
-                firstObject = null;
+            if (clone != null) {
+                Debug.Log(hit != null ? hit.gameObject.name + "--" + firstObject.name : "");
+
+                if (hit != null && firstObject != hit.gameObject)
+                {
+                    SwapObjects(firstObject, hit.gameObject);
+                    abilityTimer = abilityCooldown;
+                    firstObject = null;
+                }
             }
             timeAbility.CancelSlowDown();
             RemoveClone();
             RemoveHighlight();
-            abilityTimer = abilityCooldown;
+            playerMaterial.SetFloat("_OutlineAlpha", 0f);
         }
     }
     void HighlightObject(GameObject obj)
@@ -103,7 +119,7 @@ public class SwapAbility : MonoBehaviour
         {
             RemoveHighlight();
             highlightedObject = obj;
-            highlightedObject.GetComponent<Renderer>().material.color = Color.yellow;
+            highlightedObject.GetComponent<Renderer>().material.color = highlightColor;
         }
     }
     void RemoveHighlight()
@@ -239,6 +255,7 @@ public class SwapAbility : MonoBehaviour
         MonoBehaviour[] allScripts = gameObject.GetComponents<MonoBehaviour>();
         foreach (MonoBehaviour script in allScripts)
         {
+            if (script is AllIn1Shader) continue;
             if (script is SwapAbility) continue; // Exclude the SwapAbility script
             if (!script.enabled) continue;// Exclude disabled scripts
             if (scripts.Contains(script)) continue; // Exclude duplicate scripts

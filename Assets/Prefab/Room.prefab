@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 6178330593201521910}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1952110000991679658
 MonoBehaviour:
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_LookaheadTime: 0.281
   m_LookaheadSmoothing: 3.1
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
+  m_XDamping: 1.25
   m_YDamping: 1.2
   m_ZDamping: 1
   m_TargetMovementOnly: 1

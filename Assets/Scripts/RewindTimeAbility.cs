@@ -5,21 +5,23 @@ using UnityEngine;
 
 public class RewindTimeAbility : MonoBehaviour
 {
-    public float rewindTime = 2.0f;
-    public float slowDownFactor = 0.1f;
-    public float maxSlowdownDuration = 2f;
-    public float slowMotionTimeLeft = 0f;
-    private float originalFixedDeltaTime;
-    public KeyCode rewindKey = KeyCode.R;
-    public List<string> tagsToRewind;
-
-    private bool isRewinding = false;
-    [HideInInspector] public bool isSlowingDown = false;
-    private List<Vector2> playerPositions = new List<Vector2>();
-    private Dictionary<GameObject, List<Vector2>> objectPositions = new Dictionary<GameObject, List<Vector2>>();
     [SerializeField, Description("Player")] private GameObject playerObject;
     private Rigidbody2D rb2d;
 
+    [SerializeField] private float slowDownFactor = 0.25f;
+    [SerializeField] private float maxSlowdownDuration = 3f;
+    public float slowMotionTimeLeft = 0f;
+    private float originalFixedDeltaTime;
+    private bool isSlowingDown = false;
+
+    [SerializeField] private bool doRewind = false;
+    private bool isRewinding = false;
+    [SerializeField] private float rewindTime = 2.0f;
+    [SerializeField] private KeyCode rewindKey = KeyCode.R;
+    [SerializeField] private List<string> tagsToRewind;
+
+    private List<Vector2> playerPositions = new List<Vector2>();
+    private Dictionary<GameObject, List<Vector2>> objectPositions = new Dictionary<GameObject, List<Vector2>>();
     void Start()
     {
         originalFixedDeltaTime = Time.fixedDeltaTime;
@@ -28,6 +30,10 @@ public class RewindTimeAbility : MonoBehaviour
 
     void Update()
     {
+        if (!doRewind)
+        {
+            return;
+        }
         if (Input.GetKeyDown(rewindKey))
         {
             StartRewind();
@@ -40,6 +46,10 @@ public class RewindTimeAbility : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!doRewind)
+        {
+            return;
+        }
         if (isRewinding)
         {
             if (playerPositions.Count > 0)
