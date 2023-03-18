@@ -10,6 +10,7 @@ public class EntranceDoor : MonoBehaviour
     private Vector3 closedPosition;
     private Vector3 openPosition;
     private bool isOpen = false;
+    private bool isBlocked = false;
 
     [SerializeField] private Sprite closedSprite;
     [SerializeField] private Sprite openSprite;
@@ -29,7 +30,10 @@ public class EntranceDoor : MonoBehaviour
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, closedPosition, doorSpeed * Time.deltaTime);
+            if (!isBlocked)
+            {
+                transform.position = Vector3.Lerp(transform.position, closedPosition, doorSpeed * Time.deltaTime);
+            }
         }
     }
 
@@ -43,5 +47,18 @@ public class EntranceDoor : MonoBehaviour
     {
         isOpen = false;
         spriteRenderer.sprite = closedSprite;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Player" || collision.gameObject.tag == "Swapable" || collision.gameObject.tag == "Rewindable")
+        {
+            isBlocked = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isBlocked = false;
     }
 }
