@@ -1,17 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class RewindTimeAbility : MonoBehaviour
 {
     [SerializeField, Description("Player")] private GameObject playerObject;
     private Rigidbody2D rb2d;
 
+    [SerializeField] private AudioMixerGroup audioMixerGroup;
+
     [SerializeField] private float slowDownFactor = 0.25f;
+    [SerializeField] private float transitionDuration = 1f;
     [SerializeField] private float maxSlowdownDuration = 3f;
     public float slowMotionTimeLeft = 0f;
-    private float originalFixedDeltaTime;
+    private float originalPitch;
     private bool isSlowingDown = false;
 
     [SerializeField] private bool doRewind = false;
@@ -24,8 +29,8 @@ public class RewindTimeAbility : MonoBehaviour
     private Dictionary<GameObject, List<Vector2>> objectPositions = new Dictionary<GameObject, List<Vector2>>();
     void Start()
     {
-        originalFixedDeltaTime = Time.fixedDeltaTime;
         rb2d = playerObject.GetComponent<Rigidbody2D>();
+        audioMixerGroup .audioMixer.GetFloat("Pitch", out originalPitch);
     }
 
     void Update()
@@ -116,6 +121,8 @@ public class RewindTimeAbility : MonoBehaviour
     public void SlowTimeDown()
     {
         isSlowingDown = true;
+        //speedUpSound.Stop();
+        //slowDownSound.Play();
         slowMotionTimeLeft = maxSlowdownDuration;
         StartCoroutine(SlowTime());
     }
@@ -127,8 +134,17 @@ public class RewindTimeAbility : MonoBehaviour
     IEnumerator SlowTime()
     {
         isSlowingDown = true;
-        Time.timeScale = slowDownFactor;
-        Time.fixedDeltaTime = originalFixedDeltaTime * slowDownFactor;
+        float initialFixedDeltaTime = Time.fixedDeltaTime;
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / transitionDuration;
+            Time.timeScale = Mathf.Lerp(Time.timeScale, slowDownFactor, t);
+            Time.fixedDeltaTime = Mathf.Lerp(initialFixedDeltaTime, initialFixedDeltaTime * slowDownFactor, t);
+            audioMixerGroup.audioMixer.SetFloat("Pitch", Mathf.Lerp(originalPitch, slowDownFactor, t));
+            yield return null;
+        }
 
         while (slowMotionTimeLeft > 0f)
         {
@@ -136,8 +152,16 @@ public class RewindTimeAbility : MonoBehaviour
             slowMotionTimeLeft -= 0.1f;
         }
 
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = originalFixedDeltaTime;
+        t = 0;
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / transitionDuration;
+            Time.timeScale = Mathf.Lerp(slowDownFactor, 1f, t);
+            Time.fixedDeltaTime = Mathf.Lerp(initialFixedDeltaTime * slowDownFactor, initialFixedDeltaTime, t);
+            audioMixerGroup.audioMixer.SetFloat("Pitch", Mathf.Lerp(slowDownFactor, originalPitch, t));
+            yield return null;
+        }
+
         slowMotionTimeLeft = 0f;
         isSlowingDown = false;
     }

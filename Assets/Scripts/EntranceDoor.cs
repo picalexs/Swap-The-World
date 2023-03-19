@@ -51,9 +51,19 @@ public class EntranceDoor : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Player" || collision.gameObject.tag == "Swapable" || collision.gameObject.tag == "Rewindable")
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Swapable" || collision.gameObject.tag == "Rewindable")
         {
-            isBlocked = true;
+            ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
+            collision.GetContacts(contacts);
+            //chek to see if the player is touching the door from below
+            foreach (ContactPoint2D contact in contacts)
+            {
+                if (contact.normal.y > 0.5f)
+                {
+                    isBlocked = true;
+                    break;
+                }
+            }
         }
     }
 

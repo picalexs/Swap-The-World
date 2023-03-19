@@ -14,6 +14,7 @@ public class SwapAbility : MonoBehaviour
     private Material playerMaterial;
     private RewindTimeAbility timeAbility;
     private PlayerScript playerScript;
+    [SerializeField] private AudioSource swapEndSound;
 
     [SerializeField] private float selectRange = 1f;
     [SerializeField] private float swapPlayerCooldown = 4f;
@@ -50,6 +51,7 @@ public class SwapAbility : MonoBehaviour
                 Debug.Log("changed playerObject to " + playerObj);
                 SwapObjects(objectObj, playerObj);
                 playerScript.ChangePlayerObjectTo(playerObj);
+                swapEndSound.Play();
                 isSwaped = false;
             }
             else
@@ -166,10 +168,8 @@ public class SwapAbility : MonoBehaviour
         Rigidbody2D secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
         if (firstRigidbody != null && secondRigidbody != null)
         {
-            Vector2 firstVelocity = firstRigidbody.velocity;
-            firstRigidbody.velocity = secondRigidbody.velocity;
-            secondRigidbody.velocity = firstVelocity;
-
+            firstRigidbody.velocity = new Vector2(0, 0);
+            secondRigidbody.velocity = new Vector2(0, 0);
             var firstGravityScale = firstRigidbody.gravityScale;
             firstRigidbody.gravityScale = secondRigidbody.gravityScale;
             secondRigidbody.gravityScale = firstGravityScale;
