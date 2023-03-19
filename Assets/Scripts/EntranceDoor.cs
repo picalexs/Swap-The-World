@@ -9,7 +9,7 @@ public class EntranceDoor : MonoBehaviour
 
     private Vector3 closedPosition;
     private Vector3 openPosition;
-    private bool isOpen = false;
+    public bool isOpen = false;
     private bool isBlocked = false;
 
     [SerializeField] private Sprite closedSprite;

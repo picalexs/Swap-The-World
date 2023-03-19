@@ -6,15 +6,21 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     [SerializeField,Description("Player")] private GameObject playerObject;
-    [SerializeField] private Material playerMaterial;
+    [SerializeField] private Material _playerMaterial;
     private PlayerActionControler _playerAction;
     private Rigidbody2D _rigidBody;
-    private Renderer playerRenderer;
+    private Renderer _playerRenderer;
     [SerializeField] private LayerMask _groundLayer;
     private Animator _anim;
 
+    [Space(10),Header("Sound")]
+    [SerializeField] private AudioSource _jumpSound;
+    [SerializeField] private AudioSource[] _dirtSound;
+    [SerializeField] private AudioSource _deathSound;
+    [SerializeField] private float _playSoundCooldown = 0.1f;
+    private float _playSoundTime = 0f;
 
-    [Space(10)]
+    [Space(10),Header("Booleans")]
     private bool _isFacingRight=true;
     [SerializeField] private bool _isGrounded;
     private bool _isJumping;
@@ -23,7 +29,9 @@ public class PlayerScript : MonoBehaviour
     private bool _isSwaped = false;
     private bool _isPressing;
     private bool _isRunning;
+    private bool _firstTouch = true;
 
+    [Space(10),Header("Jump variables")]
     private float _lastGrounded;
     [SerializeField] private float _pressedTime;
     [SerializeField] private float _coyoteTime = 0.15f;
@@ -80,10 +88,10 @@ public class PlayerScript : MonoBehaviour
     }
     private void Start()
     {
-        playerMaterial = playerObject.GetComponent<Renderer>().material;
+        _playerMaterial = playerObject.GetComponent<Renderer>().material;
         _anim = playerObject.GetComponent<Animator>();
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
-        playerRenderer = playerObject.GetComponent<Renderer>();
+        _playerRenderer = playerObject.GetComponent<Renderer>();
         _respawnPosition = playerObject.transform.position;
         _playerAction.Player.Jump.started += _ => JumpStarted();
         _playerAction.Player.Jump.canceled += _ => JumpCanceled();
@@ -96,7 +104,7 @@ public class PlayerScript : MonoBehaviour
         Debug.Log("isSwaped:" + _isSwaped);
         playerObject = newObject;
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
-        playerRenderer = playerObject.GetComponent<Renderer>();
+        _playerRenderer = playerObject.GetComponent<Renderer>();
     }
     private void FixedUpdate()
     {
@@ -112,7 +120,7 @@ public class PlayerScript : MonoBehaviour
         if (!_isActive)
         {
             float fadeSpeed = 10f;
-            playerMaterial.SetFloat("_HitEffectBlend", Mathf.Lerp(playerMaterial.GetFloat("_HitEffectBlend"),0f,Time.deltaTime * fadeSpeed));
+            _playerMaterial.SetFloat("_HitEffectBlend", Mathf.Lerp(_playerMaterial.GetFloat("_HitEffectBlend"),0f,Time.deltaTime * fadeSpeed));
             return;
         }
         GravityCases();
@@ -177,6 +185,17 @@ public class PlayerScript : MonoBehaviour
         float movement = Mathf.Pow(Mathf.Abs(speedDif) * _accelRate, _velocityPower) * Mathf.Sign(speedDif);
         _rigidBody.AddForce(movement * Vector2.right);
 
+        _playSoundTime -= Time.deltaTime;
+        if(_isGrounded && Mathf.Abs(_movementInput.x) > 0)
+        {
+            if (_playSoundTime < 0f)
+            {
+                int randomIndex = Random.Range(0, _dirtSound.Length);
+                _dirtSound[randomIndex].Play();
+                _playSoundTime = _playSoundCooldown;
+            }
+        }
+
         if (_isGrounded && Mathf.Abs(_movementInput.x) < 0.01f)
         {
             float amount = Mathf.Min(Mathf.Abs(_rigidBody.velocity.x), Mathf.Abs(_frictionAmount));
@@ -202,7 +221,10 @@ public class PlayerScript : MonoBehaviour
     {
         if (_coyoteCooldownTimer > 0f && !_isJumping)
         {
+            _jumpSound.Play();
             Debug.Log("jumping");
+            _isPressing = false;
+            _pressedTime = 0f;
             _isJumping = true;
             _coyoteCooldownTimer = 0f;
             _rigidBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
@@ -223,7 +245,6 @@ public class PlayerScript : MonoBehaviour
 
     private void JumpCases()
     {
-
         if (_isPressing)
         {
             _pressedTime += Time.deltaTime;
@@ -312,8 +333,9 @@ public class PlayerScript : MonoBehaviour
         {
             return;
         }
+        _deathSound.Play();
         _isActive = false;
-        playerMaterial.SetFloat("_HitEffectBlend", 1f);
+        _playerMaterial.SetFloat("_HitEffectBlend", 1f);
         SetGravityScale(_gravityScale);
         _isGrounded = true;
         _isJumping= false;
@@ -332,7 +354,7 @@ public class PlayerScript : MonoBehaviour
         yield return new WaitForSeconds(_respawnTime);
         _rigidBody.velocity = new Vector2(0, 0);
         playerObject.transform.position = _respawnPosition;
-        playerMaterial.SetFloat("_HitEffectBlend", 0f);
+        _playerMaterial.SetFloat("_HitEffectBlend", 0f);
         MiniJump(_respawnJumpAmount);
         StartCoroutine(RespawnCooldown(_respawnCooldown));
     }
@@ -344,7 +366,7 @@ public class PlayerScript : MonoBehaviour
     }
     public void IsGrounded()
     {
-        Vector3 lowestPosition = new Vector3(playerRenderer.bounds.center.x, playerRenderer.bounds.min.y, 0f);
+        Vector3 lowestPosition = new Vector3(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
         Collider2D[] colliders = Physics2D.OverlapBoxAll(lowestPosition, _groundCheckSize, 0, _groundLayer);
         foreach (Collider2D collider in colliders)
         {

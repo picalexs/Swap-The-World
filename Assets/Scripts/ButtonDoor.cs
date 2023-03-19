@@ -1,9 +1,10 @@
+using UnityEditor;
 using UnityEngine;
 
 public class ButtonDoor : MonoBehaviour
 {
-    [SerializeField] private GameObject doorObject;
-    [HideInInspector] private EntranceDoor door;
+    [SerializeField] private GameObject[] doorObjects;
+    [HideInInspector] private EntranceDoor[] doors;
     private float objectsOnButton;
 
     [SerializeField] private Sprite openSprite;
@@ -11,7 +12,11 @@ public class ButtonDoor : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private void Start()
     {
-        door = doorObject.GetComponent<EntranceDoor>();
+        doors = new EntranceDoor[doorObjects.Length];
+        for (int i = 0; i < doorObjects.Length; i++)
+        {
+            doors[i] = doorObjects[i].GetComponent<EntranceDoor>();
+        }
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void OnCollisionEnter2D(Collision2D other)
@@ -21,7 +26,13 @@ public class ButtonDoor : MonoBehaviour
             objectsOnButton++;
             if (objectsOnButton == 1)
             {
-                door.OpenDoor();
+                foreach (EntranceDoor door in doors)
+                {
+                    if (!door.isOpen)
+                    {
+                        door.OpenDoor();
+                    }
+                }
                 spriteRenderer.sprite = openSprite;
             }
         }
@@ -34,7 +45,13 @@ public class ButtonDoor : MonoBehaviour
             objectsOnButton--;
             if (objectsOnButton == 0)
             {
-                door.CloseDoor();
+                foreach (EntranceDoor door in doors)
+                {
+                    if (door.isOpen)
+                    {
+                        door.CloseDoor();
+                    }
+                }
                 spriteRenderer.sprite = closedSprite;
             }
         }
