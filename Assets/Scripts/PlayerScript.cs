@@ -12,6 +12,8 @@ public class PlayerScript : MonoBehaviour
     private Renderer _playerRenderer;
     [SerializeField] private LayerMask _groundLayer;
     private Animator _anim;
+    [SerializeField] private GameObject _transitionManager;
+    private Animator _transition;
 
     [Space(10),Header("Sound")]
     [SerializeField] private AudioSource _jumpSound;
@@ -25,11 +27,10 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private bool _isGrounded;
     private bool _isJumping;
     private bool _jumpPressed;
-    private bool _isActive = true;
+    public static bool _isActive = true;
     private bool _isSwaped = false;
     private bool _isPressing;
     private bool _isRunning;
-    private bool _firstTouch = true;
 
     [Space(10),Header("Jump variables")]
     private float _lastGrounded;
@@ -95,6 +96,8 @@ public class PlayerScript : MonoBehaviour
         _respawnPosition = playerObject.transform.position;
         _playerAction.Player.Jump.started += _ => JumpStarted();
         _playerAction.Player.Jump.canceled += _ => JumpCanceled();
+
+        _transition = _transitionManager.GetComponentInChildren<Animator>();
     }
 
     public void ChangePlayerObjectTo(GameObject newObject)
@@ -241,6 +244,7 @@ public class PlayerScript : MonoBehaviour
         }
         _isJumping = false;
         _coyoteCooldownTimer = 0f;
+        _jumpCooldownTime = 0f;
     }
 
     private void JumpCases()
@@ -278,6 +282,7 @@ public class PlayerScript : MonoBehaviour
                 Debug.Log("jump case");
                 _jumpCooldownTime = 0f;
                 _isJumping = true;
+                _jumpSound.Play();
                 _rigidBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
             }
             else
@@ -333,13 +338,16 @@ public class PlayerScript : MonoBehaviour
         {
             return;
         }
-        _deathSound.Play();
+        _pressedTime = 0f;
+        _jumpCooldownTime = 0f;
         _isActive = false;
-        _playerMaterial.SetFloat("_HitEffectBlend", 1f);
+        _isJumping = false;
         SetGravityScale(_gravityScale);
-        _isGrounded = true;
-        _isJumping= false;
         _rigidBody.velocity = new Vector2(0, _rigidBody.velocity.y);
+
+        _deathSound.Play();
+        _playerMaterial.SetFloat("_HitEffectBlend", 1f);
+        _transition.SetBool("Start", true);
         MiniJump(_dieJumpAmount);
         StartCoroutine(Respawn(_respawnTime));
     }
@@ -363,6 +371,7 @@ public class PlayerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(_respawnCooldown);
         _isActive = true;
+        _transition.SetBool("Start", false);
     }
     public void IsGrounded()
     {
