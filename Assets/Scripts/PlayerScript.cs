@@ -31,6 +31,8 @@ public class PlayerScript : MonoBehaviour
     private bool _isSwaped = false;
     private bool _isPressing;
     private bool _isRunning;
+    public bool _canMove = true;
+    public bool _canJump = true;
 
     [Space(10),Header("Jump variables")]
     private float _lastGrounded;
@@ -144,6 +146,10 @@ public class PlayerScript : MonoBehaviour
     }
     private void Move(float _lerpAmount)
     {
+        if (_canMove == false)
+        {
+            return;
+        }
         _movementInput = _playerAction.Player.Move.ReadValue<Vector2>();
         if (!_isSwaped)
         {
@@ -222,6 +228,10 @@ public class PlayerScript : MonoBehaviour
 
     private void Jump()
     {
+        if(_canJump == false)
+        {
+            return;
+        }
         if (_coyoteCooldownTimer > 0f && !_isJumping)
         {
             _jumpSound.Play();
@@ -249,6 +259,11 @@ public class PlayerScript : MonoBehaviour
 
     private void JumpCases()
     {
+        if (_canJump == false)
+        {
+            return;
+        }
+
         if (_isPressing)
         {
             _pressedTime += Time.deltaTime;

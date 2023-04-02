@@ -184,6 +184,8 @@ SpriteAtlas:
     - 13a822e0fc9850f4aa19c27e7a8945bf: 2143541183
     - 13a822e0fc9850f4aa19c27e7a8945bf: 1550649804
     - 13a822e0fc9850f4aa19c27e7a8945bf: 1043861397
+    - a633daf0b1c5a1b459f0b7a1b3fa312f: -1635077758
+    - a633daf0b1c5a1b459f0b7a1b3fa312f: 1818838971
     - 82d3ef624a056cd458a410c2ff5ed32f: -677325188
     - 82d3ef624a056cd458a410c2ff5ed32f: 1240336439
     - d1c5dd83be0837c4097dbf48adae8e34: -1426867174
@@ -904,6 +906,8 @@ SpriteAtlas:
   - {fileID: 2143541183, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
   - {fileID: 1550649804, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
   - {fileID: 1043861397, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
+  - {fileID: -1635077758, guid: a633daf0b1c5a1b459f0b7a1b3fa312f, type: 3}
+  - {fileID: 1818838971, guid: a633daf0b1c5a1b459f0b7a1b3fa312f, type: 3}
   - {fileID: -677325188, guid: 82d3ef624a056cd458a410c2ff5ed32f, type: 3}
   - {fileID: 1240336439, guid: 82d3ef624a056cd458a410c2ff5ed32f, type: 3}
   - {fileID: -1426867174, guid: d1c5dd83be0837c4097dbf48adae8e34, type: 3}
@@ -1623,6 +1627,8 @@ SpriteAtlas:
   - Infill_12
   - Infill_11
   - Infill_10
+  - Spring_1
+  - Spring_0
   - Door_0
   - Door_1
   - Dirt_v1__6

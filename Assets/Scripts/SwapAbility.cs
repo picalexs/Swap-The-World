@@ -164,12 +164,17 @@ public class SwapAbility : MonoBehaviour
         Debug.Log("start swap");
         if (firstObj == secondObj)
             return;
+
         Rigidbody2D firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
         Rigidbody2D secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
+        Collider2D firstCollider = firstObj.GetComponent<Collider2D>();
+        Collider2D secondCollider = secondObj.GetComponent<Collider2D>();
+
         if (firstRigidbody != null && secondRigidbody != null)
         {
             firstRigidbody.velocity = new Vector2(0, 0);
             secondRigidbody.velocity = new Vector2(0, 0);
+           
             var firstGravityScale = firstRigidbody.gravityScale;
             firstRigidbody.gravityScale = secondRigidbody.gravityScale;
             secondRigidbody.gravityScale = firstGravityScale;
@@ -177,7 +182,18 @@ public class SwapAbility : MonoBehaviour
             var firstMass = firstRigidbody.mass;
             firstRigidbody.mass = secondRigidbody.mass;
             secondRigidbody.mass = firstMass;
-        }
+
+            PhysicsMaterial2D object1Material = firstCollider.sharedMaterial;
+            PhysicsMaterial2D object2Material = secondCollider.sharedMaterial;
+
+            float tempFriction = object1Material.friction;
+            object1Material.friction = object2Material.friction;
+            object2Material.friction = tempFriction;
+
+            // Update the shared materials of the colliders
+            firstCollider.sharedMaterial = object1Material;
+            secondCollider.sharedMaterial = object2Material;
+        }   
         if (!isSwaped)
         {
             if (firstObj.gameObject.tag == "Player")
