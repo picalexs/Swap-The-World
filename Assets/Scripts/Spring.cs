@@ -42,6 +42,7 @@ public class Spring : MonoBehaviour
                     jumpDir.y = Mathf.Abs(jumpDir.y) + springAngleOffset.y;
                 }
                 springSound.Play();
+                rb.velocity = new Vector2(0f, 0f);
                 rb.AddForce(jumpDir * springForce, ForceMode2D.Impulse);
             }
         }

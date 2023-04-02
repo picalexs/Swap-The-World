@@ -14,6 +14,7 @@ public class SwapAbility : MonoBehaviour
     private Material playerMaterial;
     private RewindTimeAbility timeAbility;
     private PlayerScript playerScript;
+    private MaterialSwapper materialSwapper;
     [SerializeField] private AudioSource swapEndSound;
 
     [SerializeField] private float selectRange = 1f;
@@ -41,6 +42,7 @@ public class SwapAbility : MonoBehaviour
         timeAbility = GetComponent<RewindTimeAbility>();
         playerScript = movmentManager.GetComponent<PlayerScript>();
         playerMaterial = playerObject.GetComponent<Renderer>().material;
+        materialSwapper = GetComponent<MaterialSwapper>();
     }
     private void Update()
     {
@@ -72,6 +74,10 @@ public class SwapAbility : MonoBehaviour
             HighlightObject(hit.gameObject);
             if (Input.GetMouseButtonDown(0))
             {
+                if (materialSwapper.swaped == false)
+                {
+                    materialSwapper.SwapMaterials();
+                }
                 playerMaterial.SetFloat("_OutlineAlpha", 1f);
                 timeAbility.SlowTimeDown();
                 firstObject = hit.gameObject;
@@ -79,10 +85,14 @@ public class SwapAbility : MonoBehaviour
                 Debug.Log(hit.gameObject.name);
             }
         }
-        else if(!Input.GetMouseButton(0))
+        else if (!Input.GetMouseButton(0))
         {
             RemoveHighlight();
             RemoveClone();
+            if (materialSwapper.swaped == true)
+            {
+                materialSwapper.EndSwapMaterials();
+            }
         }
 
         if (Input.GetMouseButton(0) && clone != null)
@@ -94,6 +104,10 @@ public class SwapAbility : MonoBehaviour
                 RemoveClone();
                 playerMaterial.SetFloat("_OutlineAlpha", 0f);
                 abilityTimer = abilityCooldown;
+                if (materialSwapper.swaped == true)
+                {
+                    materialSwapper.EndSwapMaterials();
+                }
             }
         }
 
@@ -113,6 +127,10 @@ public class SwapAbility : MonoBehaviour
             RemoveClone();
             RemoveHighlight();
             playerMaterial.SetFloat("_OutlineAlpha", 0f);
+            if (materialSwapper.swaped == true)
+            {
+                materialSwapper.EndSwapMaterials();
+            }
         }
     }
     void HighlightObject(GameObject obj)

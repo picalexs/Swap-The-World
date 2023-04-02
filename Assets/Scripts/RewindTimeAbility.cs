@@ -14,10 +14,9 @@ public class RewindTimeAbility : MonoBehaviour
 
     [SerializeField] private float slowDownFactor = 0.25f;
     [SerializeField] private float transitionDuration = 1f;
-    [SerializeField] private float maxSlowdownDuration = 3f;
+    public float maxSlowdownDuration = 3f;
     public float slowMotionTimeLeft = 0f;
     private float originalPitch;
-    private bool isSlowingDown = false;
 
     [SerializeField] private bool doRewind = false;
     private bool isRewinding = false;
@@ -120,9 +119,6 @@ public class RewindTimeAbility : MonoBehaviour
 
     public void SlowTimeDown()
     {
-        isSlowingDown = true;
-        //speedUpSound.Stop();
-        //slowDownSound.Play();
         slowMotionTimeLeft = maxSlowdownDuration;
         StartCoroutine(SlowTime());
     }
@@ -133,7 +129,6 @@ public class RewindTimeAbility : MonoBehaviour
     }
     IEnumerator SlowTime()
     {
-        isSlowingDown = true;
         float initialFixedDeltaTime = Time.fixedDeltaTime;
 
         float t = 0f;
@@ -163,6 +158,5 @@ public class RewindTimeAbility : MonoBehaviour
         }
 
         slowMotionTimeLeft = 0f;
-        isSlowingDown = false;
     }
 }

@@ -9,6 +9,8 @@ public class ButtonDoor : MonoBehaviour
 
     [SerializeField] private Sprite openSprite;
     [SerializeField] private Sprite closedSprite;
+    [SerializeField] private AudioSource buttonOn;
+    [SerializeField] private AudioSource buttonOff;
     private SpriteRenderer spriteRenderer;
     private void Start()
     {
@@ -24,7 +26,7 @@ public class ButtonDoor : MonoBehaviour
         if(other.gameObject.tag == "Player" || other.gameObject.tag=="Swapable")
         {
             objectsOnButton++;
-            if (objectsOnButton == 1)
+            if (objectsOnButton >= 1)
             {
                 foreach (EntranceDoor door in doors)
                 {
@@ -34,7 +36,8 @@ public class ButtonDoor : MonoBehaviour
                     }
                 }
                 spriteRenderer.sprite = openSprite;
-            }
+                buttonOn.Play();
+            } 
         }
     }
 
@@ -52,8 +55,9 @@ public class ButtonDoor : MonoBehaviour
                         door.CloseDoor();
                     }
                 }
-                spriteRenderer.sprite = closedSprite;
             }
         }
+        spriteRenderer.sprite = closedSprite;
+        buttonOff.Play();
     }
 }
