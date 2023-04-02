@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Swapable
   - Rewindable
+  - ExitDoor
+  - LevelDoor
   layers:
   - Default
   - TransparentFX
