@@ -136,6 +136,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1493538984}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
+      propertyPath: doorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: levelNumber
       value: 2
       objectReference: {fileID: 0}
@@ -145,7 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -157,7 +161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenMenuScene
+      value: OpenGameScene
       objectReference: {fileID: 0}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -165,7 +169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

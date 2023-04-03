@@ -380,6 +380,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
+      propertyPath: doorKeyLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -512,6 +516,10 @@ PrefabInstance:
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: levelNumber
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
+      propertyPath: doorKeyLevel
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.size
@@ -1818,7 +1826,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 122.43497, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1847,6 +1855,10 @@ PrefabInstance:
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: levelNumber
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
+      propertyPath: doorKeyLevel
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4459569722995734769, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: m_RootOrder
