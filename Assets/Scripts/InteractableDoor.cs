@@ -2,71 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class InteractableDoor : MonoBehaviour
 {
-    public bool isInRange;
+    [SerializeField] private bool inRange = false;
     public KeyCode interactKey;
     public UnityEvent interactAction;
-    [SerializeField] private int levelNumber;
-    [SerializeField] public int doors;
-    [SerializeField] private GameObject player;
-    [SerializeField] public bool LevelDoor;
-    [SerializeField] public bool ExitDoor;
-    [SerializeField] private bool previousLevelComplet;
-    private void Start() {
-        doors= player.GetComponent<PlayerDataSave>().doorsUnlocked;
-        //player.GetComponent<PlayerDataSave>().LoadData();
-        //player.GetComponent<PlayerDataSave>().ResetData();
-    }
-    void Update()
+    [SerializeField] private int doorType = 0; // 0: normal door; 1: exit door
+    [SerializeField] private int doorKeyLevel = 0;
+
+    public void Update()
     {
-        LevelDoor=player.GetComponent<PlayerDataSave>().isLevelDoor;
-        ExitDoor=player.GetComponent<PlayerDataSave>().isExitDoor;
-        previousLevelComplet= (doors>=levelNumber);
-        if(isInRange)
+        if (!inRange) {
+            return;
+        }
+        if (Input.GetKeyDown(interactKey))
         {
-            if(LevelDoor)
+            if (doorType == 0)
             {
-                if(previousLevelComplet)
+                if (PlayerDataSave.doorKey >= doorKeyLevel)
                 {
-                    if(Input.GetKeyDown(interactKey))
-                        {
-                           
-                                interactAction.Invoke();
-                        } 
-                }                
+                    Debug.Log("entered");
+                    interactAction.Invoke();
+                }
                 else
                 {
-                    Debug.Log("nu poti intra");
+                    Debug.Log("cant enter!");
                 }
             }
-            else if(ExitDoor)
+            else if (doorType == 1)
             {
-                if(Input.GetKeyDown(interactKey))
-                    {
-                    player.GetComponent<PlayerDataSave>().doorsUnlocked=Mathf.Max(player.GetComponent<PlayerDataSave>().doorsUnlocked,levelNumber+1);
-                    Debug.Log(player.GetComponent<PlayerDataSave>().doorsUnlocked);
-                    player.GetComponent<PlayerDataSave>().SaveData();
-                    Debug.Log("am crescut");
-                    interactAction.Invoke();
-                    }         
+                PlayerDataSave.ChangeKeyTo(PlayerDataSave.doorKey + 1);
+                Debug.Log("upgraded key to: " + PlayerDataSave.doorKey);
+                interactAction.Invoke();
             }
-            }
-            
         }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.CompareTag("Player"))
         {
-            isInRange=true;
-            Debug.Log("on");
+            inRange = true;
+            Debug.Log("in range");
         }
     }
-    private void OnTriggerExit2D(Collider2D collision) {
-        if(collision.gameObject.CompareTag("Player"))
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
-            isInRange=false;
-            Debug.Log("off");
+            inRange = false;
+            Debug.Log("not in range");
         }
+    }
+    public void OpenGameScene(int i)
+    {
+        PlayerDataSave.SaveData();
+        SceneManager.LoadScene(i);
+        PlayerDataSave.LoadData();
     }
 }
