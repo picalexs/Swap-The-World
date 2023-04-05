@@ -5,14 +5,13 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     public GameObject roomCamera;
-    public bool isActive = false;
-
+    public GameObject roomElements;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !other.isTrigger)
         {
-            isActive = true;
             roomCamera.SetActive(true);
+            roomElements.SetActive(true);
         }
     }
 
@@ -20,8 +19,8 @@ public class RoomManager : MonoBehaviour
     {
         if (other.CompareTag("Player") && !other.isTrigger)
         {
-            isActive = false;
             roomCamera.SetActive(false);
+            roomElements.SetActive(false);
         }
     }
 }

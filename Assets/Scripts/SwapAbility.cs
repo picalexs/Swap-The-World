@@ -24,6 +24,10 @@ public class SwapAbility : MonoBehaviour
     [SerializeField] private float abilityCooldown = 4f;
     private float abilityTimer;
     private GameObject playerObj, objectObj;
+    private Rigidbody2D firstRigidbody;
+    private Rigidbody2D secondRigidbody;
+    private Collider2D firstCollider;
+    private Collider2D secondCollider;
     private bool isSwaped = false;
 
     private GameObject firstObject;
@@ -187,10 +191,10 @@ public class SwapAbility : MonoBehaviour
         if (firstObj == secondObj)
             return;
 
-        Rigidbody2D firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
-        Rigidbody2D secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
-        Collider2D firstCollider = firstObj.GetComponent<Collider2D>();
-        Collider2D secondCollider = secondObj.GetComponent<Collider2D>();
+        firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
+        secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
+        firstCollider = firstObj.GetComponent<Collider2D>();
+        secondCollider = secondObj.GetComponent<Collider2D>();
 
         if (firstRigidbody != null && secondRigidbody != null)
         {
@@ -304,6 +308,18 @@ public class SwapAbility : MonoBehaviour
         foreach (System.Reflection.FieldInfo field in fields)
         {
             field.SetValue(target, field.GetValue(source));
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        if(isSwaped) {
+            PhysicsMaterial2D object1Material = firstCollider.sharedMaterial;
+            PhysicsMaterial2D object2Material = secondCollider.sharedMaterial;
+
+            (object2Material.friction, object1Material.friction) = (object1Material.friction, object2Material.friction);
+            firstCollider.sharedMaterial = object1Material;
+            secondCollider.sharedMaterial = object2Material;
         }
     }
 }

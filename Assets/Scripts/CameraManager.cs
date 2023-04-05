@@ -2,36 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Unity.VisualScripting;
 
 public class CameraManager: MonoBehaviour
 {
-    public LayerMask roomLayer;
     [SerializeField] private CinemachineVirtualCamera[] cameras;
     private CinemachineVirtualCamera currentCamera;
     [SerializeField] private GameObject player;
-
-    void Start()
-    {
-        currentCamera = GetActiveCamera();
-    }
-
-    private void Update()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(player.transform.position, Vector2.down, Mathf.Infinity, roomLayer);
-        if (hit.collider != null && hit.collider.CompareTag("Room"))
-        {
-            CinemachineVirtualCamera roomCamera = hit.collider.GetComponentInChildren<CinemachineVirtualCamera>();
-            if (roomCamera != null && roomCamera != currentCamera)
-            {
-                Debug.Log("roomCamer: "+ roomCamera.name);
-                currentCamera.gameObject.SetActive(false);
-                currentCamera = roomCamera;
-                currentCamera.gameObject.SetActive(true);
-            }
-        }
-    }
     public void FocusOnSelectedObject (Transform selectedObject)
     {
+        currentCamera = GetActiveCamera();
+        if(currentCamera == null)
+        {
+            Debug.LogWarning("no active virtual camera in the scene!");
+            return;
+        }
         Debug.Log(currentCamera.name +" follows "+ selectedObject.name);
         currentCamera.Follow = selectedObject.transform;
     }
