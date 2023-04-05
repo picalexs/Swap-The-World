@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3779557519053256412
 SpriteRenderer:
@@ -57,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 28f541091a3d99842b40f677162e2ec8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,10 +147,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 0}
-  springForce: 20
+  springForcePlayer: 20
+  springForceBox: 50
   springSound: {fileID: 3779557519053256408}
   freezeCooldown: 0.5
-  retractSpringCooldown: 0.75
+  playerRetractSpringCooldown: 1
+  boxRetractSpringCooldown: 0.5
   springAngleOffset: {x: 0, y: 0}
 --- !u!82 &3779557519053256408
 AudioSource:

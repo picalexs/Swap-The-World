@@ -8,7 +8,7 @@ public class MaterialSwapper : MonoBehaviour
     public Material swapMaterial;
     public bool swaped = false;
 
-    private Dictionary<Renderer, Material> originalMaterials = new Dictionary<Renderer, Material>();
+    private readonly Dictionary<Renderer, Material> originalMaterials = new();
 
     void Start()
     {

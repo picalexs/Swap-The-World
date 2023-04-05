@@ -24,8 +24,8 @@ public class RewindTimeAbility : MonoBehaviour
     [SerializeField] private KeyCode rewindKey = KeyCode.R;
     [SerializeField] private List<string> tagsToRewind;
 
-    private List<Vector2> playerPositions = new List<Vector2>();
-    private Dictionary<GameObject, List<Vector2>> objectPositions = new Dictionary<GameObject, List<Vector2>>();
+    private readonly List<Vector2> playerPositions = new();
+    private readonly Dictionary<GameObject, List<Vector2>> objectPositions = new();
     void Start()
     {
         rb2d = playerObject.GetComponent<Rigidbody2D>();
@@ -58,7 +58,7 @@ public class RewindTimeAbility : MonoBehaviour
         {
             if (playerPositions.Count > 0)
             {
-                Vector2 lastPlayerPosition = playerPositions[playerPositions.Count - 1];
+                Vector2 lastPlayerPosition = playerPositions[^1];
                 rb2d.MovePosition(lastPlayerPosition);
                 playerPositions.RemoveAt(playerPositions.Count - 1);
             }
@@ -75,7 +75,7 @@ public class RewindTimeAbility : MonoBehaviour
 
                 if (positions.Count > 0)
                 {
-                    Vector2 lastPosition = positions[positions.Count - 1];
+                    Vector2 lastPosition = positions[^1];
                     Rigidbody2D objRb2d = obj.GetComponent<Rigidbody2D>();
                     objRb2d.MovePosition(lastPosition);
                     positions.RemoveAt(positions.Count - 1);
@@ -91,8 +91,7 @@ public class RewindTimeAbility : MonoBehaviour
                 GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
                 foreach (GameObject obj in objects)
                 {
-                    Rigidbody2D objRb2d = obj.GetComponent<Rigidbody2D>();
-                    if (objRb2d != null)
+                    if (obj.TryGetComponent<Rigidbody2D>(out var objRb2d))
                     {
                         if (!objectPositions.ContainsKey(obj))
                         {
@@ -108,7 +107,7 @@ public class RewindTimeAbility : MonoBehaviour
     {
         isRewinding = true;
         rb2d.isKinematic = true;
-        Invoke("StopRewind", rewindTime);
+        Invoke(nameof(StopRewind), rewindTime);
     }
     void StopRewind()
     {

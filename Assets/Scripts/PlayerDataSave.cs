@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDataSave : MonoBehaviour
 {
-    [SerializeField] public static int doorKey = 0;
+    public static int doorKey = 0;
     private void Start()
     {
         LoadData();
@@ -14,7 +14,7 @@ public class PlayerDataSave : MonoBehaviour
     public static void SaveData()
     {
         string filePath = Application.persistentDataPath + "/playerData.txt";
-        using (StreamWriter writer = new StreamWriter(filePath))
+        using (StreamWriter writer = new(filePath))
         {
             writer.WriteLine(doorKey.ToString());
         }
@@ -26,7 +26,7 @@ public class PlayerDataSave : MonoBehaviour
         string filePath = Application.persistentDataPath + "/playerData.txt";
         if (File.Exists(filePath))
         {
-            using (StreamReader reader = new StreamReader(filePath))
+            using (StreamReader reader = new(filePath))
             {
                 string doorsString = reader.ReadLine();
                 if (int.TryParse(doorsString, out int ledoors))
@@ -46,7 +46,6 @@ public class PlayerDataSave : MonoBehaviour
         doorKey = 0;
         SaveData();
     }
-
     public static void ChangeKeyTo(int newKey)
     {
         doorKey = newKey;

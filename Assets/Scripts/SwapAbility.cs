@@ -14,6 +14,7 @@ public class SwapAbility : MonoBehaviour
     private Material playerMaterial;
     private RewindTimeAbility timeAbility;
     private PlayerScript playerScript;
+    private CameraManager cameraManager;
     private MaterialSwapper materialSwapper;
     [SerializeField] private AudioSource swapEndSound;
 
@@ -26,8 +27,8 @@ public class SwapAbility : MonoBehaviour
     private bool isSwaped = false;
 
     private GameObject firstObject;
-    private List<MonoBehaviour> firstScripts = new List<MonoBehaviour>();
-    private List<MonoBehaviour> secondScripts = new List<MonoBehaviour>();
+    private List<MonoBehaviour> firstScripts = new();
+    private List<MonoBehaviour> secondScripts = new();
 
     // Variables to store the game objects and their clones
     [SerializeField] private Color highlightColor;
@@ -36,6 +37,8 @@ public class SwapAbility : MonoBehaviour
     public LayerMask swapLayerMask;
     public int cloneLayer;
 
+    public List<MonoBehaviour> FirstScripts { get => FirstScripts1; set => FirstScripts1 = value; }
+    public List<MonoBehaviour> FirstScripts1 { get => firstScripts; set => firstScripts = value; }
 
     private void Start()
     {
@@ -43,6 +46,7 @@ public class SwapAbility : MonoBehaviour
         playerScript = movmentManager.GetComponent<PlayerScript>();
         playerMaterial = playerObject.GetComponent<Renderer>().material;
         materialSwapper = GetComponent<MaterialSwapper>();
+        cameraManager = FindAnyObjectByType<CameraManager>();
     }
     private void Update()
     {
@@ -52,6 +56,7 @@ public class SwapAbility : MonoBehaviour
             {
                 Debug.Log("changed playerObject to " + playerObj);
                 SwapObjects(objectObj, playerObj);
+                cameraManager.FocusOnSelectedObject(playerObj.transform);
                 playerScript.ChangePlayerObjectTo(playerObj);
                 swapEndSound.Play();
                 isSwaped = false;
@@ -157,8 +162,7 @@ public class SwapAbility : MonoBehaviour
         SpriteRenderer spriteRenderer = clone.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = obj.GetComponent<SpriteRenderer>().sprite;
 
-        clone.transform.position = obj.transform.position;
-        clone.transform.rotation = obj.transform.rotation;
+        clone.transform.SetPositionAndRotation(obj.transform.position, obj.transform.rotation);
         clone.transform.localScale = obj.transform.localScale;
 
         spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
@@ -192,21 +196,13 @@ public class SwapAbility : MonoBehaviour
         {
             firstRigidbody.velocity = new Vector2(0, 0);
             secondRigidbody.velocity = new Vector2(0, 0);
-           
-            var firstGravityScale = firstRigidbody.gravityScale;
-            firstRigidbody.gravityScale = secondRigidbody.gravityScale;
-            secondRigidbody.gravityScale = firstGravityScale;
 
-            var firstMass = firstRigidbody.mass;
-            firstRigidbody.mass = secondRigidbody.mass;
-            secondRigidbody.mass = firstMass;
-
+            (secondRigidbody.gravityScale, firstRigidbody.gravityScale) = (firstRigidbody.gravityScale, secondRigidbody.gravityScale);
+            (secondRigidbody.mass, firstRigidbody.mass) = (firstRigidbody.mass, secondRigidbody.mass);
             PhysicsMaterial2D object1Material = firstCollider.sharedMaterial;
             PhysicsMaterial2D object2Material = secondCollider.sharedMaterial;
 
-            float tempFriction = object1Material.friction;
-            object1Material.friction = object2Material.friction;
-            object2Material.friction = tempFriction;
+            (object2Material.friction, object1Material.friction) = (object1Material.friction, object2Material.friction);
 
             // Update the shared materials of the colliders
             firstCollider.sharedMaterial = object1Material;
@@ -214,19 +210,23 @@ public class SwapAbility : MonoBehaviour
         }   
         if (!isSwaped)
         {
-            if (firstObj.gameObject.tag == "Player")
+            if (firstObj.CompareTag("Player"))
             {
                 playerObj = firstObj;
                 objectObj = secondObj;
+                Debug.Log("objectObj:" + objectObj);
+                cameraManager.FocusOnSelectedObject(secondObj.transform);
                 playerScript.ChangePlayerObjectTo(secondObj);
                 Debug.Log("changed playerObject to " + secondObj);
                 playerTimer = swapPlayerCooldown;
                 isSwaped = true;
             }
-            else if (secondObj.gameObject.tag == "Player")
+            else if (secondObj.CompareTag("Player"))
             {
                 playerObj = secondObj;
                 objectObj = firstObj;
+                Debug.Log("objectObj:" + objectObj);
+                cameraManager.FocusOnSelectedObject(firstObj.transform);
                 playerScript.ChangePlayerObjectTo(firstObj);
                 Debug.Log("changed playerObject to " + firstObj);
                 playerTimer = swapPlayerCooldown;
@@ -238,14 +238,14 @@ public class SwapAbility : MonoBehaviour
     }
     void SwapScripts(GameObject firstObject, GameObject secondObject)
     {
-        GetScriptsToSwap(firstObject, firstScripts);
+        GetScriptsToSwap(firstObject, FirstScripts);
         GetScriptsToSwap(secondObject, secondScripts);
-        firstScripts = firstScripts.Distinct().ToList();
+        FirstScripts = FirstScripts.Distinct().ToList();
         secondScripts = secondScripts.Distinct().ToList();
-        firstScripts.RemoveAll(s => s == null || s.enabled == false);
+        FirstScripts.RemoveAll(s => s == null || s.enabled == false);
         secondScripts.RemoveAll(s => s == null || s.enabled == false);
 
-        foreach (MonoBehaviour script in firstScripts)
+        foreach (MonoBehaviour script in FirstScripts)
         {
             script.enabled = false;
         }
@@ -253,7 +253,7 @@ public class SwapAbility : MonoBehaviour
         {
             script.enabled = false;
         }
-        foreach (MonoBehaviour script in firstScripts)
+        foreach (MonoBehaviour script in FirstScripts)
         {
             MonoBehaviour newScript = secondObject.AddComponent(script.GetType()) as MonoBehaviour;
             CopyComponent(script, newScript);
@@ -269,15 +269,16 @@ public class SwapAbility : MonoBehaviour
         MonoBehaviour[] allFirstScripts = firstObject.GetComponents<MonoBehaviour>();
         foreach (MonoBehaviour script in allFirstScripts)
         {
-            if (!(script is SwapAbility) && !script.enabled && firstScripts.IndexOf(script) == -1)
+            if (script is SwapAbility || script.enabled || FirstScripts.IndexOf(script) != -1)
             {
-                Destroy(script);
+                continue;
             }
+            Destroy(script);
         }
         MonoBehaviour[] allSecondScripts = secondObject.GetComponents<MonoBehaviour>();
         foreach (MonoBehaviour script in allSecondScripts)
         {
-            if (!(script is SwapAbility) && !script.enabled && secondScripts.IndexOf(script) == -1)
+            if (script is not SwapAbility && !script.enabled && secondScripts.IndexOf(script) == -1)
             {
                 Destroy(script);
             }

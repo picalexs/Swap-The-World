@@ -28,7 +28,7 @@ public class PlayerScript : MonoBehaviour
     private bool _isJumping;
     private bool _jumpPressed;
     public static bool _isActive = true;
-    private bool _isSwaped = false;
+    public static bool _isSwaped = false;
     private bool _isPressing;
     private bool _isRunning;
     public bool _canMove = true;
@@ -250,7 +250,7 @@ public class PlayerScript : MonoBehaviour
         Debug.Log("jump canceled");
         if (_isJumping)
         {
-            _rigidBody.AddForce(Vector2.down * _rigidBody.velocity.y * (1 - _jumpCutMult), ForceMode2D.Impulse);
+            _rigidBody.AddForce((1 - _jumpCutMult) * _rigidBody.velocity.y * Vector2.down, ForceMode2D.Impulse);
         }
         _isJumping = false;
         _coyoteCooldownTimer = 0f;
@@ -302,7 +302,7 @@ public class PlayerScript : MonoBehaviour
             }
             else
             {
-                _rigidBody.AddForce(Vector2.down * _rigidBody.velocity.y * (1 - _jumpCutMult), ForceMode2D.Impulse);
+                _rigidBody.AddForce((1 - _jumpCutMult) * _rigidBody.velocity.y * Vector2.down, ForceMode2D.Impulse);
                 _isJumping = false;
             }
         }
@@ -390,11 +390,11 @@ public class PlayerScript : MonoBehaviour
     }
     public void IsGrounded()
     {
-        Vector3 lowestPosition = new Vector3(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
+        Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
         Collider2D[] colliders = Physics2D.OverlapBoxAll(lowestPosition, _groundCheckSize, 0, _groundLayer);
         foreach (Collider2D collider in colliders)
         {
-            if (collider.gameObject != playerObject.gameObject)
+            if (collider.gameObject != playerObject)
             {
                 _isGrounded = true;
                 break;

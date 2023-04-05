@@ -5,11 +5,13 @@ using System.Collections;
 public class Spring : MonoBehaviour
 {
     [SerializeField] private PlayerScript playerMovement;
-    [SerializeField] private float springForce = 10f;
+    [SerializeField] private float springForcePlayer = 20f;
+    [SerializeField] private float springForceBox = 50f;
     [SerializeField] private AudioSource springSound;
     private Vector2 jumpDir;
     [SerializeField] private float freezeCooldown = 1f;
-    [SerializeField] private float retractSpringCooldown = 1f;
+    [SerializeField] private float playerRetractSpringCooldown = 1f;
+    [SerializeField] private float boxRetractSpringCooldown = 0.5f;
     private bool canMove = true;
     private bool canJump = true;
     [SerializeField] private Vector2 springAngleOffset;
@@ -22,13 +24,23 @@ public class Spring : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && canMove && canJump)
+        if (!canMove || !canJump)
         {
-            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            return;
+        }
+
+        Rigidbody2D[] rbs = collision.GetComponents<Rigidbody2D>();
+        if (rbs == null)
+        {
+            return;
+        }
+
+        foreach (Rigidbody2D rb in rbs)
+        {
+            jumpDir = transform.up;
+            if (collision.CompareTag("Player"))
             {
-                StartCoroutine(RetractSpring());
-                jumpDir = transform.up;
+                StartCoroutine(RetractSpring(playerRetractSpringCooldown));
                 if (jumpDir.y > 0f)
                 {
                     Debug.Log("can not jump");
@@ -41,16 +53,32 @@ public class Spring : MonoBehaviour
                     StartCoroutine(DisableMovement());
                     jumpDir.y = Mathf.Abs(jumpDir.y) + springAngleOffset.y;
                 }
+                springSound.Stop();
                 springSound.Play();
                 rb.velocity = new Vector2(0f, 0f);
-                rb.AddForce(jumpDir * springForce, ForceMode2D.Impulse);
+                rb.AddForce(jumpDir * springForcePlayer, ForceMode2D.Impulse);
+            }
+            else if (collision.CompareTag("Swapable"))
+            {
+                StartCoroutine(RetractSpring(boxRetractSpringCooldown));
+                springSound.Stop();
+                springSound.Play();
+                rb.velocity = new Vector2(0f, 0f);
+                if (PlayerScript._isSwaped == true)
+                {
+                    rb.AddForce(jumpDir * springForcePlayer, ForceMode2D.Impulse);
+                }
+                else
+                {
+                    rb.AddForce(jumpDir * springForceBox, ForceMode2D.Impulse);
+                }
             }
         }
     }
-    private IEnumerator RetractSpring()
+    private IEnumerator RetractSpring(float retractSpringDuration)
     {
         animator.SetBool("Active", true);
-        yield return new WaitForSeconds(retractSpringCooldown);
+        yield return new WaitForSeconds(retractSpringDuration);
         animator.SetBool("Active", false);
     }
 
