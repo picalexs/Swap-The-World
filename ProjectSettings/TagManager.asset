@@ -49,3 +49,6 @@ TagManager:
   - name: Particles
     uniqueID: 2735717185
     locked: 0
+  - name: Tilemap
+    uniqueID: 2289925409
+    locked: 0

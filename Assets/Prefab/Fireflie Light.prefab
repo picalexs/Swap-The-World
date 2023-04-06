@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7964748549739715106}
   - component: {fileID: 7964748549739715107}
   m_Layer: 0
-  m_Name: Light 2D
+  m_Name: Fireflie Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7964748549739715107
 MonoBehaviour:
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Intensity: 5
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 0000000041bb0fa3
+  m_ApplyToSortingLayers: 0000000041bb0fa3217d7d88
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
