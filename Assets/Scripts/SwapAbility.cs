@@ -191,6 +191,8 @@ public class SwapAbility : MonoBehaviour
         if (firstObj == secondObj)
             return;
 
+        SwapScripts(firstObj, secondObj);
+
         firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
         secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
         firstCollider = firstObj.GetComponent<Collider2D>();
@@ -238,7 +240,6 @@ public class SwapAbility : MonoBehaviour
             }
         }
         Debug.Log("swaped rb");
-        SwapScripts(firstObj, secondObj);
     }
     void SwapScripts(GameObject firstObject, GameObject secondObject)
     {

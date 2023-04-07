@@ -14,6 +14,7 @@ public class PlayerScript : MonoBehaviour
     private Animator _anim;
     [SerializeField] private GameObject _transitionManager;
     private Animator _transition;
+    private BlinkingScript blinkingScript;
 
     [Space(10),Header("Sound")]
     [SerializeField] private AudioSource _jumpSound;
@@ -70,6 +71,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField, Range(0, 1)] private float _jumpCutMult = 0.45f;
 
     [Space(10), Header("Respawn variables")]
+    [SerializeField] private Color hitColor;
     [SerializeField] private float _dieJumpAmount = 8f;
     [SerializeField] private float _respawnTime = 0.5f;
     [SerializeField] private Vector2 _respawnPosition;
@@ -91,6 +93,7 @@ public class PlayerScript : MonoBehaviour
     }
     private void Start()
     {
+        blinkingScript = playerObject.GetComponent<BlinkingScript>();
         _playerMaterial = playerObject.GetComponent<Renderer>().material;
         _anim = playerObject.GetComponent<Animator>();
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
@@ -108,8 +111,20 @@ public class PlayerScript : MonoBehaviour
         _isRunning = false;
         Debug.Log("isSwaped:" + _isSwaped);
         playerObject = newObject;
+        blinkingScript = playerObject.GetComponent<BlinkingScript>();
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
         _playerRenderer = playerObject.GetComponent<Renderer>();
+
+        if(blinkingScript == null)
+        {
+            Debug.Log("blinkingScript is null");
+            return;
+        }
+        if (_isSwaped)
+        {
+            Debug.Log("start blinking");
+            blinkingScript.StartBlinking();
+        }
     }
     private void FixedUpdate()
     {
@@ -125,6 +140,7 @@ public class PlayerScript : MonoBehaviour
         if (!_isActive)
         {
             float fadeSpeed = 10f;
+            _playerMaterial.SetColor("HitEffectColor", hitColor);
             _playerMaterial.SetFloat("_HitEffectBlend", Mathf.Lerp(_playerMaterial.GetFloat("_HitEffectBlend"),0f,Time.deltaTime * fadeSpeed));
             return;
         }
