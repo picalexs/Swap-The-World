@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    [SerializeField,Description("Player")] private GameObject playerObject;
+    [SerializeField,Description("Player")] private GameObject playerObject; 
     [SerializeField] private Material _playerMaterial;
     private PlayerActionControler _playerAction;
     private Rigidbody2D _rigidBody;
@@ -14,7 +14,6 @@ public class PlayerScript : MonoBehaviour
     private Animator _anim;
     [SerializeField] private GameObject _transitionManager;
     private Animator _transition;
-    private BlinkingScript blinkingScript;
 
     [Space(10),Header("Sound")]
     [SerializeField] private AudioSource _jumpSound;
@@ -29,7 +28,7 @@ public class PlayerScript : MonoBehaviour
     private bool _isJumping;
     private bool _jumpPressed;
     public static bool _isActive = true;
-    public static bool _isSwaped = false;
+    public bool _isSwaped = false;
     private bool _isPressing;
     private bool _isRunning;
     public bool _canMove = true;
@@ -72,6 +71,7 @@ public class PlayerScript : MonoBehaviour
 
     [Space(10), Header("Respawn variables")]
     [SerializeField] private Color hitColor;
+    [SerializeField] private float hitGlowAmount;
     [SerializeField] private float _dieJumpAmount = 8f;
     [SerializeField] private float _respawnTime = 0.5f;
     [SerializeField] private Vector2 _respawnPosition;
@@ -93,7 +93,6 @@ public class PlayerScript : MonoBehaviour
     }
     private void Start()
     {
-        blinkingScript = playerObject.GetComponent<BlinkingScript>();
         _playerMaterial = playerObject.GetComponent<Renderer>().material;
         _anim = playerObject.GetComponent<Animator>();
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
@@ -111,20 +110,8 @@ public class PlayerScript : MonoBehaviour
         _isRunning = false;
         Debug.Log("isSwaped:" + _isSwaped);
         playerObject = newObject;
-        blinkingScript = playerObject.GetComponent<BlinkingScript>();
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
         _playerRenderer = playerObject.GetComponent<Renderer>();
-
-        if(blinkingScript == null)
-        {
-            Debug.Log("blinkingScript is null");
-            return;
-        }
-        if (_isSwaped)
-        {
-            Debug.Log("start blinking");
-            blinkingScript.StartBlinking();
-        }
     }
     private void FixedUpdate()
     {
@@ -140,7 +127,8 @@ public class PlayerScript : MonoBehaviour
         if (!_isActive)
         {
             float fadeSpeed = 10f;
-            _playerMaterial.SetColor("HitEffectColor", hitColor);
+            _playerMaterial.SetColor("_HitEffectColor", hitColor);
+            _playerMaterial.SetFloat("_HitEffectGlow", hitGlowAmount);
             _playerMaterial.SetFloat("_HitEffectBlend", Mathf.Lerp(_playerMaterial.GetFloat("_HitEffectBlend"),0f,Time.deltaTime * fadeSpeed));
             return;
         }
@@ -369,6 +357,7 @@ public class PlayerScript : MonoBehaviour
         {
             return;
         }
+        
         _pressedTime = 0f;
         _jumpCooldownTime = 0f;
         _isActive = false;

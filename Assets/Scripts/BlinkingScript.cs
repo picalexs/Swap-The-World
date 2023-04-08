@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class BlinkingScript : MonoBehaviour
 {
-    public bool test = false;
-    public float blinkDuration = 0.1f;
+    public bool testBlinking = false;
+
+    [SerializeField] private GameObject playerObject;
+    public float baseBlinkDuration = 0.1f;
     public float baseBlinkFrequency = 0.1f;
     public float abilityDuration = 3.0f;
-    public float blinkStartThreshold = 1.0f;
     public float blinkEndThreshold = 0.5f;
-    public float maxBlinkFrequency = 0.05f;
+    public float endBlinkFrequency = 0.5f;
+    public float endBlinkDuration = 0.5f;
 
     private Material playerMaterial;
-    public Color playerBlinkColor;
+    [SerializeField] private Color playerBlinkColor = new Color(255, 76, 215);
+    [SerializeField] private float playerGlowAmount = 5f;
+    [SerializeField] private float maxBlendAmount = 0.8f;
+    [SerializeField] private float chromAberrAmount = 5f;
+
     private float timeLeft;
     private bool isBlinking;
+    private bool isSwaped = false;
 
     void Start()
     {
@@ -25,8 +31,10 @@ public class BlinkingScript : MonoBehaviour
 
     public void UpdateMaterial()
     {
-        playerMaterial = GetComponent<Renderer>().material;
-        Debug.Log("playerMat " + playerMaterial.name);
+        Debug.Log("!updating materials");
+        playerMaterial = playerObject.GetComponent<Renderer>().material;
+        playerMaterial.SetColor("_HitEffectColor", playerBlinkColor);
+        playerMaterial.SetFloat("_HitEffectGlow", playerGlowAmount);
         timeLeft = abilityDuration;
         isBlinking = false;
     }
@@ -37,26 +45,21 @@ public class BlinkingScript : MonoBehaviour
         if (!isBlinking)
         {
             isBlinking = true;
-            StartCoroutine(BlinkCoroutine(baseBlinkFrequency));
+            StartCoroutine(BlinkCoroutine(baseBlinkFrequency, baseBlinkDuration, endBlinkFrequency, endBlinkDuration));
         }
     }
 
     void Update()
     {
-        if (test)
+        if (testBlinking)
         {
             StartBlinking();
-            test = false;
+            testBlinking = false;
         }
-        
+
         if (isBlinking)
         {
             timeLeft -= Time.deltaTime;
-            if (timeLeft <= blinkEndThreshold)
-            {
-                float blinkFrequency = Mathf.Lerp(baseBlinkFrequency, maxBlinkFrequency, 1 - timeLeft / blinkEndThreshold);
-                StartCoroutine(BlinkCoroutine(blinkFrequency));
-            }
             if (timeLeft <= 0)
             {
                 StopAbility();
@@ -64,28 +67,46 @@ public class BlinkingScript : MonoBehaviour
         }
     }
 
-    IEnumerator BlinkCoroutine(float blinkFrequency)
+    IEnumerator BlinkCoroutine(float startFrequency, float startDuration, float endFrequency, float endDuration)
     {
-        while (isBlinking)
+        float timer = 0f;
+        while (isBlinking && timer < abilityDuration)
         {
-            Debug.Log("blink");
-            playerMaterial.SetColor("_HitEffectColor", playerBlinkColor);
-            playerMaterial.SetFloat("_HitEffectBlend", 1f);
-            playerMaterial.SetFloat("_ChromAberrAmount", 0.4f);
-            yield return new WaitForSeconds(blinkDuration);
+            float progress = timer / abilityDuration;
+            float currentFrequency = Mathf.Lerp(startFrequency, endFrequency, progress);
+            float currentDuration = Mathf.Lerp(startDuration, endDuration, progress);
+
+            playerMaterial.SetFloat("_HitEffectBlend", maxBlendAmount);
+            playerMaterial.SetFloat("_ChromAberrAmount", chromAberrAmount);
+            yield return new WaitForSeconds(currentDuration);
             playerMaterial.SetFloat("_HitEffectBlend", 0f);
             playerMaterial.SetFloat("_ChromAberrAmount", 0f);
-            yield return new WaitForSeconds(blinkFrequency);
+            yield return new WaitForSeconds(currentFrequency - currentDuration);
+
+            timer += currentFrequency;
         }
+
+        StopAbility();
     }
 
     void StopAbility()
     {
         Debug.Log("stop blinking");
-        StopCoroutine(BlinkCoroutine(baseBlinkFrequency));
         isBlinking = false;
         playerMaterial.SetFloat("_HitEffectBlend", 0f);
         playerMaterial.SetFloat("_ChromAberrAmount", 0f);
         timeLeft = abilityDuration;
+    }
+
+    public void ChangePlayerObjectTo(GameObject newObject)
+    {
+        Debug.Log("!changed playerobject to: " + newObject);
+        playerObject = newObject;
+        isSwaped = !isSwaped;
+        if (isSwaped)
+        {
+            Debug.Log("!start blinking");
+            StartBlinking();
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Spring : MonoBehaviour
 {
-    [SerializeField] private PlayerScript playerMovement;
+    [SerializeField] private PlayerScript playerScript;
     [SerializeField] private float springForcePlayer = 20f;
     [SerializeField] private float springForceBox = 50f;
     [SerializeField] private AudioSource springSound;
@@ -58,13 +58,13 @@ public class Spring : MonoBehaviour
                 rb.velocity = new Vector2(0f, 0f);
                 rb.AddForce(jumpDir * springForcePlayer, ForceMode2D.Impulse);
             }
-            else if (collision.CompareTag("Swapable"))
+            else if (collision.CompareTag("Swappable"))
             {
                 StartCoroutine(RetractSpring(boxRetractSpringCooldown));
                 springSound.Stop();
                 springSound.Play();
                 rb.velocity = new Vector2(0f, 0f);
-                if (PlayerScript._isSwaped == true)
+                if (playerScript._isSwaped == true)
                 {
                     rb.AddForce(jumpDir * springForcePlayer, ForceMode2D.Impulse);
                 }
@@ -85,20 +85,20 @@ public class Spring : MonoBehaviour
     private IEnumerator DisableMovement()
     {
         canMove = false;
-        playerMovement._canMove = false;
+        playerScript._canMove = false;
         yield return new WaitForSeconds(freezeCooldown);
         canMove = true;
-        playerMovement._canMove = true;
+        playerScript._canMove = true;
         Debug.Log("can move");
     }
 
     private IEnumerator DisableJump()
     {
         canJump = false;
-        playerMovement._canJump = false;
+        playerScript._canJump = false;
         yield return new WaitForSeconds(freezeCooldown);
         canJump = true;
-        playerMovement._canJump = true;
+        playerScript._canJump = true;
         Debug.Log("can jump");
     }
 }
