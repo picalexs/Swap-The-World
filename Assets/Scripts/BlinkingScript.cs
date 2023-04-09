@@ -77,7 +77,7 @@ public class BlinkingScript : MonoBehaviour
             float currentDuration = Mathf.Lerp(startDuration, endDuration, progress);
 
             playerMaterial.SetFloat("_HitEffectBlend", maxBlendAmount);
-            playerMaterial.SetFloat("_ChromAberrAmount", chromAberrAmount);
+            playerMaterial.SetFloat("_ChromAberrAmount", Random.Range(1, chromAberrAmount));
             yield return new WaitForSeconds(currentDuration);
             playerMaterial.SetFloat("_HitEffectBlend", 0f);
             playerMaterial.SetFloat("_ChromAberrAmount", 0f);

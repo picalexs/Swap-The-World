@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8891713522006230936}
   m_Layer: 0
   m_Name: Torch
-  m_TagString: Untagged
+  m_TagString: Torch
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,7 +118,7 @@ Transform:
   - {fileID: 8891713522513580223}
   - {fileID: 1623991716415002167}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &8891713522006230935
 ParticleSystem:
@@ -5040,8 +5040,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torchLight: {fileID: 8891713522513580222}
-  minIntensity: 5
-  maxIntensity: 8
+  minIntensity: 4
+  maxIntensity: 9
   flickerSpeed: 0.2
 --- !u!1 &8891713523625077628
 GameObject:

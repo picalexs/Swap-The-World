@@ -15,7 +15,6 @@ Material:
   - CHROMABERR_ON
   - GLOWLIGHT_ON
   - HITEFFECT_ON
-  - HSV_ON
   - SHINE_ON
   m_InvalidKeywords:
   - _GLOWAFFECTLIGHT_ON
