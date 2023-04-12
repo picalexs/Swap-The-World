@@ -8,12 +8,6 @@ public class FlickerLight : MonoBehaviour
     public float minIntensity = 0.3f;
     public float maxIntensity = 0.8f;
     public float flickerSpeed = 0.1f;
-
-    void Start()
-    {
-        StartCoroutine(Flicker());
-    }
-
     IEnumerator Flicker()
     {
         while (true)
@@ -22,5 +16,10 @@ public class FlickerLight : MonoBehaviour
             torchLight.intensity = flickerIntensity;
             yield return new WaitForSeconds(flickerSpeed);
         }
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(Flicker());
     }
 }

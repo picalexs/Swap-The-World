@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -433106318449871651}
   m_Layer: 6
   m_Name: Spring
-  m_TagString: Untagged
+  m_TagString: HideObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3779557519053256412
 SpriteRenderer:
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dda38945d55ced4298927ff8746ce85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 0}
+  playerScript: {fileID: 0}
   springForcePlayer: 20
   springForceBox: 50
   springSound: {fileID: 3779557519053256408}
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shaderTypes: 4
+  shaderTypes: 3
   normalStrength: 5
   normalSmoothing: 1
   computingNormal: 0

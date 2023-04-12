@@ -32,7 +32,7 @@ public class CameraShake : MonoBehaviour
     {
         noise.m_AmplitudeGain = shakeAmplitude;
         noise.m_FrequencyGain = shakeFrequency;
-        Invoke("StopShaking", shakeDuration);
+        Invoke(nameof(StopShaking), shakeDuration);
     }
 
     void StopShaking()

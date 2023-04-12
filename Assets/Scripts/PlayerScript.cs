@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    [SerializeField,Description("Player")] private GameObject playerObject;
+    [SerializeField,Description("Player")] private GameObject playerObject; 
     [SerializeField] private Material _playerMaterial;
     private PlayerActionControler _playerAction;
     private Rigidbody2D _rigidBody;
@@ -28,7 +28,7 @@ public class PlayerScript : MonoBehaviour
     private bool _isJumping;
     private bool _jumpPressed;
     public static bool _isActive = true;
-    public static bool _isSwaped = false;
+    public bool _isSwaped = false;
     private bool _isPressing;
     private bool _isRunning;
     public bool _canMove = true;
@@ -70,6 +70,8 @@ public class PlayerScript : MonoBehaviour
     [SerializeField, Range(0, 1)] private float _jumpCutMult = 0.45f;
 
     [Space(10), Header("Respawn variables")]
+    [SerializeField] private Color hitColor;
+    [SerializeField] private float hitGlowAmount;
     [SerializeField] private float _dieJumpAmount = 8f;
     [SerializeField] private float _respawnTime = 0.5f;
     [SerializeField] private Vector2 _respawnPosition;
@@ -125,6 +127,8 @@ public class PlayerScript : MonoBehaviour
         if (!_isActive)
         {
             float fadeSpeed = 10f;
+            _playerMaterial.SetColor("_HitEffectColor", hitColor);
+            _playerMaterial.SetFloat("_HitEffectGlow", hitGlowAmount);
             _playerMaterial.SetFloat("_HitEffectBlend", Mathf.Lerp(_playerMaterial.GetFloat("_HitEffectBlend"),0f,Time.deltaTime * fadeSpeed));
             return;
         }
@@ -353,6 +357,7 @@ public class PlayerScript : MonoBehaviour
         {
             return;
         }
+        
         _pressedTime = 0f;
         _jumpCooldownTime = 0f;
         _isActive = false;

@@ -13,16 +13,20 @@ public class SwapAbility : MonoBehaviour
     [SerializeField] private GameObject playerObject;
     private Material playerMaterial;
     private RewindTimeAbility timeAbility;
+    private BlinkingScript blinkingScript;
     private PlayerScript playerScript;
     private CameraManager cameraManager;
     private MaterialSwapper materialSwapper;
     [SerializeField] private AudioSource swapEndSound;
+    [SerializeField] private ParticleSystem abilityParticleSystem;
 
     [SerializeField] private float selectRange = 1f;
     [SerializeField] private float swapPlayerCooldown = 4f;
     private float playerTimer;
     [SerializeField] private float abilityCooldown = 4f;
+    [SerializeField] private float failedAbilityCooldown = 1f;
     private float abilityTimer;
+
     private GameObject playerObj, objectObj;
     private Rigidbody2D firstRigidbody;
     private Rigidbody2D secondRigidbody;
@@ -34,7 +38,6 @@ public class SwapAbility : MonoBehaviour
     private List<MonoBehaviour> firstScripts = new();
     private List<MonoBehaviour> secondScripts = new();
 
-    // Variables to store the game objects and their clones
     [SerializeField] private Color highlightColor;
     private GameObject highlightedObject;
     private GameObject clone;
@@ -46,6 +49,7 @@ public class SwapAbility : MonoBehaviour
 
     private void Start()
     {
+        blinkingScript = GetComponent<BlinkingScript>();
         timeAbility = GetComponent<RewindTimeAbility>();
         playerScript = movmentManager.GetComponent<PlayerScript>();
         playerMaterial = playerObject.GetComponent<Renderer>().material;
@@ -58,12 +62,7 @@ public class SwapAbility : MonoBehaviour
         {
             if (playerTimer < 0f)
             {
-                Debug.Log("changed playerObject to " + playerObj);
-                SwapObjects(objectObj, playerObj);
-                cameraManager.FocusOnSelectedObject(playerObj.transform);
-                playerScript.ChangePlayerObjectTo(playerObj);
-                swapEndSound.Play();
-                isSwaped = false;
+                ResetSwapPlayerObject();
             }
             else
             {
@@ -83,9 +82,13 @@ public class SwapAbility : MonoBehaviour
             HighlightObject(hit.gameObject);
             if (Input.GetMouseButtonDown(0))
             {
-                if (materialSwapper.swaped == false)
+                if (materialSwapper.swapped == false)
                 {
                     materialSwapper.SwapMaterials();
+                }
+                if (abilityParticleSystem != null)
+                {
+                    abilityParticleSystem.Play();
                 }
                 playerMaterial.SetFloat("_OutlineAlpha", 1f);
                 timeAbility.SlowTimeDown();
@@ -98,7 +101,11 @@ public class SwapAbility : MonoBehaviour
         {
             RemoveHighlight();
             RemoveClone();
-            if (materialSwapper.swaped == true)
+            if (abilityParticleSystem != null)
+            {
+                abilityParticleSystem.Stop();
+            }
+            if (materialSwapper.swapped == true)
             {
                 materialSwapper.EndSwapMaterials();
             }
@@ -111,9 +118,13 @@ public class SwapAbility : MonoBehaviour
             {
                 RemoveHighlight();
                 RemoveClone();
+                if (abilityParticleSystem != null)
+                {
+                    abilityParticleSystem.Stop();
+                }
                 playerMaterial.SetFloat("_OutlineAlpha", 0f);
-                abilityTimer = abilityCooldown;
-                if (materialSwapper.swaped == true)
+                abilityTimer = failedAbilityCooldown;
+                if (materialSwapper.swapped == true)
                 {
                     materialSwapper.EndSwapMaterials();
                 }
@@ -135,8 +146,12 @@ public class SwapAbility : MonoBehaviour
             timeAbility.CancelSlowDown();
             RemoveClone();
             RemoveHighlight();
+            if (abilityParticleSystem != null)
+            {
+                abilityParticleSystem.Stop();
+            }
             playerMaterial.SetFloat("_OutlineAlpha", 0f);
-            if (materialSwapper.swaped == true)
+            if (materialSwapper.swapped == true)
             {
                 materialSwapper.EndSwapMaterials();
             }
@@ -191,6 +206,8 @@ public class SwapAbility : MonoBehaviour
         if (firstObj == secondObj)
             return;
 
+        SwapScripts(firstObj, secondObj);
+
         firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
         secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
         firstCollider = firstObj.GetComponent<Collider2D>();
@@ -208,7 +225,6 @@ public class SwapAbility : MonoBehaviour
 
             (object2Material.friction, object1Material.friction) = (object1Material.friction, object2Material.friction);
 
-            // Update the shared materials of the colliders
             firstCollider.sharedMaterial = object1Material;
             secondCollider.sharedMaterial = object2Material;
         }   
@@ -221,6 +237,7 @@ public class SwapAbility : MonoBehaviour
                 Debug.Log("objectObj:" + objectObj);
                 cameraManager.FocusOnSelectedObject(secondObj.transform);
                 playerScript.ChangePlayerObjectTo(secondObj);
+                blinkingScript.ChangePlayerObjectTo(secondObj);
                 Debug.Log("changed playerObject to " + secondObj);
                 playerTimer = swapPlayerCooldown;
                 isSwaped = true;
@@ -232,13 +249,13 @@ public class SwapAbility : MonoBehaviour
                 Debug.Log("objectObj:" + objectObj);
                 cameraManager.FocusOnSelectedObject(firstObj.transform);
                 playerScript.ChangePlayerObjectTo(firstObj);
+                blinkingScript.ChangePlayerObjectTo(firstObj);
                 Debug.Log("changed playerObject to " + firstObj);
                 playerTimer = swapPlayerCooldown;
                 isSwaped = true;
             }
         }
         Debug.Log("swaped rb");
-        SwapScripts(firstObj, secondObj);
     }
     void SwapScripts(GameObject firstObject, GameObject secondObject)
     {
@@ -287,6 +304,17 @@ public class SwapAbility : MonoBehaviour
                 Destroy(script);
             }
         }
+    }
+
+    public void ResetSwapPlayerObject()
+    {
+        Debug.Log("changed playerObject to " + playerObj);
+        SwapObjects(objectObj, playerObj);
+        cameraManager.FocusOnSelectedObject(playerObj.transform);
+        playerScript.ChangePlayerObjectTo(playerObj);
+        blinkingScript.ChangePlayerObjectTo(playerObj);
+        swapEndSound.Play();
+        isSwaped = false;
     }
     private void GetScriptsToSwap(GameObject gameObject, List<MonoBehaviour> scripts)
     {

@@ -4,11 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Swapable
   - Rewindable
   - ExitDoor
   - LevelDoor
   - Room
+  - Torch
+  - HideObject
+  - Swappable
   layers:
   - Default
   - TransparentFX

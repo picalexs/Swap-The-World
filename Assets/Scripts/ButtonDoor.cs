@@ -25,7 +25,7 @@ public class ButtonDoor : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Swapable"))
+        if(other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Swappable"))
         {
             objectsOnButton++;
             if(objectsOnButton == 1 && buttonOn.isPlaying == false)
@@ -50,7 +50,7 @@ public class ButtonDoor : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Swapable"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Swappable"))
         {
             objectsOnButton--;
             if (objectsOnButton == 0)

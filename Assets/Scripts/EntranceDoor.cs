@@ -51,7 +51,7 @@ public class EntranceDoor : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Swapable" || collision.gameObject.tag == "Rewindable")
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Swappable") || collision.gameObject.CompareTag("Rewindable"))
         {
             ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contacts);
