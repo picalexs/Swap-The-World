@@ -32,6 +32,7 @@ public class AutoAimAbility : MonoBehaviour
     private void FindClosestObject()
     {
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
         aimDirection = (mousePos - playerTransform.position).normalized;
         closestObject = null;
         float closestDistance = Mathf.Infinity;
