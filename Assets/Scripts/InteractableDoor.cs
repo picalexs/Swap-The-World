@@ -9,8 +9,8 @@ public class InteractableDoor : MonoBehaviour
     [SerializeField] private bool inRange = false;
     public KeyCode interactKey;
     public UnityEvent interactAction;
-    [SerializeField] private int doorType = 0; // 0: normal door; 1: exit door
-    [SerializeField] private int doorKeyLevel = 0;
+    [SerializeField] public int doorType = 0; // 0: normal door; 1: exit door
+    [SerializeField] public int doorKeyLevel = 0;
      public Animator animationFinale;
     public void Update()
     {

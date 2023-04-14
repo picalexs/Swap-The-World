@@ -25,7 +25,7 @@ public class Button : MonoBehaviour
     }
     IEnumerator LoadScene(int i)
     {
-        if(i==1)
+        if(i==2)
         {
             PlayerDataSave.ResetData();
             Debug.Log("resetam Datele");

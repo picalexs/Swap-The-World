@@ -181,6 +181,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1677730956453715683}
+  - component: {fileID: -3664008172129951557}
   - component: {fileID: 1677730956453715692}
   - component: {fileID: 1525784446720517092}
   m_Layer: 0
@@ -199,7 +200,7 @@ RectTransform:
   m_GameObject: {fileID: 1677730956453715693}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.34}
-  m_LocalScale: {x: 2.3, y: 2.6, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3074811080871714893}
@@ -212,6 +213,21 @@ RectTransform:
   m_AnchoredPosition: {x: -7.07, y: -1.62}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &-3664008172129951557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677730956453715693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b56ed839108c3e48a8059574c7be0b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactableDoor: {fileID: 3499001224864676494}
+  SpriteOpen: {fileID: -455694828, guid: 1d80b6b05b6c5284ab18b72ae82adde6, type: 3}
+  SpriteClose: {fileID: -1833274488, guid: 1d80b6b05b6c5284ab18b72ae82adde6, type: 3}
 --- !u!212 &1677730956453715692
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -284,6 +300,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
+      propertyPath: SpriteOpen
+      value: 
+      objectReference: {fileID: -455694828, guid: 1d80b6b05b6c5284ab18b72ae82adde6, type: 3}
+    - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
+      propertyPath: SpriteClose
+      value: 
+      objectReference: {fileID: -1833274488, guid: 1d80b6b05b6c5284ab18b72ae82adde6, type: 3}
     - target: {fileID: 2866132665264988722, guid: e6d46cb86acfaf543b9f2beea4792eb2, type: 3}
       propertyPath: levelNumber
       value: 1
