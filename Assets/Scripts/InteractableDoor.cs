@@ -11,7 +11,7 @@ public class InteractableDoor : MonoBehaviour
     public UnityEvent interactAction;
     [SerializeField] private int doorType = 0; // 0: normal door; 1: exit door
     [SerializeField] private int doorKeyLevel = 0;
-
+     public Animator animationFinale;
     public void Update()
     {
         if (!inRange) {
@@ -58,8 +58,14 @@ public class InteractableDoor : MonoBehaviour
     }
     public void OpenGameScene(int i)
     {
+       StartCoroutine(OpenGamescenefor(i));
+    }
+    IEnumerator OpenGamescenefor(int i ) {
         PlayerDataSave.SaveData();
-        SceneManager.LoadScene(i);
         PlayerDataSave.LoadData();
+        animationFinale.SetTrigger("end");
+        yield return new WaitForSeconds(0.6f);
+        SceneManager.LoadScene(i);
+        
     }
 }

@@ -8,6 +8,7 @@ public class Button : MonoBehaviour
     public Animator animationFinale;
     public Animator musicAnim;
     public AudioSource soundPlayer;
+    [SerializeField] public PlayerDataSave saveManager;
     void Start()
     {
          
@@ -24,6 +25,16 @@ public class Button : MonoBehaviour
     }
     IEnumerator LoadScene(int i)
     {
+        if(i==1)
+        {
+            PlayerDataSave.ResetData();
+            Debug.Log("resetam Datele");
+        }
+        else 
+        {
+            PlayerDataSave.LoadData();
+            Debug.Log("incarcam datele");
+        }
         soundPlayer.Play();
         animationFinale.SetTrigger("end");
         musicAnim.SetTrigger("fade");
