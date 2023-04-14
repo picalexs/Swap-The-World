@@ -1067,6 +1067,7 @@ SpriteAtlas:
     - 938b9a3ddeffc034f8002807b2bec8bb: 737947517
     - 938b9a3ddeffc034f8002807b2bec8bb: -181545643
     - 938b9a3ddeffc034f8002807b2bec8bb: -1402482701
+    - 3f4165edf1dde7e42a048d388a3598c2: 21300000
     - 16e16b2ee357c51409359faf0b0894b0: -61991725
     - 16e16b2ee357c51409359faf0b0894b0: -1371546925
     - 16e16b2ee357c51409359faf0b0894b0: 604312453
@@ -2235,6 +2236,7 @@ SpriteAtlas:
   - {fileID: 737947517, guid: 938b9a3ddeffc034f8002807b2bec8bb, type: 3}
   - {fileID: -181545643, guid: 938b9a3ddeffc034f8002807b2bec8bb, type: 3}
   - {fileID: -1402482701, guid: 938b9a3ddeffc034f8002807b2bec8bb, type: 3}
+  - {fileID: 21300000, guid: 3f4165edf1dde7e42a048d388a3598c2, type: 3}
   - {fileID: -61991725, guid: 16e16b2ee357c51409359faf0b0894b0, type: 3}
   - {fileID: -1371546925, guid: 16e16b2ee357c51409359faf0b0894b0, type: 3}
   - {fileID: 604312453, guid: 16e16b2ee357c51409359faf0b0894b0, type: 3}
@@ -3402,6 +3404,7 @@ SpriteAtlas:
   - Rock_v2__29
   - Rock_v2__28
   - Rock_v2__48
+  - WhiteTile
   - Brick_v2__21
   - Brick_v2__20
   - Brick_v2__23
