@@ -99,6 +99,8 @@ SpriteAtlas:
     - 8f939e10057130e448a49b56a75538a1: 1601865799
     - 8f939e10057130e448a49b56a75538a1: -1933589410
     - 54487ea017f493741b1a13da74f0a9b4: 21300000
+    - 1d80b6b05b6c5284ab18b72ae82adde6: -455694828
+    - 1d80b6b05b6c5284ab18b72ae82adde6: -1833274488
     - 657d48b0c372ac3479f478bb44a121a3: 2028657258
     - 657d48b0c372ac3479f478bb44a121a3: -648717014
     - 657d48b0c372ac3479f478bb44a121a3: -1704138062
@@ -384,6 +386,7 @@ SpriteAtlas:
     - 9735de16ae84f11478db1bcfe62fba34: -111874987
     - 9735de16ae84f11478db1bcfe62fba34: 1562801888
     - 9735de16ae84f11478db1bcfe62fba34: 2057928075
+    - 3c4b1bb61a4dda84daea2f5a4730ace1: 21300000
     - fddebc27db41cf747ba9e1c0e598496c: -1238078073
     - fddebc27db41cf747ba9e1c0e598496c: 425795926
     - fddebc27db41cf747ba9e1c0e598496c: -1333962583
@@ -433,6 +436,7 @@ SpriteAtlas:
     - fddebc27db41cf747ba9e1c0e598496c: -1067706861
     - fddebc27db41cf747ba9e1c0e598496c: 1393759748
     - fddebc27db41cf747ba9e1c0e598496c: -1800239172
+    - 851d98384e1f481468f46b6acaa40b07: 21300000
     - 5963b2c951760704ba90a75995ecf821: -793893563
     - 5963b2c951760704ba90a75995ecf821: -785216234
     - 5963b2c951760704ba90a75995ecf821: -1253353541
@@ -969,6 +973,8 @@ SpriteAtlas:
   - {fileID: 1601865799, guid: 8f939e10057130e448a49b56a75538a1, type: 3}
   - {fileID: -1933589410, guid: 8f939e10057130e448a49b56a75538a1, type: 3}
   - {fileID: 21300000, guid: 54487ea017f493741b1a13da74f0a9b4, type: 3}
+  - {fileID: -455694828, guid: 1d80b6b05b6c5284ab18b72ae82adde6, type: 3}
+  - {fileID: -1833274488, guid: 1d80b6b05b6c5284ab18b72ae82adde6, type: 3}
   - {fileID: 2028657258, guid: 657d48b0c372ac3479f478bb44a121a3, type: 3}
   - {fileID: -648717014, guid: 657d48b0c372ac3479f478bb44a121a3, type: 3}
   - {fileID: -1704138062, guid: 657d48b0c372ac3479f478bb44a121a3, type: 3}
@@ -1254,6 +1260,7 @@ SpriteAtlas:
   - {fileID: -111874987, guid: 9735de16ae84f11478db1bcfe62fba34, type: 3}
   - {fileID: 1562801888, guid: 9735de16ae84f11478db1bcfe62fba34, type: 3}
   - {fileID: 2057928075, guid: 9735de16ae84f11478db1bcfe62fba34, type: 3}
+  - {fileID: 21300000, guid: 3c4b1bb61a4dda84daea2f5a4730ace1, type: 3}
   - {fileID: -1238078073, guid: fddebc27db41cf747ba9e1c0e598496c, type: 3}
   - {fileID: 425795926, guid: fddebc27db41cf747ba9e1c0e598496c, type: 3}
   - {fileID: -1333962583, guid: fddebc27db41cf747ba9e1c0e598496c, type: 3}
@@ -1303,6 +1310,7 @@ SpriteAtlas:
   - {fileID: -1067706861, guid: fddebc27db41cf747ba9e1c0e598496c, type: 3}
   - {fileID: 1393759748, guid: fddebc27db41cf747ba9e1c0e598496c, type: 3}
   - {fileID: -1800239172, guid: fddebc27db41cf747ba9e1c0e598496c, type: 3}
+  - {fileID: 21300000, guid: 851d98384e1f481468f46b6acaa40b07, type: 3}
   - {fileID: -793893563, guid: 5963b2c951760704ba90a75995ecf821, type: 3}
   - {fileID: -785216234, guid: 5963b2c951760704ba90a75995ecf821, type: 3}
   - {fileID: -1253353541, guid: 5963b2c951760704ba90a75995ecf821, type: 3}
@@ -1838,6 +1846,8 @@ SpriteAtlas:
   - TestSoil_v3__31
   - TestSoil_v3__30
   - Crates
+  - LevelDoors_1
+  - LevelDoors_0
   - Metal_v2__38
   - Metal_v2__39
   - Metal_v2__29
@@ -2123,6 +2133,7 @@ SpriteAtlas:
   - Metal_v3__13
   - Metal_v3__12
   - Metal_v3__11
+  - Exit
   - Dirt_v3__8
   - Dirt_v3__9
   - Dirt_v3__4
@@ -2172,6 +2183,7 @@ SpriteAtlas:
   - Dirt_v3__30
   - Dirt_v3__33
   - Dirt_v3__32
+  - Efectiv Patrat
   - Rock_v1__42
   - Rock_v1__43
   - Rock_v1__40
