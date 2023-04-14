@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce35db82d089de449b44ae95c32c8b40, type: 3}
-  m_Name: InfillRock
+  m_Name: BrickInfill
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: -941691688, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
+  m_DefaultSprite: {fileID: 1230985275, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: -941691688, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
-    - {fileID: 318059999, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
-    - {fileID: 1303487696, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
+    - {fileID: 1230985275, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
+    - {fileID: 1043861397, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
+    - {fileID: 1550649804, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
     - {fileID: 638966758, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
     - {fileID: 638966758, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
     - {fileID: 638966758, guid: 13a822e0fc9850f4aa19c27e7a8945bf, type: 3}
@@ -62,6 +62,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e3eab53cae24a3a438be73b1c1e3dd0d, type: 2}
   - {fileID: 11400000, guid: c11e52295974ed14ab1126a6c2faea89, type: 2}
   - {fileID: 11400000, guid: d1d4bd3f6aa5d7e45b5df6f70e9eb6c7, type: 2}
-  - {fileID: 11400000, guid: 02d9feed5e9c5cf41bb91f24a0c986d5, type: 2}
-  - {fileID: 11400000, guid: 2698556fb6325424b8d5910f5b2550c6, type: 2}
+  - {fileID: 11400000, guid: 8d6850d5708e8784db3313ca033fe5e8, type: 2}
+  - {fileID: 11400000, guid: ff5ba2b823336794da95516c96d25f5a, type: 2}
   checkSelf: 1
