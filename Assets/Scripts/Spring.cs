@@ -64,7 +64,7 @@ public class Spring : MonoBehaviour
                 springSound.Stop();
                 springSound.Play();
                 rb.velocity = new Vector2(0f, 0f);
-                if (playerScript._isSwaped == true)
+                if (playerScript._isSwapped == true)
                 {
                     rb.AddForce(jumpDir * springForcePlayer, ForceMode2D.Impulse);
                 }

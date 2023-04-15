@@ -16,7 +16,7 @@ public class InstantDeath : MonoBehaviour
     {
         if (other.collider.CompareTag("Player"))
         {
-            if (playerScript._isSwaped)
+            if (playerScript._isSwapped)
             {
                 swapAbility.ResetSwapPlayerObject();
             }

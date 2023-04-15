@@ -28,7 +28,8 @@ public class PlayerScript : MonoBehaviour
     private bool _isJumping;
     private bool _jumpPressed;
     public static bool _isActive = true;
-    public bool _isSwaped = false;
+    public bool _isSwapped = false;
+    public bool _isSwappedPropriety = false;
     private bool _isPressing;
     private bool _isRunning;
     public bool _canMove = true;
@@ -106,9 +107,9 @@ public class PlayerScript : MonoBehaviour
 
     public void ChangePlayerObjectTo(GameObject newObject)
     {
-        _isSwaped = !_isSwaped;
+        _isSwapped = !_isSwapped;
         _isRunning = false;
-        Debug.Log("isSwaped:" + _isSwaped);
+        Debug.Log("isSwaped:" + _isSwapped);
         playerObject = newObject;
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
         _playerRenderer = playerObject.GetComponent<Renderer>();
@@ -136,7 +137,7 @@ public class PlayerScript : MonoBehaviour
         JumpCases();
         IsGrounded();
 
-        if (!_isSwaped)
+        if (!_isSwapped)
         {
             if (!_isFacingRight && _movementInput.x > 0f)
             {
@@ -155,7 +156,7 @@ public class PlayerScript : MonoBehaviour
             return;
         }
         _movementInput = _playerAction.Player.Move.ReadValue<Vector2>();
-        if (!_isSwaped)
+        if (!_isSwapped)
         {
             if (_movementInput.x == 0)
             {
@@ -319,6 +320,10 @@ public class PlayerScript : MonoBehaviour
 
     private void GravityCases()
     {
+        if (_isSwappedPropriety)
+        {
+            return;
+        }
         if (_rigidBody.velocity.y < 0 && (_movementInput.y < 0))
         {
             SetGravityScale(_gravityScale * _fastFallGravityMult);
