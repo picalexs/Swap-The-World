@@ -51,10 +51,13 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   playerObject: {fileID: 0}
   swapEndSound: {fileID: 509082510}
-  selectRange: 0.5
+  abilityParticleSystem: {fileID: 0}
+  selectRange: 3
   swapPlayerCooldown: 3
+  swapPlayerProprietyCooldown: 5
   abilityCooldown: 3
-  highlightColor: {r: 0.9234666, g: 0.427451, b: 1, a: 1}
+  failedAbilityCooldown: 1
+  highlightMaterial: {fileID: 2100000, guid: 1651eb01772307045866999e192afc74, type: 2}
   swapLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -72,7 +75,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swapMaterial: {fileID: 2100000, guid: 6f2a0b37e62f0904ba1d0dd852068f41, type: 2}
-  swaped: 0
+  hideMaterial: {fileID: 0}
+  swapped: 0
+  lightPrefab: {fileID: 0}
 --- !u!114 &7457853047144782594
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -28,6 +28,7 @@ public class MaterialSwapper : MonoBehaviour
         {
             if (spriteRenderer.CompareTag("Player")) continue; // skip player object
             if (spriteRenderer.CompareTag("Swappable")) continue; // skip swapable objects
+            if (spriteRenderer.CompareTag("SwappablePropriety")) continue; // skip swapableProprietys objects
             originalMaterials[spriteRenderer] = spriteRenderer.material;
         }
 
@@ -61,10 +62,17 @@ public class MaterialSwapper : MonoBehaviour
             this.hideObjects.Add(hideObject);
         }
 
-        GameObject[] swapableObjects = GameObject.FindGameObjectsWithTag("Swappable");
-        foreach (GameObject swapableObject in swapableObjects)
+        GameObject[] swappableObjects = GameObject.FindGameObjectsWithTag("Swappable");
+        foreach (GameObject swappableObject in swappableObjects)
         {
-            GameObject newLightObject = Instantiate(lightPrefab, swapableObject.transform.position, Quaternion.identity);
+            GameObject newLightObject = Instantiate(lightPrefab, swappableObject.transform.position, Quaternion.identity);
+            lightObjects.Add(newLightObject);
+        }
+
+        GameObject[] swappableProprietyObjects = GameObject.FindGameObjectsWithTag("SwappablePropriety");
+        foreach (GameObject swappableProprietyObject in swappableProprietyObjects)
+        {
+            GameObject newLightObject = Instantiate(lightPrefab, swappableProprietyObject.transform.position, Quaternion.identity);
             lightObjects.Add(newLightObject);
         }
     }

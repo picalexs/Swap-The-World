@@ -1,68 +1,98 @@
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
+using System.Collections.Generic;
+using System.Collections;
 
-public class ParticleSpawner : MonoBehaviour
+public class ObjectSpawner : MonoBehaviour
 {
-    public ParticleSystem my_particleSystem;
-    public GameObject particlePrefab;
+    [SerializeField] private GameObject spawnObjectPrefab;
+    [SerializeField] private float spawnRate = 1f;
+    [SerializeField] private float minSpeed = 1f;
+    [SerializeField] private float maxSpeed = 3f;
+    [SerializeField] private float objectLifetime = 5f;
+    [SerializeField] private Vector3 spawnOffset = Vector3.zero;
+    [SerializeField] private Vector3 spawnRandomness = Vector3.zero;
+    [SerializeField] private AnimationCurve sizeOverLifetime = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+    [SerializeField] private Gradient colorOverLifetime;
 
-    private GameObject[] particles;
-    private float originalGravityScale;
+    private float timer = 0f;
+    private List<Rigidbody2D> spawnedObjects = new();
 
     void Start()
     {
-        // Initialize array to hold gameobjects
-        particles = new GameObject[my_particleSystem.main.maxParticles];
-
-        // Spawn gameobjects to match the particle system
-        for (int i = 0; i < my_particleSystem.main.maxParticles; i++)
+        // Pre-warm the object pool
+        for (int i = 0; i < 10; i++)
         {
-            GameObject particle = Instantiate(particlePrefab, Vector3.zero, Quaternion.identity, transform);
-            particle.SetActive(false);
-            particles[i] = particle;
-            originalGravityScale = particle.GetComponent<Rigidbody2D>().gravityScale;
+            SpawnObject();
         }
-        
     }
 
     void Update()
     {
-        // Get current state of particle system
-        ParticleSystem.Particle[] systemParticles = new ParticleSystem.Particle[my_particleSystem.main.maxParticles];
-        int numParticles = my_particleSystem.GetParticles(systemParticles);
+        timer += Time.deltaTime;
 
-        // Update gameobject positions and velocities to match particle system
-        for (int i = 0; i < numParticles; i++)
+        if (timer > 1f / spawnRate)
         {
-            GameObject particle = particles[i];
-            ParticleSystem.Particle systemParticle = systemParticles[i];
-            particle.SetActive(true);
-
-            // Transform the position of the particle from local to world space
-            Vector3 particlePosition = my_particleSystem.transform.TransformPoint(systemParticle.position);
-            particle.transform.position = particlePosition;
-
-            particle.GetComponent<Rigidbody2D>().velocity = systemParticle.velocity;
-        }
-
-        // Disable or reset any remaining gameobjects
-        for (int i = numParticles; i < my_particleSystem.main.maxParticles; i++)
-        {
-            GameObject particle = particles[i];
-            if (particle.activeSelf)
-            {
-                ResetParticle(particle);
-            }
-            particle.SetActive(false);
+            timer = 0f;
+            SpawnObject();
         }
     }
 
-    void ResetParticle(GameObject particle)
+    private void SpawnObject()
     {
-        // Reset particle to its original prefab state
-        particle.transform.position = Vector3.zero;
-        particle.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        particle.GetComponent<Rigidbody2D>().gravityScale = originalGravityScale;
-        // Add additional reset code here as needed
+        Vector3 spawnPos = transform.position + spawnOffset + new Vector3(Random.Range(-spawnRandomness.x, spawnRandomness.x), Random.Range(-spawnRandomness.y, spawnRandomness.y), Random.Range(-spawnRandomness.z, spawnRandomness.z));
+        GameObject newObj = Instantiate(spawnObjectPrefab, spawnPos, Quaternion.identity, transform);
+        Rigidbody2D rb = newObj.GetComponent<Rigidbody2D>();
+        spawnedObjects.Add(rb);
+
+        if (rb != null)
+        {
+            rb.velocity = transform.forward * Random.Range(minSpeed, maxSpeed);
+        }
+
+        if (newObj.TryGetComponent<Renderer>(out var objectRenderer))
+        {
+            float startSize = objectRenderer.transform.localScale.x;
+            objectRenderer.transform.localScale = sizeOverLifetime.Evaluate(0f) * startSize * Vector3.one;
+
+            IEnumerator SizeOverLifetimeCoroutine()
+            {
+                float elapsedTime = 0f;
+                while (elapsedTime < objectLifetime)
+                {
+                    float t = elapsedTime / objectLifetime;
+                    objectRenderer.transform.localScale = sizeOverLifetime.Evaluate(t) * startSize * Vector3.one;
+
+                    Color currentColor = colorOverLifetime.Evaluate(t);
+                    currentColor.a = t * (1 - t) * 4; 
+                    objectRenderer.material.color = currentColor;
+
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+                spawnedObjects.Remove(rb);
+                Destroy(newObj);
+            }
+            StartCoroutine(SizeOverLifetimeCoroutine());
+        }
+        else
+        {
+            Destroy(newObj, objectLifetime);
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (Rigidbody2D rb in spawnedObjects)
+        {
+            rb.velocity = Vector2.zero;
+        }
+    }
+
+    private void OnEnable()
+    {
+        foreach (Rigidbody2D rb in spawnedObjects)
+        {
+            rb.velocity = transform.forward * Random.Range(minSpeed, maxSpeed);
+        }
     }
 }
