@@ -12,7 +12,6 @@ TagManager:
   - HideObject
   - Swappable
   - SwappablePropriety
-  - Door
   layers:
   - Default
   - TransparentFX

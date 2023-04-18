@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class WaterfallScript : MonoBehaviour
 {
@@ -11,11 +10,8 @@ public class WaterfallScript : MonoBehaviour
     public LayerMask obstacleLayerMask;
     public BoxCollider2D boxCollider2D;
     public GameObject splashEffectObject;
-    public Light2D childLight;
 
     private float lastLength;
-    private bool isReset = false;
-
     void Start()
     {
         lineRenderer.positionCount = 2;
@@ -30,7 +26,6 @@ public class WaterfallScript : MonoBehaviour
         RescaleCollider(currentLength);
         CheckForSplashEffect(currentLength, currentMaxLength);
     }
-
     void Update()
     {
         GetCurrentLength(out float currentMaxLength);
@@ -72,21 +67,5 @@ public class WaterfallScript : MonoBehaviour
     {
         splashEffectObject.SetActive(currentLength >= currentMaxLength);
         splashEffectObject.transform.position = transform.position - Vector3.up * currentLength;
-        if (splashEffectObject.activeSelf)
-        {
-            isReset = false;
-            childLight.intensity = 0.3f;
-        }
-        else if(!isReset)
-        {
-            StartCoroutine(ResetLightIntensity(0f, 1.0f));
-        }
-    }
-
-    private IEnumerator ResetLightIntensity(float delay, float intensity)
-    {
-        yield return new WaitForSeconds(delay);
-        childLight.intensity = intensity;
-        isReset = true;
     }
 }
