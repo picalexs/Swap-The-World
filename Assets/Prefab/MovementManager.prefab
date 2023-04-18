@@ -43,7 +43,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1516788271561293269
 MonoBehaviour:
@@ -78,6 +78,7 @@ MonoBehaviour:
   _deathSound: {fileID: 8815569104976565631}
   _playSoundCooldown: 0.2
   _isGrounded: 0
+  _isSwaped: 0
   _canMove: 1
   _canJump: 1
   _pressedTime: 0
@@ -105,6 +106,8 @@ MonoBehaviour:
   _jumpHangMaxSpeedMult: 1.3
   _jumpHangThreshold: 1
   _jumpCutMult: 0.45
+  hitColor: {r: 1, g: 0, b: 0, a: 0}
+  hitGlowAmount: 5
   _dieJumpAmount: 5
   _respawnTime: 0.5
   _respawnPosition: {x: 0, y: 0}

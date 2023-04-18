@@ -4,37 +4,26 @@ using System.Collections.Generic;
 
 public class EntranceDoor : MonoBehaviour
 {
-    [SerializeField] private float doorHeight = 2.0f;
     [SerializeField] private float doorSpeed = 2.0f;
+    [SerializeField] private Vector3 pointA;
+    [SerializeField] private Vector3 pointB;
 
-    private Vector3 closedPosition;
-    private Vector3 openPosition;
     public bool isOpen = false;
     private bool isBlocked = false;
 
     [SerializeField] private Sprite closedSprite;
     [SerializeField] private Sprite openSprite;
     private SpriteRenderer spriteRenderer;
+
     private void Start()
     {
-        closedPosition = transform.position;
-        openPosition = closedPosition + Vector3.up * doorHeight;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
-        if (isOpen)
-        {
-            transform.position = Vector3.Lerp(transform.position, openPosition, doorSpeed * Time.deltaTime);
-        }
-        else
-        {
-            if (!isBlocked)
-            {
-                transform.position = Vector3.Lerp(transform.position, closedPosition, doorSpeed * Time.deltaTime);
-            }
-        }
+        Vector3 targetPosition = isOpen ? pointB : pointA;
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, doorSpeed * Time.deltaTime);
     }
 
     public void OpenDoor()

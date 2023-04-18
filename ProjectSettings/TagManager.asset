@@ -11,6 +11,7 @@ TagManager:
   - Torch
   - HideObject
   - Swappable
+  - SwappablePropriety
   layers:
   - Default
   - TransparentFX
@@ -19,10 +20,10 @@ TagManager:
   - Water
   - UI
   - Ground
-  - Swapable
+  - Swappable
   - Postprocessing
   - Room
-  - 
+  - Damage
   - 
   - 
   - 
@@ -45,12 +46,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3163980489
+    locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Particles
-    uniqueID: 2735717185
-    locked: 0
-  - name: Tilemap
-    uniqueID: 2289925409
     locked: 0

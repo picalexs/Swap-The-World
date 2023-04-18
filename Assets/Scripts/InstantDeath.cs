@@ -16,7 +16,19 @@ public class InstantDeath : MonoBehaviour
     {
         if (other.collider.CompareTag("Player"))
         {
-            if (playerScript._isSwaped)
+            if (playerScript._isSwapped)
+            {
+                swapAbility.ResetSwapPlayerObject();
+            }
+            playerScript.Die();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (playerScript._isSwapped)
             {
                 swapAbility.ResetSwapPlayerObject();
             }
