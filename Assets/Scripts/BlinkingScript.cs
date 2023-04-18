@@ -89,7 +89,7 @@ public class BlinkingScript : MonoBehaviour
         StopAbility();
     }
 
-    void StopAbility()
+    public void StopAbility()
     {
         Debug.Log("stop blinking");
         isBlinking = false;

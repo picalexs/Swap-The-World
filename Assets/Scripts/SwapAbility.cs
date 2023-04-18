@@ -1,6 +1,4 @@
 using AllIn1SpriteShader;
-using Cinemachine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,20 +9,24 @@ public class SwapAbility : MonoBehaviour
     [SerializeField] private GameObject movmentManager;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject playerObject;
+    [Space(10)]
+    [SerializeField] private AudioSource swapEndSound;
+    [SerializeField] private ParticleSystem abilityParticleSystem;
     private Material playerMaterial;
     private RewindTimeAbility timeAbility;
     private BlinkingScript blinkingScript;
     private PlayerScript playerScript;
     private CameraManager cameraManager;
     private MaterialSwapper materialSwapper;
-    [SerializeField] private AudioSource swapEndSound;
-    [SerializeField] private ParticleSystem abilityParticleSystem;
-
+   
+    [Space(10)]
     [SerializeField] private float selectRange = 1f;
     [SerializeField] private float swapPlayerCooldown = 4f;
-    private float playerTimer;
+    [SerializeField] private float swapPlayerProprietyCooldown = 5f;
     [SerializeField] private float abilityCooldown = 4f;
     [SerializeField] private float failedAbilityCooldown = 1f;
+    private float playerTimer;
+    private float proprietyTimer;
     private float abilityTimer;
 
     private GameObject playerObj, objectObj;
@@ -32,14 +34,20 @@ public class SwapAbility : MonoBehaviour
     private Rigidbody2D secondRigidbody;
     private Collider2D firstCollider;
     private Collider2D secondCollider;
-    private bool isSwaped = false;
+    private GameObject firstObjToSwap;
+    private GameObject secondObjToSwap;
+
+    private bool isSwapped = false;
+    private bool isSwappedPropriety = false;
+    private bool isWaitingToSwap = false;
 
     private GameObject firstObject;
     private List<MonoBehaviour> firstScripts = new();
     private List<MonoBehaviour> secondScripts = new();
 
-    [SerializeField] private Color highlightColor;
+    [SerializeField] private Material highlightMaterial;
     private GameObject highlightedObject;
+    private Material originalMaterial;
     private GameObject clone;
     public LayerMask swapLayerMask;
     public int cloneLayer;
@@ -58,9 +66,17 @@ public class SwapAbility : MonoBehaviour
     }
     private void Update()
     {
-        if (isSwaped)
+        if (isWaitingToSwap && firstObjToSwap !=null && secondObjToSwap !=null)
         {
-            if (playerTimer < 0f)
+            SwapObjects(firstObjToSwap, secondObjToSwap);
+            firstObjToSwap = null;
+            secondObjToSwap = null;
+            isWaitingToSwap = false;
+        }
+
+        if (isSwapped)
+        {
+            if (playerTimer < 0f || Input.GetMouseButtonDown(1))
             {
                 ResetSwapPlayerObject();
             }
@@ -70,10 +86,39 @@ public class SwapAbility : MonoBehaviour
             }
         }
 
+        if (isSwappedPropriety)
+        {
+            if (proprietyTimer < 0f)
+            {
+                SwapObjects(objectObj, playerObj);
+                swapEndSound.Play();
+                isSwappedPropriety = false;
+                playerScript._isSwappedPropriety = false;
+            }
+            else
+            {
+                proprietyTimer -= Time.deltaTime;
+            }
+        }
+
         Vector3 mousePosition = Mouse.current.position.ReadValue();
         mousePosition.z = mainCamera.nearClipPlane;
         Vector2 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        Collider2D hit = Physics2D.OverlapCircle(mouseWorldPosition, selectRange, swapLayerMask);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(mouseWorldPosition, selectRange, swapLayerMask);
+
+        float minDistance = Mathf.Infinity;
+        Collider2D hit = null;
+
+        foreach (Collider2D hitObject in hits)
+        {
+            float distance = Vector2.Distance(hitObject.transform.position, mouseWorldPosition);
+
+            if (distance < minDistance)
+            {
+                hit = hitObject;
+                minDistance = distance;
+            }
+        }
 
         abilityTimer -= Time.deltaTime;
 
@@ -133,9 +178,8 @@ public class SwapAbility : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            RemoveHighlight();
             if (clone != null) {
-                Debug.Log(hit != null ? hit.gameObject.name + "--" + firstObject.name : "");
-
                 if (hit != null && firstObject != hit.gameObject)
                 {
                     SwapObjects(firstObject, hit.gameObject);
@@ -145,7 +189,6 @@ public class SwapAbility : MonoBehaviour
             }
             timeAbility.CancelSlowDown();
             RemoveClone();
-            RemoveHighlight();
             if (abilityParticleSystem != null)
             {
                 abilityParticleSystem.Stop();
@@ -163,14 +206,16 @@ public class SwapAbility : MonoBehaviour
         {
             RemoveHighlight();
             highlightedObject = obj;
-            highlightedObject.GetComponent<Renderer>().material.color = highlightColor;
+            originalMaterial = highlightedObject.GetComponent<Renderer>().material;
+            highlightedObject.GetComponent<Renderer>().material = highlightMaterial;
         }
     }
+
     void RemoveHighlight()
     {
         if (highlightedObject != null)
         {
-            highlightedObject.GetComponent<Renderer>().material.color = Color.white;
+            highlightedObject.GetComponent<Renderer>().material = originalMaterial;
             highlightedObject = null;
         }
     }
@@ -202,12 +247,53 @@ public class SwapAbility : MonoBehaviour
     }
     public void SwapObjects(GameObject firstObj, GameObject secondObj)
     {
-        Debug.Log("start swap");
-        if (firstObj == secondObj)
+        if (firstObj == null || secondObj == null)
+        {
+            Debug.Log("one of the selected objects is null!!");
+            firstObjToSwap = firstObj;
+            secondObjToSwap = secondObj;
+            isWaitingToSwap = true;
             return;
+        }
+        if (firstObj == secondObj)
+        {
+            Debug.Log("same object selected!!");
+            return;
+        }
 
+        if (!isSwapped)
+        {
+            if (firstObj.CompareTag("Player") && secondObj.CompareTag("Swappable"))
+            {
+                playerObj = firstObj;
+                objectObj = secondObj;
+
+                Debug.Log("focusing on: " + secondObj.name);
+                cameraManager.FocusOnSelectedObject(secondObj.transform);
+                playerScript.ChangePlayerObjectTo(secondObj);
+                blinkingScript.ChangePlayerObjectTo(secondObj);
+                Debug.Log("changed playerObject to " + secondObj);
+                playerTimer = swapPlayerCooldown;
+                isSwapped = true;
+            }
+            else if (secondObj.CompareTag("Player") && firstObj.CompareTag("Swappable"))
+            {
+                playerObj = secondObj;
+                objectObj = firstObj;
+                Debug.Log("focusing on: " + firstObj.name);
+                cameraManager.FocusOnSelectedObject(firstObj.transform);
+                playerScript.ChangePlayerObjectTo(firstObj);
+                blinkingScript.ChangePlayerObjectTo(firstObj);
+                Debug.Log("changed playerObject to " + firstObj);
+                playerTimer = swapPlayerCooldown;
+                isSwapped = true;
+            }
+        }
+        SwapRigidbodys(firstObj,secondObj);
         SwapScripts(firstObj, secondObj);
-
+    }
+    void SwapRigidbodys(GameObject firstObj, GameObject secondObj)
+    {
         firstRigidbody = firstObj.GetComponent<Rigidbody2D>();
         secondRigidbody = secondObj.GetComponent<Rigidbody2D>();
         firstCollider = firstObj.GetComponent<Collider2D>();
@@ -215,48 +301,28 @@ public class SwapAbility : MonoBehaviour
 
         if (firstRigidbody != null && secondRigidbody != null)
         {
-            firstRigidbody.velocity = new Vector2(0, 0);
-            secondRigidbody.velocity = new Vector2(0, 0);
-
+            if (!isSwapped)
+            {
+                isSwappedPropriety = true;
+                playerScript._isSwappedPropriety = true;
+                proprietyTimer = swapPlayerProprietyCooldown;
+            }
             (secondRigidbody.gravityScale, firstRigidbody.gravityScale) = (firstRigidbody.gravityScale, secondRigidbody.gravityScale);
             (secondRigidbody.mass, firstRigidbody.mass) = (firstRigidbody.mass, secondRigidbody.mass);
+
             PhysicsMaterial2D object1Material = firstCollider.sharedMaterial;
             PhysicsMaterial2D object2Material = secondCollider.sharedMaterial;
-
-            (object2Material.friction, object1Material.friction) = (object1Material.friction, object2Material.friction);
-
-            firstCollider.sharedMaterial = object1Material;
-            secondCollider.sharedMaterial = object2Material;
-        }   
-        if (!isSwaped)
-        {
-            if (firstObj.CompareTag("Player"))
+            if (object1Material != null && object2Material != null)
             {
-                playerObj = firstObj;
-                objectObj = secondObj;
-                Debug.Log("objectObj:" + objectObj);
-                cameraManager.FocusOnSelectedObject(secondObj.transform);
-                playerScript.ChangePlayerObjectTo(secondObj);
-                blinkingScript.ChangePlayerObjectTo(secondObj);
-                Debug.Log("changed playerObject to " + secondObj);
-                playerTimer = swapPlayerCooldown;
-                isSwaped = true;
+                (object2Material.friction, object1Material.friction) = (object1Material.friction, object2Material.friction);
+                firstCollider.sharedMaterial = object1Material;
+                secondCollider.sharedMaterial = object2Material;
+                Debug.Log("swapped materials");
             }
-            else if (secondObj.CompareTag("Player"))
-            {
-                playerObj = secondObj;
-                objectObj = firstObj;
-                Debug.Log("objectObj:" + objectObj);
-                cameraManager.FocusOnSelectedObject(firstObj.transform);
-                playerScript.ChangePlayerObjectTo(firstObj);
-                blinkingScript.ChangePlayerObjectTo(firstObj);
-                Debug.Log("changed playerObject to " + firstObj);
-                playerTimer = swapPlayerCooldown;
-                isSwaped = true;
-            }
+            Debug.Log("swapped rigidbodys");
         }
-        Debug.Log("swaped rb");
     }
+
     void SwapScripts(GameObject firstObject, GameObject secondObject)
     {
         GetScriptsToSwap(firstObject, FirstScripts);
@@ -304,6 +370,7 @@ public class SwapAbility : MonoBehaviour
                 Destroy(script);
             }
         }
+        Debug.Log("swapped scritps");
     }
 
     public void ResetSwapPlayerObject()
@@ -314,7 +381,8 @@ public class SwapAbility : MonoBehaviour
         playerScript.ChangePlayerObjectTo(playerObj);
         blinkingScript.ChangePlayerObjectTo(playerObj);
         swapEndSound.Play();
-        isSwaped = false;
+        blinkingScript.StopAbility();
+        isSwapped = false;
     }
     private void GetScriptsToSwap(GameObject gameObject, List<MonoBehaviour> scripts)
     {
@@ -341,7 +409,7 @@ public class SwapAbility : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if(isSwaped) {
+        if(isSwapped) {
             PhysicsMaterial2D object1Material = firstCollider.sharedMaterial;
             PhysicsMaterial2D object2Material = secondCollider.sharedMaterial;
 

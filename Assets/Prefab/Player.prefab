@@ -9651,7 +9651,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -14588,6 +14588,7 @@ GameObject:
   - component: {fileID: 3575115933495045941}
   - component: {fileID: 7305129959753409847}
   - component: {fileID: 7305129959753409846}
+  - component: {fileID: 1852287662037236417}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -14612,7 +14613,7 @@ Transform:
   - {fileID: 7305129961802380681}
   - {fileID: 603410467}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3575115933495045937
 SpriteRenderer:
@@ -14778,6 +14779,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateEveryFrame: 0
   useMaterialInstanceIfPossible: 1
+--- !u!81 &1852287662037236417
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3575115933495045930}
+  m_Enabled: 1
 --- !u!1 &7305129960084651110
 GameObject:
   m_ObjectHideFlags: 0
