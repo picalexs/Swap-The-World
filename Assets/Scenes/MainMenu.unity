@@ -158,7 +158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1622, y: 0.0000084473}
+  m_AnchoredPosition: {x: 1684, y: 0.0000084473}
   m_SizeDelta: {x: 2202.878, y: 1240.2273}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &44226129
@@ -382,7 +382,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1894,7 +1894,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Aici vine titlul domnu
+  m_text: Swap the world
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7d5343b8dba19e40bdde687d827def7, type: 2}
   m_sharedMaterial: {fileID: 4243541306874182655, guid: e7d5343b8dba19e40bdde687d827def7, type: 2}
@@ -2061,8 +2061,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2028899526}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -0.0582, y: -0.0232, z: -3.7304423}
-  m_LocalScale: {x: 1.8375844, y: 1, z: 1.0554471}
+  m_LocalPosition: {x: 0.0998, y: -0.0232, z: -3.7304423}
+  m_LocalScale: {x: 1.8788407, y: 1, z: 1.0554471}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
