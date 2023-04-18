@@ -1,9 +1,6 @@
 using AllIn1SpriteShader;
-using Cinemachine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -79,7 +76,7 @@ public class SwapAbility : MonoBehaviour
 
         if (isSwapped)
         {
-            if (playerTimer < 0f)
+            if (playerTimer < 0f || Input.GetMouseButtonDown(1))
             {
                 ResetSwapPlayerObject();
             }
@@ -252,13 +249,17 @@ public class SwapAbility : MonoBehaviour
     {
         if (firstObj == null || secondObj == null)
         {
+            Debug.Log("one of the selected objects is null!!");
             firstObjToSwap = firstObj;
             secondObjToSwap = secondObj;
             isWaitingToSwap = true;
             return;
         }
         if (firstObj == secondObj)
+        {
+            Debug.Log("same object selected!!");
             return;
+        }
 
         if (!isSwapped)
         {
@@ -267,6 +268,7 @@ public class SwapAbility : MonoBehaviour
                 playerObj = firstObj;
                 objectObj = secondObj;
 
+                Debug.Log("focusing on: " + secondObj.name);
                 cameraManager.FocusOnSelectedObject(secondObj.transform);
                 playerScript.ChangePlayerObjectTo(secondObj);
                 blinkingScript.ChangePlayerObjectTo(secondObj);
@@ -278,7 +280,7 @@ public class SwapAbility : MonoBehaviour
             {
                 playerObj = secondObj;
                 objectObj = firstObj;
-
+                Debug.Log("focusing on: " + firstObj.name);
                 cameraManager.FocusOnSelectedObject(firstObj.transform);
                 playerScript.ChangePlayerObjectTo(firstObj);
                 blinkingScript.ChangePlayerObjectTo(firstObj);
@@ -379,6 +381,7 @@ public class SwapAbility : MonoBehaviour
         playerScript.ChangePlayerObjectTo(playerObj);
         blinkingScript.ChangePlayerObjectTo(playerObj);
         swapEndSound.Play();
+        blinkingScript.StopAbility();
         isSwapped = false;
     }
     private void GetScriptsToSwap(GameObject gameObject, List<MonoBehaviour> scripts)

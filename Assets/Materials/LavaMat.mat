@@ -37,12 +37,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _HighlightsSpread: 3
+    - _HighlightsSpread: 4
     - _MovementSpeed: 2
     - _PixelSize: 4
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Scale: 1.5
+    - _Scale: 1.25
     - _StartTime: 15
     m_Colors:
     - _BaseColor: {r: 1, g: 0.10838385, b: 0, a: 0}
