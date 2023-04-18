@@ -44,6 +44,7 @@ public class Button : MonoBehaviour
     public void ExitGame()
     {
         Debug.Log("PAPA");
+        PlayerDataSave.SaveData();
         Application.Quit();
     }
 }
