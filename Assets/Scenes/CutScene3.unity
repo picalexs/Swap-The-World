@@ -228,7 +228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.6385, y: -1143}
+  m_AnchoredPosition: {x: 0.6385, y: -951}
   m_SizeDelta: {x: 855.1525, y: 286.2637}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &584622669
@@ -259,8 +259,7 @@ MonoBehaviour:
     gr\u0103din\u0103 -\r\nDormi \xEEn pace!\r\n\r\nTrece leb\u0103da pe ape\r\n\xCEntre
     trestii s\u0103 se culce -\r\nFie-\u0163i \xEEngerii aproape,\r\nSomnul dulce!\r\n\r\nPeste-a
     nop\u0163ii feerie\r\nSe ridic\u0103 m\xE2ndra lun\u0103,\r\nTotu-i vis \u015Fi
-    armonie -\r\nNoapte bun\u0103!\n\n\n\n\n\n\n\nswap the world\n\nProject made
-    by\nPicioroaga alexandru \nand irimia cosmin\n\nThank you for playing"
+    armonie -\r\nNoapte bun\u0103!\n\n\n\n\n\n\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7d5343b8dba19e40bdde687d827def7, type: 2}
   m_sharedMaterial: {fileID: 4243541306874182655, guid: e7d5343b8dba19e40bdde687d827def7, type: 2}
