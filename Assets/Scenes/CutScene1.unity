@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.8811, y: 151.18036}
-  m_SizeDelta: {x: 436.1248, y: 205.6393}
+  m_AnchoredPosition: {x: 3.2359, y: 159}
+  m_SizeDelta: {x: 436.1248, y: 212.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &149589417
 MonoBehaviour:
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 19ded77b79074af449a20e85c0d98b99, type: 3}
+  m_Texture: {fileID: 2800000, guid: 959c78a96da285c488ec2c4567339118, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -299,8 +299,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000038862, y: 0}
-  m_SizeDelta: {x: 1124, y: 632}
+  m_AnchoredPosition: {x: 3.2359009, y: 2.1976}
+  m_SizeDelta: {x: 1146.4717, y: 665.3387}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &259569042
 MonoBehaviour:
@@ -985,9 +985,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textWriter: {fileID: 690728478}
-  textWrite: The distant future. The world completly changed due to a  global pandemic
-    back in 2120. Half of world population has been wiped out by a virus. Now, people
-    live in big cities, divided in three social classes.
+  textWrite: Ionut is a dreamy and brave boy. He always wanted to go on an adventure
+    like in the movies, but he never had the opportunity.
 --- !u!95 &932981975
 Animator:
   serializedVersion: 5
@@ -1029,7 +1028,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 505.58813
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

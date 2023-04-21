@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.8811, y: 151.18036}
-  m_SizeDelta: {x: 436.1248, y: 205.6393}
+  m_AnchoredPosition: {x: 2.8811, y: 163.02277}
+  m_SizeDelta: {x: 436.1248, y: 232.2303}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &149589417
 MonoBehaviour:
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: d83dbcd8b0ff21d4d9194ebf580274cc, type: 3}
+  m_Texture: {fileID: 2800000, guid: baed4d5aa7954c14283d6aea932df39e, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -299,8 +299,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000061035, y: 0.000030518}
-  m_SizeDelta: {x: 1111, y: 625}
+  m_AnchoredPosition: {x: 0.000039101, y: 0}
+  m_SizeDelta: {x: 1140, y: 641}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &259569042
 MonoBehaviour:
@@ -909,11 +909,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textWriter: {fileID: 690728478}
-  textWrite: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam volutpat,
-    augue ac molestie condimentum, lorem orci mollis nunc, vitae pharetra purus velit
-    in lorem. Suspendisse sit amet nisl fringilla, consequat nisi ac, porttitor orci.
-    Morbi rhoncus, ligula vitae cursus blandit, metus orci vehicula enim, ut accumsan
-    leo lorem id orci. Interdum et malesuada fames ac ante ipsum primis in faucibus
+  textWrite: One day, while he was sitting in his garden, a mysterious door with
+    "ENTER" written on it appeared out of nowhere. Naturally curious, he opened the
+    door and entered an unseen cave. Now, he needs help to explore the cave and find
+    a way out of it
 --- !u!95 &932981975
 Animator:
   serializedVersion: 5

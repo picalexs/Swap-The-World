@@ -4807,6 +4807,10 @@ PrefabInstance:
       propertyPath: animationFinale
       value: 
       objectReference: {fileID: 2040431203}
+    - target: {fileID: 3499001224864676494, guid: b93288eaac6b5a74ab925c2a1aee705f, type: 3}
+      propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8649849450308797564, guid: b93288eaac6b5a74ab925c2a1aee705f, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0.16

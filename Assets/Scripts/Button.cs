@@ -31,15 +31,19 @@ public class Button : MonoBehaviour
             Debug.Log("resetam Datele");
         }
         else 
-        {
+        {   
             PlayerDataSave.LoadData();
             Debug.Log("incarcam datele");
-        }
+        } 
+        if(!(i==3 && PlayerDataSave.doorKey==0))
+           { 
         soundPlayer.Play();
         animationFinale.SetTrigger("end");
-        musicAnim.SetTrigger("fade");
+        //musicAnim.SetTrigger("fade");
         yield return new WaitForSeconds(0.6f);
-        SceneManager.LoadScene(i);
+            SceneManager.LoadScene(i);
+            }
+        
     }
     public void ExitGame()
     {
