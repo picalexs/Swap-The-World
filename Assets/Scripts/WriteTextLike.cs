@@ -41,6 +41,10 @@ public class WriteTextLike : MonoBehaviour
 
     private void Update()
     {
+        if (!messageText)
+        {
+            return;
+        }
         if (isWriting && Input.GetKeyDown(KeyCode.Space))
         {
             StopAllCoroutines();
@@ -55,6 +59,10 @@ public class WriteTextLike : MonoBehaviour
 
     IEnumerator WriteTextWithSoundEffect()
     {
+        if (!messageText)
+        {
+            yield break;
+        }
         messageText.text = "";
         int letterIndex = 0;
 

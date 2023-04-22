@@ -75,7 +75,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private float hitGlowAmount;
     [SerializeField] private float _dieJumpAmount = 8f;
     [SerializeField] private float _respawnTime = 0.5f;
-    [SerializeField] private Vector2 _respawnPosition;
+    [SerializeField] public Vector2 _respawnPosition;
     [SerializeField] private float _respawnJumpAmount = 3f;
     [SerializeField] private float _respawnCooldown = 0.1f;
 
