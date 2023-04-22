@@ -914,10 +914,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -984,9 +984,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f82d1e6605e4f488cd68d2555a8b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textWriter: {fileID: 690728478}
   textWrite: Ionut is a dreamy and brave boy. He always wanted to go on an adventure
-    like in the movies, but he never had the opportunity.
+    like in the movies, but he never had the opportunity to.
+  delayBetweenLetters: 0.05
+  volume: 0.1
+  pitchMultiplier: 0.3
+  minPitch: 0.6
+  maxPitch: 1
+  commaPause: 0.25
+  periodPause: 0.5
+  audioClips:
+  - {fileID: 8300000, guid: 975ecd8fa11a8504aa3bd2d0779d289a, type: 3}
+  messageText: {fileID: 815088679}
+  activateOnFinish: {fileID: 858673385}
 --- !u!95 &932981975
 Animator:
   serializedVersion: 5
@@ -1017,7 +1027,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 58ccec2859d7544f5880b3202cc15dc1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2ec14d07946c7fe429f08fc058e5b2f8, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

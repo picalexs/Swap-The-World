@@ -14,56 +14,45 @@ public class TextWriter : MonoBehaviour
     private bool invisCharacter;
     private bool pressed;
     [SerializeField] private GameObject button;
-    public void AddWriter(TMP_Text uiText, string textToWrite, float timePerCharacter, bool invisCharacter )
+    private bool buttonEnabled;
+
+    public void AddWriter(TMP_Text uiText, string textToWrite, float timePerCharacter, bool invisCharacter)
     {
         this.uiText = uiText;
-        this.textToWrite= textToWrite;
+        this.textToWrite = textToWrite;
         this.timePerCharacter = timePerCharacter;
-        this.invisCharacter =invisCharacter;
-        charaterIndex=0;
+        this.invisCharacter = invisCharacter;
+        charaterIndex = 0;
+        buttonEnabled = false;
     }
-    private void Update() {
-        if(uiText)
-        {
-            timer-= Time.deltaTime;
-            while(timer<=0f && textToWrite!=null )
-            {
-                timer+=timePerCharacter;
-                charaterIndex++;
-                string text=textToWrite.Substring(0,charaterIndex);
-                if(invisCharacter)
-                {
-                    text+="<color=#00000000>"+textToWrite.Substring(charaterIndex)+"</color>";
-                }
-                uiText.text= text;
-                if(charaterIndex>=textToWrite.Length)
-                {
-                    uiText=null;
-                    if(button.activeInHierarchy==false) {
-                button.SetActive(true);
-            }
-                    return ;
-                }
-            }
-        }
-        if(Input.GetKeyDown("space")){
-            WrtieAllAndeDestroy();
-            Debug.Log("merge");
-            return ;
-        }
-    }
-    public void WrtieAllAndeDestroy()
+
+    private void Update()
     {
-        if(!pressed)
+        if (uiText)
         {
-            timer=-0.1f;
-        uiText.text=textToWrite;
-        charaterIndex=textToWrite.Length-1;
-        pressed=true;
-        if(button.activeInHierarchy==false) {
-                button.SetActive(true);
+            timer -= Time.deltaTime;
+            while (timer <= 0f && textToWrite != null)
+            {
+                timer += timePerCharacter;
+                charaterIndex++;
+                string text = textToWrite.Substring(0, charaterIndex);
+                if (invisCharacter)
+                {
+                    text += "<color=#00000000>" + textToWrite.Substring(charaterIndex) + "</color>";
+                }
+                uiText.text = text;
+                if (charaterIndex >= textToWrite.Length)
+                {
+                    uiText = null;
+                    return;
+                }
             }
         }
-        
+
+        if ((!buttonEnabled && Time.timeSinceLevelLoad > 25f) || Input.GetKeyDown("space"))
+        {
+            button.SetActive(true);
+            buttonEnabled = true;
+        }
     }
 }

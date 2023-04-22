@@ -6,14 +6,11 @@ public class RollCredits : MonoBehaviour
 {
     public Animator animator;
     public AudioSource soundPlayer;
-    [SerializeField] private GameObject gameObject;
+    [SerializeField] private GameObject gameObjectToEnable;
     void Start()
     {
-        
          soundPlayer.Play();
     }
-
-    // Update is called once per frame
     void Update()
     {
        
@@ -28,11 +25,11 @@ public class RollCredits : MonoBehaviour
     }
     IEnumerator PlayRollCreditsButton()
     {
-        yield return new WaitForSeconds(15f);
-         if(gameObject.activeInHierarchy==false) 
-                {
-                    gameObject.SetActive(true);
-                }
-        
+        yield return new WaitForSeconds(25f);
+        if (gameObjectToEnable.activeInHierarchy == false)
+        {
+            gameObjectToEnable.SetActive(true);
+        }
+
     }
 }
