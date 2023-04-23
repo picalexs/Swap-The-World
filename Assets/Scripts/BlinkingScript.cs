@@ -15,7 +15,7 @@ public class BlinkingScript : MonoBehaviour
     public float endBlinkDuration = 0.5f;
 
     private Material playerMaterial;
-    [SerializeField] private Color playerBlinkColor = new Color(255, 76, 215);
+    [SerializeField] private Color playerBlinkColor = new(255, 76, 215);
     [SerializeField] private float playerGlowAmount = 5f;
     [SerializeField] private float maxBlendAmount = 0.8f;
     [SerializeField] private float chromAberrAmount = 5f;

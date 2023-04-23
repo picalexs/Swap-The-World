@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    [SerializeField,Description("Player")] private GameObject playerObject; 
+    [SerializeField, Description("Player")] private GameObject playerObject;
     [SerializeField] private Material _playerMaterial;
     private PlayerActionControler _playerAction;
     private Rigidbody2D _rigidBody;
@@ -15,15 +15,15 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject _transitionManager;
     private Animator _transition;
 
-    [Space(10),Header("Sound")]
+    [Space(10), Header("Sound")]
     [SerializeField] private AudioSource _jumpSound;
     [SerializeField] private AudioSource[] _dirtSound;
     [SerializeField] private AudioSource _deathSound;
     [SerializeField] private float _playSoundCooldown = 0.1f;
     private float _playSoundTime = 0f;
 
-    [Space(10),Header("Booleans")]
-    private bool _isFacingRight=true;
+    [Space(10), Header("Booleans")]
+    private bool _isFacingRight = true;
     [SerializeField] private bool _isGrounded;
     private bool _isJumping;
     private bool _jumpPressed;
@@ -35,7 +35,7 @@ public class PlayerScript : MonoBehaviour
     public bool _canMove = true;
     public bool _canJump = true;
 
-    [Space(10),Header("Jump variables")]
+    [Space(10), Header("Jump variables")]
     private float _lastGrounded;
     [SerializeField] private float _pressedTime;
     [SerializeField] private float _coyoteTime = 0.15f;
@@ -108,8 +108,8 @@ public class PlayerScript : MonoBehaviour
     public void ChangePlayerObjectTo(GameObject newObject)
     {
         _isSwapped = !_isSwapped;
-        _isRunning = false;
         Debug.Log("isSwaped:" + _isSwapped);
+        _isRunning = false;
         playerObject = newObject;
         _rigidBody = playerObject.GetComponent<Rigidbody2D>();
         _playerRenderer = playerObject.GetComponent<Renderer>();
@@ -130,7 +130,7 @@ public class PlayerScript : MonoBehaviour
             float fadeSpeed = 10f;
             _playerMaterial.SetColor("_HitEffectColor", hitColor);
             _playerMaterial.SetFloat("_HitEffectGlow", hitGlowAmount);
-            _playerMaterial.SetFloat("_HitEffectBlend", Mathf.Lerp(_playerMaterial.GetFloat("_HitEffectBlend"),0f,Time.deltaTime * fadeSpeed));
+            _playerMaterial.SetFloat("_HitEffectBlend", Mathf.Lerp(_playerMaterial.GetFloat("_HitEffectBlend"), 0f, Time.deltaTime * fadeSpeed));
             return;
         }
         GravityCases();
@@ -200,7 +200,7 @@ public class PlayerScript : MonoBehaviour
         _rigidBody.AddForce(movement * Vector2.right);
 
         _playSoundTime -= Time.deltaTime;
-        if(_isGrounded && Mathf.Abs(_movementInput.x) > 0)
+        if (_isGrounded && Mathf.Abs(_movementInput.x) > 0)
         {
             if (_playSoundTime < 0f)
             {
@@ -233,7 +233,7 @@ public class PlayerScript : MonoBehaviour
 
     private void Jump()
     {
-        if(_canJump == false)
+        if (_canJump == false)
         {
             return;
         }
@@ -272,7 +272,8 @@ public class PlayerScript : MonoBehaviour
         if (_isPressing)
         {
             _pressedTime += Time.deltaTime;
-        } else
+        }
+        else
         {
             _pressedTime -= Time.deltaTime;
         }
@@ -311,7 +312,7 @@ public class PlayerScript : MonoBehaviour
                 _isJumping = false;
             }
         }
-       
+
     }
     private void MiniJump(float _jumpPower)
     {
@@ -358,11 +359,11 @@ public class PlayerScript : MonoBehaviour
 
     public void Die()
     {
-        if(!_isActive)
+        if (!_isActive)
         {
             return;
         }
-        
+
         _pressedTime = 0f;
         _jumpCooldownTime = 0f;
         _isActive = false;
@@ -379,7 +380,7 @@ public class PlayerScript : MonoBehaviour
 
     public void SetRespawnPoint(Vector2 _position)
     {
-        _respawnPosition = _position + new Vector2(0,1f);
+        _respawnPosition = _position + new Vector2(0, 1f);
     }
 
     private IEnumerator Respawn(float _respawnTime)
@@ -398,10 +399,17 @@ public class PlayerScript : MonoBehaviour
         _isActive = true;
         _transition.SetBool("Start", false);
     }
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Vector3 lowestPosition = new Vector3(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
+        Gizmos.DrawWireCube(lowestPosition, _groundCheckSize);
+    }
     public void IsGrounded()
     {
         Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
         Collider2D[] colliders = Physics2D.OverlapBoxAll(lowestPosition, _groundCheckSize, 0, _groundLayer);
+        _isGrounded = false;
         foreach (Collider2D collider in colliders)
         {
             if (collider.gameObject != playerObject)
