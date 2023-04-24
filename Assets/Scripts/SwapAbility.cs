@@ -13,9 +13,9 @@ public class SwapAbility : MonoBehaviour
     [Space(10)]
     [SerializeField] private AudioSource swapEndSound;
     [SerializeField] private ParticleSystem abilityParticleSystem;
+    [SerializeField] private GameObject cancelAbilityObject;
 
     private Material playerMaterial;
-    private RewindTimeAbility timeAbility;
     private BlinkingScript blinkingScript;
     private PlayerScript playerScript;
     private CameraManager cameraManager;
@@ -53,7 +53,6 @@ public class SwapAbility : MonoBehaviour
     private void Start()
     {
         blinkingScript = GetComponent<BlinkingScript>();
-        timeAbility = GetComponent<RewindTimeAbility>();
         playerScript = movmentManager.GetComponent<PlayerScript>();
         playerMaterial = playerObject.GetComponent<Renderer>().material;
         materialSwapper = GetComponent<MaterialSwapper>();
@@ -102,20 +101,17 @@ public class SwapAbility : MonoBehaviour
                 minDistance = distance;
             }
         }
+        if (abilityTimer > 0f)
+        {
+            return;
+        }
         if (hit)
         {
             HighlightObject(hit.gameObject);
         }
-        if (Input.GetMouseButtonDown(0) && abilityTimer <= 0f)
-        {
-            //slow time down while pressing the mouse
-            if(!hit)
-                timeAbility.SlowTimeDown();
-        }
-        else if(Input.GetMouseButtonUp(0))
+        if(Input.GetMouseButtonUp(0))
         {
             RemoveHighlight();
-            timeAbility.CancelSlowDown();
             playerTimer = swapPlayerDuration;
 
             //attempting to swap the player with the objectToSwap if they exist
@@ -193,7 +189,7 @@ public class SwapAbility : MonoBehaviour
             Debug.Log("Swaping scripts:");
             SwapScripts(playerObj, objToSwap);
         }
-
+        cancelAbilityObject.SetActive(true);
     }
     void SwapRigidbodys(GameObject playerObj, GameObject objToSwap)
     {
@@ -304,7 +300,8 @@ public class SwapAbility : MonoBehaviour
         {
             FocusOn(playerObjectCopy);
         }
-        
+
+        cancelAbilityObject.SetActive(false);
         swapEndSound.Play();
         blinkingScript.StopAbility();
         playerScript._isSwappedPropriety = false;

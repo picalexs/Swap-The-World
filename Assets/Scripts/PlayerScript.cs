@@ -31,7 +31,7 @@ public class PlayerScript : MonoBehaviour
     public bool _isSwapped = false;
     public bool _isSwappedPropriety = false;
     private bool _isPressing;
-    private bool _isRunning;
+    public static bool _isRunning;
     public bool _canMove = true;
     public bool _canJump = true;
 
@@ -43,6 +43,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private float _jumpTime = 0.15f;
     [SerializeField] private float _jumpCooldownTime;
     [SerializeField] private Vector2 _groundCheckSize;
+    [SerializeField] private Vector2 _boxGroundCheckSize;
 
     [Space(10)]
     [Header("Movement variables")]
@@ -399,16 +400,34 @@ public class PlayerScript : MonoBehaviour
         _isActive = true;
         _transition.SetBool("Start", false);
     }
-    public void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Vector3 lowestPosition = new Vector3(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
-        Gizmos.DrawWireCube(lowestPosition, _groundCheckSize);
+        if (_isSwapped)
+        {
+            Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.center.y - 1f, 0f);
+            Gizmos.DrawWireCube(lowestPosition, _boxGroundCheckSize);
+        }
+        else
+        {
+            Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
+            Gizmos.DrawWireCube(lowestPosition, _groundCheckSize);
+        }
     }
-    public void IsGrounded()
+    private void IsGrounded()
     {
-        Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(lowestPosition, _groundCheckSize, 0, _groundLayer);
+        
+        Collider2D[] colliders;
+        if (_isSwapped)
+        {
+            Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.center.y - 1f, 0f);
+            colliders = Physics2D.OverlapBoxAll(lowestPosition, _boxGroundCheckSize, 0, _groundLayer);
+        }
+        else
+        {
+            Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
+            colliders = Physics2D.OverlapBoxAll(lowestPosition, _groundCheckSize, 0, _groundLayer);
+        }
         _isGrounded = false;
         foreach (Collider2D collider in colliders)
         {

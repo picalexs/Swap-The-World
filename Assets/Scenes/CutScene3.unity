@@ -700,7 +700,6 @@ GameObject:
   - component: {fileID: 858226165}
   - component: {fileID: 858226164}
   - component: {fileID: 858226163}
-  - component: {fileID: 858226162}
   - component: {fileID: 858226161}
   - component: {fileID: 858226160}
   m_Layer: 5
@@ -826,29 +825,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &858226162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 858226159}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91f82d1e6605e4f488cd68d2555a8b1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textWrite: 
-  delayBetweenLetters: 0.05
-  volume: 1
-  pitchMultiplier: 1
-  minPitch: 1
-  maxPitch: 2
-  commaPause: 0.5
-  periodPause: 1
-  audioClips: []
-  messageText: {fileID: 0}
-  activateOnFinish: {fileID: 0}
 --- !u!114 &858226163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1374,7 +1350,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Next
+  m_text: 'Exit
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7d5343b8dba19e40bdde687d827def7, type: 2}
   m_sharedMaterial: {fileID: 4243541306874182655, guid: e7d5343b8dba19e40bdde687d827def7, type: 2}

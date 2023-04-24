@@ -25,7 +25,7 @@ public class RollCredits : MonoBehaviour
     }
     IEnumerator PlayRollCreditsButton()
     {
-        yield return new WaitForSeconds(25f);
+        yield return new WaitForSeconds(15f);
         if (gameObjectToEnable.activeInHierarchy == false)
         {
             gameObjectToEnable.SetActive(true);

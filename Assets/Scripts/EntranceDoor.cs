@@ -34,8 +34,11 @@ public class EntranceDoor : MonoBehaviour
 
     public void CloseDoor()
     {
-        isOpen = false;
-        spriteRenderer.sprite = closedSprite;
+        if (!isBlocked)
+        {
+            isOpen = false;
+            spriteRenderer.sprite = closedSprite;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

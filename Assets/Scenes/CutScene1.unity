@@ -984,8 +984,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f82d1e6605e4f488cd68d2555a8b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textWrite: Ionut is a dreamy and brave boy. He always wanted to go on an adventure
-    like in the movies, but he never had the opportunity to.
+  textWrite: Ionut is a dreamy and courageous boy who has always longed to go on
+    an adventure like those in the movies, but he has never had the chance to do
+    so.
   delayBetweenLetters: 0.05
   volume: 0.1
   pitchMultiplier: 0.3

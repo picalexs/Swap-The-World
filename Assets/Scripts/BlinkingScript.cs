@@ -7,6 +7,7 @@ public class BlinkingScript : MonoBehaviour
     public bool testBlinking = false;
 
     [SerializeField] private GameObject playerObject;
+    [SerializeField] private AudioSource blinkSound;
     public float baseBlinkDuration = 0.1f;
     public float baseBlinkFrequency = 0.1f;
     public float abilityDuration = 3.0f;
@@ -75,12 +76,18 @@ public class BlinkingScript : MonoBehaviour
             float progress = timer / abilityDuration;
             float currentFrequency = Mathf.Lerp(startFrequency, endFrequency, progress);
             float currentDuration = Mathf.Lerp(startDuration, endDuration, progress);
+            float currentPitch = Mathf.Lerp(1.0f, 2.0f, progress);
 
             playerMaterial.SetFloat("_HitEffectBlend", maxBlendAmount);
             playerMaterial.SetFloat("_ChromAberrAmount", Random.Range(1, chromAberrAmount));
+            blinkSound.pitch = currentPitch;
+            blinkSound.Play();
+
             yield return new WaitForSeconds(currentDuration);
+
             playerMaterial.SetFloat("_HitEffectBlend", 0f);
             playerMaterial.SetFloat("_ChromAberrAmount", 0f);
+
             yield return new WaitForSeconds(currentFrequency - currentDuration);
 
             timer += currentFrequency;

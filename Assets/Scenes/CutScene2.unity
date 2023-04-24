@@ -918,9 +918,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f82d1e6605e4f488cd68d2555a8b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textWrite: One day, while he was sitting in his garden, a mysterious door appeared
-    out of nowhere. Naturally curious, he opened the entrance and went trough it.
-    Now he needs your help to explore this strange place.
+  textWrite: One day, while sitting in his garden, Ionut was startled by the sudden
+    appearance of a mysterious door. Naturally curious, he approached the entrance
+    and cautiously opened it. As he stepped through the threshold, he found himself
+    in a strange and unfamiliar place. Now, he needs your help to explore this new
+    and mysterious world.
   delayBetweenLetters: 0.05
   volume: 0.1
   pitchMultiplier: 0.3

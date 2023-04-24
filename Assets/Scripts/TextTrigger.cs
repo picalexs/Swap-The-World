@@ -4,26 +4,28 @@ using UnityEngine;
 using TMPro;
 public class TextTrigger : MonoBehaviour
 {
-    [SerializeField] private GameObject gameObject;
+    [SerializeField] private GameObject textTrigger;
     void Start()
     {
-        gameObject.SetActive(false);
+        textTrigger.SetActive(false);
     }
-   private void OnTriggerEnter2D(Collider2D collision) {
-    if(collision.gameObject.CompareTag("Player"))
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
-            if(gameObject.activeInHierarchy==false) 
-                {
-                    gameObject.SetActive(true);
-                }
-            
+            if (textTrigger.activeInHierarchy == false)
+            {
+                textTrigger.SetActive(true);
+            }
+
         }
-   }
-   private void OnTriggerExit2D(Collider2D collision) {
-    if(collision.gameObject.CompareTag("Player"))
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
-            if(gameObject.activeInHierarchy==true) 
-                gameObject.SetActive(false);      
+            if (textTrigger.activeInHierarchy == true)
+                textTrigger.SetActive(false);
         }
-   }
+    }
 }
