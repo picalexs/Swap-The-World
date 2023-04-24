@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -1146,7 +1146,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Cave_Background_v3__19: -1276884238
+      Cave_Background_v3__31: -1219370712
       Cave_Background_v3__47: -1673983689
       Cave_Background_v3__2: 1835987486
       Cave_Background_v3__26: -1473516038
@@ -1194,7 +1194,7 @@ TextureImporter:
       Cave_Background_v3__39: 1327403470
       Cave_Background_v3__21: -986963014
       Cave_Background_v3__18: 429385019
-      Cave_Background_v3__31: -1219370712
+      Cave_Background_v3__19: -1276884238
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

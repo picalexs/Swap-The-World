@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -1146,7 +1146,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Brick_v1__36: 1822501850
+      Brick_v1__24: 1820498762
       Brick_v1__34: 1877189304
       Brick_v1__44: 1679854646
       Brick_v1__35: 1342677101
@@ -1194,7 +1194,7 @@ TextureImporter:
       Brick_v1__39: -25725040
       Brick_v1__2: 473982423
       Brick_v1__0: -1882343733
-      Brick_v1__24: 1820498762
+      Brick_v1__36: 1822501850
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

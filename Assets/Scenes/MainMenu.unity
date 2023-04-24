@@ -686,7 +686,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2ec14d07946c7fe429f08fc058e5b2f8, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1702,7 +1702,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -8080139000057702503, guid: 2a875623d26839b4c866295f84dc5a08, type: 2}
   m_audioClip: {fileID: 8300000, guid: 367227a9254da2041a7917208b4ef7ad, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1967,7 +1967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040b8230dfecf6f49ae28d0f6022cda0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 0.68
+  scrollSpeed: 0.5
 --- !u!23 &2028899528
 MeshRenderer:
   m_ObjectHideFlags: 0

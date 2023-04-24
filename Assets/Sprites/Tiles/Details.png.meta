@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -1912,29 +1912,29 @@ TextureImporter:
       Details_3: -2065803801
       Details_30: -2139538579
       Details_55: -444240068
-      Details_51: -1145569566
-      Details_24: 585240528
-      Details_5: 214869166
       Details_6: 1415924087
+      Details_37: 52444563
+      Details_51: -1145569566
+      Details_49: 1790336809
       Details_13: -1323418940
       Details_82: -21924659
-      Details_49: 1790336809
       Details_11: -1154441275
       Details_63: -1352244617
       Details_67: 1374808880
-      Details_37: 52444563
       Details_25: 1076696405
-      Details_29: 350232418
-      Details_66: 1094322646
       Details_26: 94850347
+      Details_5: 214869166
+      Details_29: 350232418
+      Details_24: 585240528
       Details_19: 1808093606
       Details_73: -440170438
-      Details_70: 1064696982
+      Details_66: 1094322646
       Details_12: 550816481
       Details_42: -768668561
       Details_47: -793803576
       Details_64: 1228823518
       Details_65: -195308457
+      Details_70: 1064696982
       Details_27: 1017504817
       Details_58: -1866672692
       Details_72: -98399578

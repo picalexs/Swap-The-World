@@ -261,15 +261,124 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "to be continued...\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSWAP THE WORLD\nA short
-    platformer game\n\nProject made by\n\nPicioroga Alexandru\nCosmin Irimia\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBONUS\n\nSomnoroase
-    p\u0103s\u0103rele...\r\n\r\nSomnoroase p\u0103s\u0103rele\r\nPe la cuiburi se
-    adun\u0103,\r\nSe ascund \xEEn r\u0103murele -\r\nNoapte bun\u0103!\r\n\r\nDoar
-    izvoarele suspin\u0103,\r\nPe c\xE2nd codrul negru tace;\r\nDorm \u015Fi florile-n
-    gr\u0103din\u0103 -\r\nDormi \xEEn pace!\r\n\r\nTrece leb\u0103da pe ape\r\n\xCEntre
-    trestii s\u0103 se culce -\r\nFie-\u0163i \xEEngerii aproape,\r\nSomnul dulce!\r\n\r\nPeste-a
-    nop\u0163ii feerie\r\nSe ridic\u0103 m\xE2ndra lun\u0103,\r\nTotu-i vis \u015Fi
-    armonie -\r\nNoapte bun\u0103!\n\n\n\n\n\n\n\n"
+  m_text: 'to be continued...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    SWAP THE WORLD
+
+    A short platformer
+    game
+
+
+    Project made by
+
+
+    Picioroga Alexandru
+
+    Cosmin Irimia
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    BONUS
+
+
+    Somnoroase
+    pasarele
+
+    Pe la cuiburi se aduna,
+
+    Se ascund in ramurele-
+
+    Noapte
+    buna!
+
+
+    Doar izvoarele suspina,
+
+    Pe cand codrul negru tace;
+
+    Dorm
+    si florile-n gradina-
+
+    Dormi in pace!
+
+
+    Trece lebada pe ape
+
+    Intre
+    tresti sa se culce-
+
+    Fie-ti ingerii aproape,
+
+    Somnul dulce!
+
+
+    Peste-a
+    nopti feerie
+
+    Se ridica mandra luna,
+
+    Totu-i vis si armonie-
+
+    Noapte
+    buna!
+
+
+
+
+
+
+
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7d5343b8dba19e40bdde687d827def7, type: 2}
   m_sharedMaterial: {fileID: 4243541306874182655, guid: e7d5343b8dba19e40bdde687d827def7, type: 2}
@@ -718,10 +827,10 @@ AudioSource:
   m_GameObject: {fileID: 858226159}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 4314107897284643558, guid: 2a875623d26839b4c866295f84dc5a08, type: 2}
   m_audioClip: {fileID: 8300000, guid: 2ec14d07946c7fe429f08fc058e5b2f8, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0

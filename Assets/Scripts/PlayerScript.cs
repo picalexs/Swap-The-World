@@ -400,20 +400,6 @@ public class PlayerScript : MonoBehaviour
         _isActive = true;
         _transition.SetBool("Start", false);
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        if (_isSwapped)
-        {
-            Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.center.y - 1f, 0f);
-            Gizmos.DrawWireCube(lowestPosition, _boxGroundCheckSize);
-        }
-        else
-        {
-            Vector3 lowestPosition = new(_playerRenderer.bounds.center.x, _playerRenderer.bounds.min.y, 0f);
-            Gizmos.DrawWireCube(lowestPosition, _groundCheckSize);
-        }
-    }
     private void IsGrounded()
     {
         
