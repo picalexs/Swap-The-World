@@ -15,3 +15,10 @@
 - **Programming Language**: C#  
 - **Art & Animation**: Aseprite  
 - **Game Mechanics**: Physics-based interactions, event-driven programming  
+
+## Screenshots  
+![Gameplay Screenshot 1](screenshots/image1.png)  
+![Gameplay Screenshot 2](screenshots/image2.png)  
+![Gameplay Screenshot 3](screenshots/image3.png)  
+![Gameplay Screenshot 4](screenshots/image4.png)  
+![Gameplay Screenshot 5](screenshots/image5.png)  
