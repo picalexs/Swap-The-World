@@ -17,8 +17,8 @@
 - **Game Mechanics**: Physics-based interactions, event-driven programming  
 
 ## Screenshots  
-![Gameplay Screenshot 1](screenshots/image1.png)  
-![Gameplay Screenshot 2](screenshots/image2.png)  
-![Gameplay Screenshot 3](screenshots/image3.png)  
-![Gameplay Screenshot 4](screenshots/image4.png)  
-![Gameplay Screenshot 5](screenshots/image5.png)  
+![Gameplay Screenshot 1](Screenshots/image1.png)  
+![Gameplay Screenshot 2](Screenshots/image2.png)  
+![Gameplay Screenshot 3](Screenshots/image3.png)  
+![Gameplay Screenshot 4](Screenshots/image4.png)  
+![Gameplay Screenshot 5](Screenshots/image5.png)  
